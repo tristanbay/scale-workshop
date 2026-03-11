@@ -162,10 +162,10 @@ const strokeStyle = computed(() => {
 })
 
 function presetOrgan() {
-  attackTime.value = 0.01
+  attackTime.value = 0.0
   decayTime.value = 0.15
   sustainLevel.value = 0.8
-  releaseTime.value = 0.01
+  releaseTime.value = 0.0
 }
 
 function presetPad() {
@@ -176,24 +176,24 @@ function presetPad() {
 }
 
 function presetShort() {
-  attackTime.value = 0.002
+  attackTime.value = 0.0
   decayTime.value = 0.125
   sustainLevel.value = 0.0
   releaseTime.value = 0.1
 }
 
 function presetMedium() {
-  attackTime.value = 0.003
+  attackTime.value = 0.0
   decayTime.value = 1.5
   sustainLevel.value = 0.0
   releaseTime.value = 0.3
 }
 
 function presetLong() {
-  attackTime.value = 0.005
+  attackTime.value = 0.0
   decayTime.value = 4
   sustainLevel.value = 0.0
-  releaseTime.value = 0.8
+  releaseTime.value = 0.95
 }
 
 function assignCode(event: KeyboardEvent) {
