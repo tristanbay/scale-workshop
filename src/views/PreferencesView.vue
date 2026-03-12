@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { UNIX_NEWLINE, WINDOWS_NEWLINE } from '@/constants'
+import { APERIODIC_WAVEFORMS, WAVEFORMS } from '@/synth'
 
 import { useStateStore } from '@/stores/state'
 import { useScaleStore } from '@/stores/scale'
@@ -57,9 +58,123 @@ const scale = useScaleStore()
         </div>
       </div>
       <div class="column">
-        <h2>Defaults</h2>
+        <h2>Synth Defaults</h2>
+        <p>What the below synth settings default to when loading a blank Scale Workshop instance (overriden when loading custom scale links)</p>
         <div class="control-group">
-          <!-- waveform, envelope preset, delay preset, keyboard mode, keyboard note display, isomorphic key mapping -->
+          <h3>Generator</h3>
+          <div class="control radio-group">
+            <label>Synth type</label>
+            <span>
+              <input type="radio" id="default-type-oscillator" value="oscillator" v-model="state.defaultSynthType" />
+              <label for="default-type-oscillator">Oscillator</label>
+            </span>
+            <span>
+              <input type="radio" id="default-type-unison" value="unison" v-model="state.defaultSynthType" />
+              <label for="default-type-unison">Unison</label>
+            </span>
+            <span>
+              <input type="radio" id="default-type-aperiodic" value="aperiodic" v-model="state.defaultSynthType" />
+              <label for="default-type-aperiodic">Aperiodic</label>
+            </span>
+          </div>
+          <template v-if="state.defaultSynthType === 'unison'">
+            <div class="control">
+              <label for="default-stack-size">Unison stack size</label>
+              <input id="default-stack-size" min="2" max="9" type="number" v-model="state.defaultUnisonStackSize" />
+            </div>
+            <label for="default-unison-spread">Unison spread</label>
+            <input id="default-unison-spread" class="control" type="range" min="0.01" max="100" step="any" v-model="state.defaultUnisonSpread" />
+          </template>
+          <div class="control">
+            <label for="waveform">Waveform</label>
+            <select v-if="state.defaultSynthType === 'aperiodic'" class="control" v-model="state.defaultAperiodicWaveform" >
+              <option v-for="waveform of APERIODIC_WAVEFORMS" :value="waveform" :key="waveform">
+                {{ waveform }}
+              </option>
+            </select>
+            <select v-else id="waveform" class="control" v-model="state.defaultWaveform">
+              <option v-for="waveform of WAVEFORMS" :value="waveform" :key="waveform">
+                {{ waveform }}
+              </option>
+            </select>
+          </div>
+
+          <h3>Envelope Preset</h3>
+          <div class="control radio-group">
+            <span>
+              <input type="radio" id="default-organ" value="organ" v-model="state.defaultEnvelope" />
+              <label for="default-organ">Organ</label>
+            </span>
+            <span>
+              <input type="radio" id="default-pad" value="pad" v-model="state.defaultEnvelope" />
+              <label for="default-pad">Pad</label>
+            </span>
+            <span>
+              <input type="radio" id="default-short" value="short" v-model="state.defaultEnvelope" />
+              <label for="default-short">Percussive (Short)</label>
+            </span>
+            <span>
+              <input type="radio" id="default-medium" value="medium" v-model="state.defaultEnvelope" />
+              <label for="default-medium">Percussive (Medium)</label>
+            </span>
+            <span>
+              <input type="radio" id="default-long" value="long" v-model="state.defaultEnvelope" />
+              <label for="default-long">Percussive (Long)</label>
+            </span>
+          </div>
+
+          <h3>Delay Preset</h3>
+          <div class="control radio-group">
+            <span>
+              <input type="radio" id="default-off" value="off" v-model="state.defaultDelay" />
+              <label for="default-off">Off</label>
+            </span>
+            <span>
+              <input type="radio" id="default-mono" value="mono" v-model="state.defaultDelay" />
+              <label for="default-mono">Basic (Mono)</label>
+            </span>
+            <span>
+              <input type="radio" id="default-stereo" value="stereo" v-model="state.defaultDelay" />
+              <label for="default-stereo">Basic (Stereo)</label>
+            </span>
+            <span>
+              <input type="radio" id="default-intense" value="intense" v-model="state.defaultDelay" />
+              <label for="default-intense">Intense</label>
+            </span>
+            <span>
+              <input type="radio" id="default-elastic" value="elastic" v-model="state.defaultDelay" />
+              <label for="default-elastic">Elastic</label>
+            </span>
+            <span>
+              <input type="radio" id="default-ambient" value="ambient" v-model="state.defaultDelay" />
+              <label for="default-ambient">Ambient</label>
+            </span>
+          </div>
+
+          <h3>Keyboard Mode</h3>
+          <div class="control radio-group">
+            <span>
+              <input type="radio" id="default-off" value="off" v-model="state.defaultDelay" />
+              <label for="default-off">Off</label>
+            </span>
+            <span>
+              <input type="radio" id="default-mono" value="mono" v-model="state.defaultDelay" />
+              <label for="default-mono">Basic (Mono)</label>
+            </span>
+          </div>
+
+          <h3>Isomorphic Key Mapping</h3>
+          <div class="control-group" style="flex-direction: row; align-items: stretch; flex-wrap: nowrap">
+            <div class="control" style="width: 50%">
+              <label for="default-vertical">Vertical</label>
+              <input type="number" id="default-vertical" v-model="state.defaultIsomorphicVertical" />
+            </div>
+            <div class="control" style="width: 50%">
+              <label for="default-horizontal">Horizontal</label>
+              <input type="number" id="default-horizontal" v-model="state.defaultIsomorphicHorizontal" />
+            </div>
+          </div>
+
         </div>
       </div>
       <div class="column">

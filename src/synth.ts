@@ -56,6 +56,7 @@ export const CUSTOM_WAVEFORMS = [
   'boethius-classic'
 ]
 export const WAVEFORMS = BASIC_WAVEFORMS.concat(CUSTOM_WAVEFORMS)
+export const DEFAULT_WAVEFORM = 'semisine'
 export const PERIODIC_WAVES: Record<string, ComputedRef<PeriodicWave>> = {}
 
 // Some of these have entries in timbres.json, but we preserve the old UI order.
@@ -72,6 +73,7 @@ export const APERIODIC_WAVEFORMS = [
   'platinum',
   '12-TET'
 ].concat(getPlainSpectraWaveformNames())
+export const DEFAULT_APERIODIC = 'jegogan'
 export const APERIODIC_WAVES: Record<string, ComputedRef<AperiodicWave>> = {}
 
 export function initializePeriodic(audioContext: BaseAudioContext) {

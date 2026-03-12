@@ -2,6 +2,7 @@ import { reactive, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { UNIX_NEWLINE } from '@/constants'
 import { syncValues } from '@/utils'
+import { DEFAULT_APERIODIC, DEFAULT_WAVEFORM } from '@/synth'
 
 export const useStateStore = defineStore('state', () => {
   // Mapping from MIDI index to number of interfaces currently pressing the key down
@@ -44,6 +45,18 @@ export const useStateStore = defineStore('state', () => {
   const equaveDownCode = ref(storage.getItem('equaveDownCode') ?? 'NumpadDivide')
   const degreeUpCode = ref(storage.getItem('degreeUpCode') ?? 'NumpadAdd')
   const degreeDownCode = ref(storage.getItem('degreeDownCode') ?? 'NumpadSubtract')
+
+  // Default settings for synth
+  const defaultSynthType = ref(storage.get('defaultSynthType') ?? 'oscillator')
+  const defaultUnisonStackSize = ref(storage.get('defaultUnisonStackSize') ?? 3)
+  const defaultUnisonSpread = ref(storage.get('defaultUnisonSpread') ?? 2.5)
+  const defaultWaveform = ref(storage.get('defaultWaveform') ?? DEFAULT_WAVEFORM)
+  const defaultAperiodicWaveform = ref(storage.get('defaultAperiodicWaveform') ?? DEFAULT_APERIODIC)
+  const defaultEnvelope = ref(storage.getItem('defaultEnvelope') ?? 'organ')
+  const defaultDelay = ref(storage.getItem('defaultDelay') ?? 'off')
+  const defaultKeyboardMode = ref(storage.getItem('defaultKeyboardMode') ?? 'keyboard')
+  const defaultIsomorphicVertical = ref(storage.getItem('defaultIsomorphicVertical') ?? 5)
+  const defaultIsomorphicHorizontal = ref(storage.getItem('defaultIsomorphicHorizontal') ?? 1)
 
   // Opt-in for user statistics
   const shareStatistics = ref(storage.getItem('shareStatistics') === 'true')
@@ -89,6 +102,16 @@ export const useStateStore = defineStore('state', () => {
     equaveDownCode,
     degreeUpCode,
     degreeDownCode,
+    defaultSynthType,
+    defaultUnisonStackSize,
+    defaultUnisonSpread,
+    defaultWaveform,
+    defaultAperiodicWaveform,
+    defaultEnvelope,
+    defaultDelay,
+    defaultKeyboardMode,
+    defaultIsomorphicVertical,
+    defaultIsomorphicHorizontal,
     shareStatistics,
     showSafariWarning,
     debug
@@ -127,6 +150,16 @@ export const useStateStore = defineStore('state', () => {
     equaveDownCode,
     degreeUpCode,
     degreeDownCode,
+    defaultSynthType,
+    defaultUnisonStackSize,
+    defaultUnisonSpread,
+    defaultWaveform,
+    defaultAperiodicWaveform,
+    defaultEnvelope,
+    defaultDelay,
+    defaultKeyboardMode,
+    defaultIsomorphicVertical,
+    defaultIsomorphicHorizontal,
     shareStatistics,
     showSafariWarning,
     debug,

@@ -3,10 +3,12 @@ import { defineStore } from 'pinia'
 import {
   APERIODIC_WAVEFORMS,
   APERIODIC_WAVES,
+  DEFAULT_APERIODIC,
   BASIC_WAVEFORMS,
   CUSTOM_WAVEFORMS,
-  initializeCustomWaves,
   PERIODIC_WAVES,
+  DEFAULT_WAVEFORM,
+  initializeCustomWaves,
   PingPongDelay
 } from '../synth'
 import { VirtualSynth } from '../virtual-synth'
@@ -51,9 +53,6 @@ type AudioStore = {
   mainLowpass: Ref<BiquadFilterNode>
   mainHighpass: Ref<BiquadFilterNode>
 }
-
-const DEFAULT_WAVEFORM = 'semisine'
-const DEFAULT_APERIODIC = 'jegogan'
 
 export const useAudioStore = defineStore<'audio', AudioStore>('audio', () => {
   const context = ref<AudioContext | null>(null)

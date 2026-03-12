@@ -293,12 +293,7 @@ onUnmounted(() => {
           <div class="control radio-group">
             <label>Synth type</label>
             <span>
-              <input
-                type="radio"
-                id="type-oscillator"
-                value="oscillator"
-                v-model="audio.synthType"
-              />
+              <input type="radio" id="type-oscillator" value="oscillator" v-model="audio.synthType" />
               <label for="type-oscillator">Oscillator</label>
             </span>
 
