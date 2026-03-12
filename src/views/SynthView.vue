@@ -161,39 +161,78 @@ const strokeStyle = computed(() => {
   return getComputedStyle(document.documentElement).getPropertyValue('--color-text').trim()
 })
 
-function presetOrgan() {
-  attackTime.value = 0.0
+function envPresetOrgan() {
+  attackTime.value = 0.01
   decayTime.value = 0.15
   sustainLevel.value = 0.8
-  releaseTime.value = 0.0
+  releaseTime.value = 0.01
 }
 
-function presetPad() {
+function envPresetPad() {
   attackTime.value = 0.5
   decayTime.value = 1.5
   sustainLevel.value = 0.5
   releaseTime.value = 0.7
 }
 
-function presetShort() {
-  attackTime.value = 0.0
+function envPresetShort() {
+  attackTime.value = 0.01
   decayTime.value = 0.125
   sustainLevel.value = 0.0
   releaseTime.value = 0.1
 }
 
-function presetMedium() {
-  attackTime.value = 0.0
+function envPresetMedium() {
+  attackTime.value = 0.01
   decayTime.value = 1.5
   sustainLevel.value = 0.0
   releaseTime.value = 0.3
 }
 
-function presetLong() {
-  attackTime.value = 0.0
+function envPresetLong() {
+  attackTime.value = 0.01
   decayTime.value = 4
   sustainLevel.value = 0.0
   releaseTime.value = 0.95
+}
+
+function dlyPresetBasicMono() {
+  pingPongDelayTime.value = 0.4
+  pingPongFeedback.value = 0.45
+  pingPongSeparation.value = 0.0
+  pingPongGain.value = 0.65
+}
+
+function dlyPresetBasicStereo() {
+  pingPongDelayTime.value = 0.4
+  pingPongFeedback.value = 0.45
+  pingPongSeparation.value = 0.8
+  pingPongGain.value = 0.65
+}
+
+function dlyPresetIntense() {
+  pingPongDelayTime.value = 0.6
+  pingPongFeedback.value = 0.85
+  pingPongSeparation.value = 0.7
+  pingPongGain.value = 0.7
+}
+
+function dlyPresetElastic() {
+  pingPongDelayTime.value = 0.085
+  pingPongFeedback.value = 0.5
+  pingPongSeparation.value = 0.4
+  pingPongGain.value = 0.75
+}
+
+function dlyPresetAmbient() {
+  pingPongDelayTime.value = 0.019
+  pingPongFeedback.value = 0.625
+  pingPongSeparation.value = 0.8
+  pingPongGain.value = 0.6
+}
+
+function dlyPresetOff() {
+  pingPongGain.value = 0.0
 }
 
 function assignCode(event: KeyboardEvent) {
@@ -348,11 +387,11 @@ onUnmounted(() => {
           />
           <div class="btn-group">
             <label>Presets</label>
-            <button @click="presetOrgan">Organ</button>
-            <button @click="presetPad">Pad</button>
-            <button @click="presetShort">Percussive (Short)</button>
-            <button @click="presetMedium">Percussive (Medium)</button>
-            <button @click="presetLong">Percussive (Long)</button>
+            <button @click="envPresetOrgan">Organ</button>
+            <button @click="envPresetPad">Pad</button>
+            <button @click="envPresetShort">Percussive (Short)</button>
+            <button @click="envPresetMedium">Percussive (Medium)</button>
+            <button @click="envPresetLong">Percussive (Long)</button>
           </div>
           <div class="control">
             <label for="polyphony">Max polyphony</label>
@@ -402,6 +441,15 @@ onUnmounted(() => {
             step="any"
             v-model="pingPongGain"
           />
+          <div class="btn-group">
+            <label>Presets</label>
+            <button @click="dlyPresetOff">Off</button>
+            <button @click="dlyPresetBasicMono">Basic (Mono)</button>
+            <button @click="dlyPresetBasicStereo">Basic (Stereo)</button>
+            <button @click="dlyPresetIntense">Intense</button>
+            <button @click="dlyPresetElastic">Elastic</button>
+            <button @click="dlyPresetAmbient">Ambient</button>
+          </div>
           <hr />
           <label>Advanced</label>
           <label for="audio-delay">Audio delay (reduce pops)</label>

@@ -57,6 +57,12 @@ const scale = useScaleStore()
         </div>
       </div>
       <div class="column">
+        <h2>Defaults</h2>
+        <div class="control-group">
+          <!-- waveform, envelope preset, delay preset, keyboard mode, keyboard note display, isomorphic key mapping -->
+        </div>
+      </div>
+      <div class="column">
         <h2>Appearance</h2>
         <div class="control-group">
           <h3>Color Scheme</h3>
@@ -101,8 +107,6 @@ const scale = useScaleStore()
             </span>
           </div>
         </div>
-      </div>
-      <div class="column">
         <h2>Precision</h2>
         <div class="control-group">
           <div class="control">
