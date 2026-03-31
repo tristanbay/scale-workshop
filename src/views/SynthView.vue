@@ -546,7 +546,7 @@ onUnmounted(() => {
           <p>These color(s) in your scale will be used to assemble the piano layout.</p>
           <div v-if="scale.pianoMode === 'Zxc'" class="control-group">
             <div class="control">
-              <label for="high-accidental-color">high</label>
+              <label for="high-accidental-color">High</label>
               <input type="text" id="high-accidental-color" v-model="scale.highAccidentalColor" />
             </div>
             <div class="control">

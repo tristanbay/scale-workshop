@@ -55,8 +55,17 @@ export const useStateStore = defineStore('state', () => {
   const defaultEnvelope = ref(storage.getItem('defaultEnvelope') ?? 'organ')
   const defaultDelay = ref(storage.getItem('defaultDelay') ?? 'off')
   const defaultKeyboardMode = ref(storage.getItem('defaultKeyboardMode') ?? 'keyboard')
+  const defaultPianoMode = ref(storage.getItem('defaultPianoMode') ?? 'Asdf')
+  const defaultShowKeyboardLabel = ref(storage.getItem('defaultShowKeyboardLabel') !== 'false')
+  const defaultShowKeyboardCents = ref(storage.getItem('defaultShowKeyboardCents') !== 'false')
+  const defaultShowKeyboardRatio = ref(storage.getItem('defaultShowKeyboardRatio') !== 'false')
+  const defaultShowKeyboardFrequency = ref(storage.getItem('defaultShowKeyboardFrequency') !== 'false')
   const defaultIsomorphicVertical = ref(storage.getItem('defaultIsomorphicVertical') ?? 5)
   const defaultIsomorphicHorizontal = ref(storage.getItem('defaultIsomorphicHorizontal') ?? 1)
+  const defaultHighAccidentalColor = ref(storage.getItem('defaultHighAccidentalColor') ?? 'indigo')
+  const defaultMiddleAccidentalColor = ref(storage.getItem('defaultMiddleAccidentalColor') ?? 'navy')
+  const defaultLowAccidentalColor = ref(storage.getItem('defaultLowAccidentalColor') ?? 'maroon')
+  const defaultAccidentalColor = ref(storage.getItem('defaultAccidentalColor') ?? 'black')
 
   // Opt-in for user statistics
   const shareStatistics = ref(storage.getItem('shareStatistics') === 'true')
@@ -110,8 +119,17 @@ export const useStateStore = defineStore('state', () => {
     defaultEnvelope,
     defaultDelay,
     defaultKeyboardMode,
+    defaultPianoMode,
+    defaultShowKeyboardLabel,
+    defaultShowKeyboardCents,
+    defaultShowKeyboardRatio,
+    defaultShowKeyboardFrequency,
     defaultIsomorphicVertical,
     defaultIsomorphicHorizontal,
+    defaultHighAccidentalColor,
+    defaultMiddleAccidentalColor,
+    defaultLowAccidentalColor,
+    defaultAccidentalColor,
     shareStatistics,
     showSafariWarning,
     debug
@@ -158,8 +176,17 @@ export const useStateStore = defineStore('state', () => {
     defaultEnvelope,
     defaultDelay,
     defaultKeyboardMode,
+    defaultPianoMode,
+    defaultShowKeyboardLabel,
+    defaultShowKeyboardCents,
+    defaultShowKeyboardRatio,
+    defaultShowKeyboardFrequency,
     defaultIsomorphicVertical,
     defaultIsomorphicHorizontal,
+    defaultHighAccidentalColor,
+    defaultMiddleAccidentalColor,
+    defaultLowAccidentalColor,
+    defaultAccidentalColor,
     shareStatistics,
     showSafariWarning,
     debug,

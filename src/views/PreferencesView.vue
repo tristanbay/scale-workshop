@@ -151,30 +151,94 @@ const scale = useScaleStore()
             </span>
           </div>
 
-          <h3>Keyboard Mode</h3>
-          <div class="control radio-group">
-            <span>
-              <input type="radio" id="default-off" value="off" v-model="state.defaultDelay" />
-              <label for="default-off">Off</label>
-            </span>
-            <span>
-              <input type="radio" id="default-mono" value="mono" v-model="state.defaultDelay" />
-              <label for="default-mono">Basic (Mono)</label>
-            </span>
-          </div>
-
-          <h3>Isomorphic Key Mapping</h3>
-          <div class="control-group" style="flex-direction: row; align-items: stretch; flex-wrap: nowrap">
-            <div class="control" style="width: 50%">
-              <label for="default-vertical">Vertical</label>
-              <input type="number" id="default-vertical" v-model="state.defaultIsomorphicVertical" />
+          <h3>Keyboard mode</h3>
+          <div class="control-group">
+            <div class="control radio-group">
+              <span>
+                <input type="radio" id="default-mode-isomorphic" value="isomorphic" v-model="state.defaultKeyboardMode" />
+                <label for="default-mode-isomorphic">Isomorphic</label>
+              </span>
+              <span>
+                <input type="radio" id="default-mode-piano" value="piano" v-model="state.defaultKeyboardMode" />
+                <label for="default-mode-piano">Piano-style layers</label>
+              </span>
             </div>
-            <div class="control" style="width: 50%">
-              <label for="default-horizontal">Horizontal</label>
-              <input type="number" id="default-horizontal" v-model="state.defaultIsomorphicHorizontal" />
-            </div>
+            <template v-if="state.defaultKeyboardMode === 'piano'">
+              <div class="control radio-group">
+                <span>
+                  <input type="radio" id="default-mode-asdf" value="Asdf" v-model="state.defaultPianoMode" />
+                  <label for="default-mode-asdf">White on ASDF & black on QWERTY</label>
+                </span>
+                <span>
+                  <input type="radio" id="default-mode-qwe-zxc" value="QweZxc" v-model="state.defaultPianoMode" />
+                  <label for="default-mode-qwe-zxc"
+                    >QWERTY & digits + ZXCV & ASDF separated by an equave</label
+                  >
+                </span>
+                <span>
+                  <input type="radio" id="default-mode-zxc" value="Zxc" v-model="state.defaultPianoMode" />
+                  <label for="default-mode-zxc">ZXCV with split accidentals above</label>
+                </span>
+              </div>
+            </template>
           </div>
-
+          <template v-if="state.defaultKeyboardMode === 'isomorphic'">
+            <h3>Keyboard notes</h3>
+            <div class="control-group" style="flex-direction: row; flex-wrap: wrap">
+              <div class="control checkbox-container">
+                <input id="default-keyboard-show-label" type="checkbox" v-model="state.defaultShowKeyboardLabel" />
+                <label for="default-keyboard-show-label">Display label</label>
+              </div>
+              <div class="control checkbox-container">
+                <input id="default-keyboard-show-cents" type="checkbox" v-model="state.defaultShowKeyboardCents" />
+                <label for="default-keyboard-show-cents">Display cents</label>
+              </div>
+              <div class="control checkbox-container">
+                <input id="default-keyboard-show-ratio" type="checkbox" v-model="state.defaultShowKeyboardRatio" />
+                <label for="default-keyboard-show-ratio">Display ratio</label>
+              </div>
+              <div class="control checkbox-container">
+                <input id="default-keyboard-show-frequency" type="checkbox" v-model="state.defaultShowKeyboardFrequency" />
+                <label for="default-keyboard-show-frequency">Display frequency</label>
+              </div>
+            </div>
+          </template>
+          <template v-if="state.defaultKeyboardMode === 'isomorphic'">
+            <h3>Isomorphic key mapping</h3>
+            <div class="control-group" style="flex-direction: row; align-items: stretch; flex-wrap: nowrap">
+              <div class="control" style="width: 50%">
+                <label for="default-vertical">Vertical</label>
+                <input type="number" id="default-vertical" v-model="state.defaultIsomorphicVertical" />
+              </div>
+              <div class="control" style="width: 50%">
+                <label for="default-horizontal">Horizontal</label>
+                <input type="number" id="default-horizontal" v-model="state.defaultIsomorphicHorizontal" />
+              </div>
+            </div>
+          </template>
+          <template v-else>
+            <h3>Accidental colors</h3>
+            <p>These color(s) in your scale will be used to assemble the piano layout.</p>
+            <div v-if="state.defaultPianoMode === 'Zxc'" class="control-group">
+              <div class="control">
+                <label for="default-high-accidental-color">High</label>
+                <input type="text" id="default-high-accidental-color" v-model="state.defaultHighAccidentalColor" />
+              </div>
+              <div class="control">
+                <label for="default-middle-accidental-color">Middle</label>
+                <input type="text" id="default-middle-accidental-color" v-model="state.defaultMiddleAccidentalColor" />
+              </div>
+              <div class="control">
+                <label for="default-low-accidental-color">Low</label>
+                <input type="text" id="default-low-accidental-color" v-model="state.defaultLowAccidentalColor" />
+              </div>
+            </div>
+            <div v-else class="control-group">
+              <div class="control">
+                <input type="text" id="default-accidental-color" v-model="state.defaultAccidentalColor" />
+              </div>
+            </div>
+          </template>
         </div>
       </div>
       <div class="column">

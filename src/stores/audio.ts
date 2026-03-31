@@ -96,7 +96,7 @@ export const useAudioStore = defineStore<'audio', AudioStore>('audio', () => {
   const pingPongSeparation = ref(1)
   const pingPongGain = ref(0)
 
-  // Fetch user-specific state
+  // Fetch user-specific states
   if ('audioDelay' in window.localStorage) {
     const value = window.localStorage.getItem('audioDelay')
     if (value !== null) {
@@ -217,8 +217,34 @@ export const useAudioStore = defineStore<'audio', AudioStore>('audio', () => {
 
     const storedMaxPolyphony = maxPolyphony.value
 
+    // load default synth type in from settings
     synthType.value = 'oscillator'
-    synth.value = oscillatorSynth
+    if ('defaultSynthType' in window.localStorage) {
+      const value = window.localStorage.getItem('audioDelay')
+      if (value !== null) {
+        switch (value) {
+          case "unison":
+            synthType.value = 'unison'
+            break
+          case "aperiodic":
+            synthType.value = 'aperiodic'
+            break
+          default:
+            break
+        }
+      }
+    }
+    switch (synthType.value) {
+      case 'unison':
+        synth.value = unisonSynth
+        break
+      case 'aperiodic':
+        synth.value = aperiodicSynth
+        break
+      default:
+        synth.value = oscillatorSynth
+        break
+    }
     synth.value.maxPolyphony = storedMaxPolyphony
 
     virtualSynth.value = new VirtualSynth(context.value)
