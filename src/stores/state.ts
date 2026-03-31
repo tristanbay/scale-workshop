@@ -47,11 +47,11 @@ export const useStateStore = defineStore('state', () => {
   const degreeDownCode = ref(storage.getItem('degreeDownCode') ?? 'NumpadSubtract')
 
   // Default settings for synth
-  const defaultSynthType = ref(storage.get('defaultSynthType') ?? 'oscillator')
-  const defaultUnisonStackSize = ref(storage.get('defaultUnisonStackSize') ?? 3)
-  const defaultUnisonSpread = ref(storage.get('defaultUnisonSpread') ?? 2.5)
-  const defaultWaveform = ref(storage.get('defaultWaveform') ?? DEFAULT_WAVEFORM)
-  const defaultAperiodicWaveform = ref(storage.get('defaultAperiodicWaveform') ?? DEFAULT_APERIODIC)
+  const defaultSynthType = ref(storage.getItem('defaultSynthType') ?? 'oscillator')
+  const defaultUnisonStackSize = ref(storage.getItem('defaultUnisonStackSize') ?? 3)
+  const defaultUnisonSpread = ref(storage.getItem('defaultUnisonSpread') ?? 2.5)
+  const defaultWaveform = ref(storage.getItem('defaultWaveform') ?? DEFAULT_WAVEFORM)
+  const defaultAperiodicWaveform = ref(storage.getItem('defaultAperiodicWaveform') ?? DEFAULT_APERIODIC)
   const defaultEnvelope = ref(storage.getItem('defaultEnvelope') ?? 'organ')
   const defaultDelay = ref(storage.getItem('defaultDelay') ?? 'off')
   const defaultKeyboardMode = ref(storage.getItem('defaultKeyboardMode') ?? 'keyboard')
