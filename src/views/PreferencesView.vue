@@ -183,27 +183,7 @@ const scale = useScaleStore()
             </template>
           </div>
           <template v-if="state.defaultKeyboardMode === 'isomorphic'">
-            <h3>Keyboard notes</h3>
-            <div class="control-group" style="flex-direction: row; flex-wrap: wrap">
-              <div class="control checkbox-container">
-                <input id="default-keyboard-show-label" type="checkbox" v-model="state.defaultShowKeyboardLabel" />
-                <label for="default-keyboard-show-label">Display label</label>
-              </div>
-              <div class="control checkbox-container">
-                <input id="default-keyboard-show-cents" type="checkbox" v-model="state.defaultShowKeyboardCents" />
-                <label for="default-keyboard-show-cents">Display cents</label>
-              </div>
-              <div class="control checkbox-container">
-                <input id="default-keyboard-show-ratio" type="checkbox" v-model="state.defaultShowKeyboardRatio" />
-                <label for="default-keyboard-show-ratio">Display ratio</label>
-              </div>
-              <div class="control checkbox-container">
-                <input id="default-keyboard-show-frequency" type="checkbox" v-model="state.defaultShowKeyboardFrequency" />
-                <label for="default-keyboard-show-frequency">Display frequency</label>
-              </div>
-            </div>
-          </template>
-          <template v-if="state.defaultKeyboardMode === 'isomorphic'">
+            <p>What info to display on keyboard keys can be changed in the Synth tab and is not overriden by custom Scale Workshop links</p>
             <h3>Isomorphic key mapping</h3>
             <div class="control-group" style="flex-direction: row; align-items: stretch; flex-wrap: nowrap">
               <div class="control" style="width: 50%">
