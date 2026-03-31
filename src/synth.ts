@@ -76,6 +76,20 @@ export const APERIODIC_WAVEFORMS = [
 export const DEFAULT_APERIODIC = 'jegogan'
 export const APERIODIC_WAVES: Record<string, ComputedRef<AperiodicWave>> = {}
 
+// Envelope presets
+export const ENV_PRESET_ORGAN = [0.01, 0.15, 0.8, 0.01]
+export const ENV_PRESET_PAD = [0.5, 1.5, 0.5, 0.7]
+export const ENV_PRESET_SHORT = [0.01, 0.125, 0.0, 0.1]
+export const ENV_PRESET_MEDIUM = [0.01, 1.5, 0.0, 0.3]
+export const ENV_PRESET_LONG = [0.01, 0.4, 0.0, 0.95]
+
+// Delay presets
+export const DLY_PRESET_MONO = [0.4, 0.45, 0.0, 0.65]
+export const DLY_PRESET_STEREO = [0.4, 0.45, 0.8, 0.65]
+export const DLY_PRESET_INTENSE = [0.6, 0.85, 0.7, 0.7]
+export const DLY_PRESET_ELASTIC = [0.085, 0.5, 0.4, 0.75]
+export const DLY_PRESET_AMBIENT = [0.019, 0.625, 0.8, 0.6]
+
 export function initializePeriodic(audioContext: BaseAudioContext) {
   PERIODIC_WAVES.warm1 = computed(() =>
     audioContext.createPeriodicWave(

@@ -2,7 +2,20 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import TimeDomainVisualizer from '@/components/TimeDomainVisualizer.vue'
 import Modal from '@/components/ModalDialog.vue'
-import { APERIODIC_WAVEFORMS, WAVEFORMS } from '@/synth'
+import {
+  APERIODIC_WAVEFORMS,
+  WAVEFORMS,
+  ENV_PRESET_ORGAN,
+  ENV_PRESET_PAD,
+  ENV_PRESET_SHORT,
+  ENV_PRESET_MEDIUM,
+  ENV_PRESET_LONG,
+  DLY_PRESET_MONO,
+  DLY_PRESET_STEREO,
+  DLY_PRESET_INTENSE,
+  DLY_PRESET_ELASTIC,
+  DLY_PRESET_AMBIENT
+} from '@/synth'
 import { useAudioStore } from '@/stores/audio'
 import { useStateStore } from '@/stores/state'
 import { useScaleStore } from '@/stores/scale'
@@ -162,73 +175,73 @@ const strokeStyle = computed(() => {
 })
 
 function envPresetOrgan() {
-  attackTime.value = 0.01
-  decayTime.value = 0.15
-  sustainLevel.value = 0.8
-  releaseTime.value = 0.01
+  attackTime.value = ENV_PRESET_ORGAN[0]
+  decayTime.value = ENV_PRESET_ORGAN[1]
+  sustainLevel.value = ENV_PRESET_ORGAN[2]
+  releaseTime.value = ENV_PRESET_ORGAN[3]
 }
 
 function envPresetPad() {
-  attackTime.value = 0.5
-  decayTime.value = 1.5
-  sustainLevel.value = 0.5
-  releaseTime.value = 0.7
+  attackTime.value = ENV_PRESET_PAD[0]
+  decayTime.value = ENV_PRESET_PAD[1]
+  sustainLevel.value = ENV_PRESET_PAD[2]
+  releaseTime.value = ENV_PRESET_PAD[3]
 }
 
 function envPresetShort() {
-  attackTime.value = 0.01
-  decayTime.value = 0.125
-  sustainLevel.value = 0.0
-  releaseTime.value = 0.1
+  attackTime.value = ENV_PRESET_SHORT[0]
+  decayTime.value = ENV_PRESET_SHORT[1]
+  sustainLevel.value = ENV_PRESET_SHORT[2]
+  releaseTime.value = ENV_PRESET_SHORT[3]
 }
 
 function envPresetMedium() {
-  attackTime.value = 0.01
-  decayTime.value = 1.5
-  sustainLevel.value = 0.0
-  releaseTime.value = 0.3
+  attackTime.value = ENV_PRESET_MEDIUM[0]
+  decayTime.value = ENV_PRESET_MEDIUM[1]
+  sustainLevel.value = ENV_PRESET_MEDIUM[2]
+  releaseTime.value = ENV_PRESET_MEDIUM[3]
 }
 
 function envPresetLong() {
-  attackTime.value = 0.01
-  decayTime.value = 4
-  sustainLevel.value = 0.0
-  releaseTime.value = 0.95
+  attackTime.value = ENV_PRESET_LONG[0]
+  decayTime.value = ENV_PRESET_LONG[1]
+  sustainLevel.value = ENV_PRESET_LONG[2]
+  releaseTime.value = ENV_PRESET_LONG[3]
 }
 
 function dlyPresetBasicMono() {
-  pingPongDelayTime.value = 0.4
-  pingPongFeedback.value = 0.45
-  pingPongSeparation.value = 0.0
-  pingPongGain.value = 0.65
+  pingPongDelayTime.value = DLY_PRESET_MONO[0]
+  pingPongFeedback.value = DLY_PRESET_MONO[1]
+  pingPongSeparation.value = DLY_PRESET_MONO[2]
+  pingPongGain.value = DLY_PRESET_MONO[3]
 }
 
 function dlyPresetBasicStereo() {
-  pingPongDelayTime.value = 0.4
-  pingPongFeedback.value = 0.45
-  pingPongSeparation.value = 0.8
-  pingPongGain.value = 0.65
+  pingPongDelayTime.value = DLY_PRESET_STEREO[0]
+  pingPongFeedback.value = DLY_PRESET_STEREO[1]
+  pingPongSeparation.value = DLY_PRESET_STEREO[2]
+  pingPongGain.value = DLY_PRESET_STEREO[3]
 }
 
 function dlyPresetIntense() {
-  pingPongDelayTime.value = 0.6
-  pingPongFeedback.value = 0.85
-  pingPongSeparation.value = 0.7
-  pingPongGain.value = 0.7
+  pingPongDelayTime.value = DLY_PRESET_INTENSE[0]
+  pingPongFeedback.value = DLY_PRESET_INTENSE[1]
+  pingPongSeparation.value = DLY_PRESET_INTENSE[2]
+  pingPongGain.value = DLY_PRESET_INTENSE[3]
 }
 
 function dlyPresetElastic() {
-  pingPongDelayTime.value = 0.085
-  pingPongFeedback.value = 0.5
-  pingPongSeparation.value = 0.4
-  pingPongGain.value = 0.75
+  pingPongDelayTime.value = DLY_PRESET_ELASTIC[0]
+  pingPongFeedback.value = DLY_PRESET_ELASTIC[1]
+  pingPongSeparation.value = DLY_PRESET_ELASTIC[2]
+  pingPongGain.value = DLY_PRESET_ELASTIC[3]
 }
 
 function dlyPresetAmbient() {
-  pingPongDelayTime.value = 0.019
-  pingPongFeedback.value = 0.625
-  pingPongSeparation.value = 0.8
-  pingPongGain.value = 0.6
+   pingPongDelayTime.value = DLY_PRESET_AMBIENT[0]
+  pingPongFeedback.value = DLY_PRESET_AMBIENT[1]
+  pingPongSeparation.value = DLY_PRESET_AMBIENT[2]
+  pingPongGain.value = DLY_PRESET_AMBIENT[3]
 }
 
 function dlyPresetOff() {
