@@ -498,7 +498,7 @@ onUnmounted(() => {
   if (midi.input !== null) {
     midi.input.removeListener()
   }
-  audio.unintialize()
+  audio.uninitialize()
 })
 
 function panic() {
