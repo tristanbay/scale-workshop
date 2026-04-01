@@ -2,7 +2,6 @@ import { reactive, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { UNIX_NEWLINE } from '@/constants'
 import { syncValues } from '@/utils'
-import { DEFAULT_APERIODIC, DEFAULT_WAVEFORM } from '@/synth'
 
 export const useStateStore = defineStore('state', () => {
   // Mapping from MIDI index to number of interfaces currently pressing the key down
@@ -45,23 +44,6 @@ export const useStateStore = defineStore('state', () => {
   const equaveDownCode = ref(storage.getItem('equaveDownCode') ?? 'NumpadDivide')
   const degreeUpCode = ref(storage.getItem('degreeUpCode') ?? 'NumpadAdd')
   const degreeDownCode = ref(storage.getItem('degreeDownCode') ?? 'NumpadSubtract')
-
-  // Default settings for synth
-  const defaultSynthType = ref(storage.getItem('defaultSynthType') ?? 'oscillator')
-  const defaultUnisonStackSize = ref(parseInt(storage.getItem('defaultUnisonStackSize') ?? '3', 10))
-  const defaultUnisonSpread = ref(parseFloat(storage.getItem('defaultUnisonSpread') ?? '2.5'))
-  const defaultWaveform = ref(storage.getItem('defaultWaveform') ?? DEFAULT_WAVEFORM)
-  const defaultAperiodicWaveform = ref(storage.getItem('defaultAperiodicWaveform') ?? DEFAULT_APERIODIC)
-  const defaultEnvelope = ref(storage.getItem('defaultEnvelope') ?? 'organ')
-  const defaultDelay = ref(storage.getItem('defaultDelay') ?? 'off')
-  const defaultKeyboardMode = ref(storage.getItem('defaultKeyboardMode') ?? 'isomorphic')
-  const defaultPianoMode = ref(storage.getItem('defaultPianoMode') ?? 'Asdf')
-  const defaultIsomorphicVertical = ref(parseInt(storage.getItem('defaultIsomorphicVertical') ?? '5', 10))
-  const defaultIsomorphicHorizontal = ref(parseInt(storage.getItem('defaultIsomorphicHorizontal') ?? '1', 10))
-  const defaultHighAccidentalColor = ref(storage.getItem('defaultHighAccidentalColor') ?? 'indigo')
-  const defaultMiddleAccidentalColor = ref(storage.getItem('defaultMiddleAccidentalColor') ?? 'navy')
-  const defaultLowAccidentalColor = ref(storage.getItem('defaultLowAccidentalColor') ?? 'maroon')
-  const defaultAccidentalColor = ref(storage.getItem('defaultAccidentalColor') ?? 'black')
 
   // Opt-in for user statistics
   const shareStatistics = ref(storage.getItem('shareStatistics') === 'true')
@@ -107,21 +89,6 @@ export const useStateStore = defineStore('state', () => {
     equaveDownCode,
     degreeUpCode,
     degreeDownCode,
-    defaultSynthType,
-    defaultUnisonStackSize,
-    defaultUnisonSpread,
-    defaultWaveform,
-    defaultAperiodicWaveform,
-    defaultEnvelope,
-    defaultDelay,
-    defaultKeyboardMode,
-    defaultPianoMode,
-    defaultIsomorphicVertical,
-    defaultIsomorphicHorizontal,
-    defaultHighAccidentalColor,
-    defaultMiddleAccidentalColor,
-    defaultLowAccidentalColor,
-    defaultAccidentalColor,
     shareStatistics,
     showSafariWarning,
     debug
@@ -160,21 +127,6 @@ export const useStateStore = defineStore('state', () => {
     equaveDownCode,
     degreeUpCode,
     degreeDownCode,
-    defaultSynthType,
-    defaultUnisonStackSize,
-    defaultUnisonSpread,
-    defaultWaveform,
-    defaultAperiodicWaveform,
-    defaultEnvelope,
-    defaultDelay,
-    defaultKeyboardMode,
-    defaultPianoMode,
-    defaultIsomorphicVertical,
-    defaultIsomorphicHorizontal,
-    defaultHighAccidentalColor,
-    defaultMiddleAccidentalColor,
-    defaultLowAccidentalColor,
-    defaultAccidentalColor,
     shareStatistics,
     showSafariWarning,
     debug,

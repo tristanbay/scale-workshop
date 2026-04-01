@@ -11,7 +11,6 @@ import {
   convertAccidentals
 } from '@/utils'
 import { defineStore } from 'pinia'
-import { useStateStore } from './state'
 import { computed, ref, watch } from 'vue'
 import { Fraction, mmod, mtof } from 'xen-dev-utils'
 import {
@@ -80,9 +79,6 @@ harmonicEntropy.__doc__ =
 harmonicEntropy.__node__ = builtinNode(harmonicEntropy)
 
 export const useScaleStore = defineStore('scale', () => {
-  // For loading user defaults
-  const state = useStateStore()
-
   // The scale store should remain unit-test friendly so this state needs to be here as well
   const centsFractionDigits = ref(parseInt(localStorage.getItem('centsFractionDigits') ?? '3', 10))
   const decimalFractionDigits = ref(
@@ -132,12 +128,10 @@ export const useScaleStore = defineStore('scale', () => {
   const warning = ref('')
 
   // Isomorphic offsets don't couple to anything else here, but they're part of the shareable live state.
-  const isomorphicVertical = ref(state.defaultIsomorphicVertical)
-  const isomorphicHorizontal = ref(state.defaultIsomorphicHorizontal)
+  const isomorphicVertical = ref(5)
+  const isomorphicHorizontal = ref(1)
   // Keyboard mode affects both physical qwerty and virtual keyboards
-  const keyboardMode = ref<'isomorphic' | 'piano'>(
-    state.defaultKeyboardMode == 'isomorphic' ? 'isomorphic' : 'piano'
-  )
+  const keyboardMode = ref<'isomorphic' | 'piano'>('isomorphic')
   // QWERTY mapping is coupled to equave and degree shifts
   const equaveShift = ref(0)
   const degreeShift = ref(0)
@@ -145,15 +139,11 @@ export const useScaleStore = defineStore('scale', () => {
   // Asdf: Non-black keys on ASDF-row black keys on QWERTY row
   // QweZxc: Two octaves similar to 'Asdf'
   // Zxc: Generic keys on ZXCV-row, maroon keys on ASDF, navy keys on QWERTY, indigo keys on digits row
-  const pianoMode = ref<'Asdf' | 'QweZxc' | 'Zxc'>(
-    state.defaultPianoMode == 'Asdf' ? 'Asdf' :
-    (state.defaultPianoMode == 'QweZxc' ? 'QweZxc' :
-    'Zxc')
-  )
-  const accidentalColor = ref(state.defaultAccidentalColor)
-  const lowAccidentalColor = ref(state.defaultLowAccidentalColor)
-  const middleAccidentalColor = ref(state.defaultMiddleAccidentalColor)
-  const highAccidentalColor = ref(state.defaultHighAccidentalColor)
+  const pianoMode = ref<'Asdf' | 'QweZxc' | 'Zxc'>('Asdf')
+  const accidentalColor = ref('black')
+  const lowAccidentalColor = ref('maroon')
+  const middleAccidentalColor = ref('navy')
+  const highAccidentalColor = ref('indigo')
 
   const id = ref('000000000')
   const uploadedId = ref('000000000')

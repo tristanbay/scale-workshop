@@ -1,23 +1,12 @@
 import { computed, ref, watch, type Ref } from 'vue'
 import { defineStore } from 'pinia'
-import { useStateStore } from './state'
 import {
   APERIODIC_WAVEFORMS,
   APERIODIC_WAVES,
   BASIC_WAVEFORMS,
   CUSTOM_WAVEFORMS,
-  PERIODIC_WAVES,
-  ENV_PRESET_ORGAN,
-  ENV_PRESET_PAD,
-  ENV_PRESET_SHORT,
-  ENV_PRESET_MEDIUM,
-  ENV_PRESET_LONG,
-  DLY_PRESET_MONO,
-  DLY_PRESET_STEREO,
-  DLY_PRESET_INTENSE,
-  DLY_PRESET_ELASTIC,
-  DLY_PRESET_AMBIENT,
   initializeCustomWaves,
+  PERIODIC_WAVES,
   PingPongDelay
 } from '../synth'
 import { VirtualSynth } from '../virtual-synth'
@@ -31,8 +20,6 @@ import {
   type AperiodicVoiceParams,
   AperiodicWave
 } from 'sw-synth'
-
-const state = useStateStore()
 
 // The compiler chokes on this store so we need an explicit type annotation
 type AudioStore = {
@@ -65,6 +52,9 @@ type AudioStore = {
   mainHighpass: Ref<BiquadFilterNode>
 }
 
+const DEFAULT_WAVEFORM = 'semisine'
+const DEFAULT_APERIODIC = 'jegogan'
+
 export const useAudioStore = defineStore<'audio', AudioStore>('audio', () => {
   const context = ref<AudioContext | null>(null)
   // Chromium has some issues with audio nodes as props
@@ -84,38 +74,14 @@ export const useAudioStore = defineStore<'audio', AudioStore>('audio', () => {
   let aperiodicSynth: AperiodicSynth
 
   // Synth params
-  const waveform = ref(state.defaultWaveform)
-  const attackTime = ref(
-    state.defaultEnvelope == 'organ' ? ENV_PRESET_ORGAN[0] :
-    (state.defaultEnvelope == 'pad' ? ENV_PRESET_PAD[0] :
-    (state.defaultEnvelope == 'short' ? ENV_PRESET_SHORT[0] :
-    (state.defaultEnvelope == 'medium' ? ENV_PRESET_MEDIUM[0] :
-    ENV_PRESET_LONG[0])))
-  )
-  const decayTime = ref(
-    state.defaultEnvelope == 'organ' ? ENV_PRESET_ORGAN[1] :
-    (state.defaultEnvelope == 'pad' ? ENV_PRESET_PAD[1] :
-    (state.defaultEnvelope == 'short' ? ENV_PRESET_SHORT[1] :
-    (state.defaultEnvelope == 'medium' ? ENV_PRESET_MEDIUM[1] :
-    ENV_PRESET_LONG[1])))
-  )
-  const sustainLevel = ref(
-    state.defaultEnvelope == 'organ' ? ENV_PRESET_ORGAN[2] :
-    (state.defaultEnvelope == 'pad' ? ENV_PRESET_PAD[2] :
-    (state.defaultEnvelope == 'short' ? ENV_PRESET_SHORT[2] :
-    (state.defaultEnvelope == 'medium' ? ENV_PRESET_MEDIUM[2] :
-    ENV_PRESET_LONG[2])))
-  )
-  const releaseTime = ref(
-    state.defaultEnvelope == 'organ' ? ENV_PRESET_ORGAN[3] :
-    (state.defaultEnvelope == 'pad' ? ENV_PRESET_PAD[3] :
-    (state.defaultEnvelope == 'short' ? ENV_PRESET_SHORT[3] :
-    (state.defaultEnvelope == 'medium' ? ENV_PRESET_MEDIUM[3] :
-    ENV_PRESET_LONG[3])))
-  )
-  const stackSize = ref(state.defaultUnisonStackSize)
-  const spread = ref(state.defaultUnisonSpread)
-  const aperiodicWaveform = ref(state.defaultAperiodicWaveform)
+  const waveform = ref(DEFAULT_WAVEFORM)
+  const attackTime = ref(0.01)
+  const decayTime = ref(0.3)
+  const sustainLevel = ref(0.8)
+  const releaseTime = ref(0.01)
+  const stackSize = ref(3)
+  const spread = ref(2.5)
+  const aperiodicWaveform = ref(DEFAULT_APERIODIC)
   // Fix Firefox issues with audioContext.currentTime being in the past using a delay.
   // This is a locally stored user preference, but shown on the Synth tab.
   const audioDelay = ref(0.001)
@@ -126,37 +92,12 @@ export const useAudioStore = defineStore<'audio', AudioStore>('audio', () => {
   // Stereo ping pong delay and associated params
   const pingPongDelay = ref<PingPongDelay | null>(null)
   const pingPongGainNode = ref<GainNode | null>(null)
-  const pingPongDelayTime = ref(
-    (state.defaultDelay == 'mono' || state.defaultDelay == 'off') ? DLY_PRESET_MONO[0] :
-    (state.defaultDelay == 'stereo' ? DLY_PRESET_STEREO[0] :
-    (state.defaultDelay == 'intense' ? DLY_PRESET_INTENSE[0] :
-    (state.defaultDelay == 'elastic' ? DLY_PRESET_ELASTIC[0] :
-    DLY_PRESET_AMBIENT[0])))
-  )
-  const pingPongFeedback = ref(
-    (state.defaultDelay == 'mono' || state.defaultDelay == 'off') ? DLY_PRESET_MONO[1] :
-    (state.defaultDelay == 'stereo' ? DLY_PRESET_STEREO[1] :
-    (state.defaultDelay == 'intense' ? DLY_PRESET_INTENSE[1] :
-    (state.defaultDelay == 'elastic' ? DLY_PRESET_ELASTIC[1] :
-    DLY_PRESET_AMBIENT[1])))
-  )
-  const pingPongSeparation = ref(
-    (state.defaultDelay == 'mono' || state.defaultDelay == 'off') ? DLY_PRESET_MONO[2] :
-    (state.defaultDelay == 'stereo' ? DLY_PRESET_STEREO[2] :
-    (state.defaultDelay == 'intense' ? DLY_PRESET_INTENSE[2] :
-    (state.defaultDelay == 'elastic' ? DLY_PRESET_ELASTIC[2] :
-    DLY_PRESET_AMBIENT[2])))
-  )
-  const pingPongGain = ref(
-    state.defaultDelay == 'mono' ? DLY_PRESET_MONO[3] :
-    (state.defaultDelay == 'stereo' ? DLY_PRESET_STEREO[3] :
-    (state.defaultDelay == 'intense' ? DLY_PRESET_INTENSE[3] :
-    (state.defaultDelay == 'elastic' ? DLY_PRESET_ELASTIC[3] :
-    (state.defaultDelay == 'ambient' ? DLY_PRESET_AMBIENT[3] :
-    0.0))))
-  )
+  const pingPongDelayTime = ref(0.3)
+  const pingPongFeedback = ref(0.8)
+  const pingPongSeparation = ref(1)
+  const pingPongGain = ref(0)
 
-  // Fetch user-specific states
+  // Fetch user-specific state
   if ('audioDelay' in window.localStorage) {
     const value = window.localStorage.getItem('audioDelay')
     if (value !== null) {
@@ -260,10 +201,10 @@ export const useAudioStore = defineStore<'audio', AudioStore>('audio', () => {
     initializeCustomWaves(context.value)
 
     oscillatorVoiceParams.type = 'custom'
-    oscillatorVoiceParams.periodicWave = PERIODIC_WAVES[state.defaultWaveform].value
+    oscillatorVoiceParams.periodicWave = PERIODIC_WAVES[DEFAULT_WAVEFORM].value
     unisonVoiceParams.type = 'custom'
-    unisonVoiceParams.periodicWave = PERIODIC_WAVES[state.defaultWaveform].value
-    aperiodicVoiceParams.aperiodicWave = APERIODIC_WAVES[state.defaultAperiodicWaveform].value
+    unisonVoiceParams.periodicWave = PERIODIC_WAVES[DEFAULT_WAVEFORM].value
+    aperiodicVoiceParams.aperiodicWave = APERIODIC_WAVES[DEFAULT_APERIODIC].value
 
     // These all should start with polyphony 0 to save resources
     oscillatorSynth = new Synth(context.value, audioDestination)
@@ -277,30 +218,8 @@ export const useAudioStore = defineStore<'audio', AudioStore>('audio', () => {
 
     const storedMaxPolyphony = maxPolyphony.value
 
-    // load default synth type in from settings
     synthType.value = 'oscillator'
-    const value = state.defaultSynthType
-    switch (value) {
-      case 'unison':
-        synthType.value = 'unison'
-        break
-      case 'aperiodic':
-        synthType.value = 'aperiodic'
-        break
-      default:
-        break
-    }
-    switch (synthType.value) {
-      case 'unison':
-        synth.value = unisonSynth
-        break
-      case 'aperiodic':
-        synth.value = aperiodicSynth
-        break
-      default:
-        synth.value = oscillatorSynth
-        break
-    }
+    synth.value = oscillatorSynth
     synth.value.maxPolyphony = storedMaxPolyphony
 
     virtualSynth.value = new VirtualSynth(context.value)
