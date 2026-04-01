@@ -54,7 +54,7 @@ export const useStateStore = defineStore('state', () => {
   const defaultAperiodicWaveform = ref(storage.getItem('defaultAperiodicWaveform') ?? DEFAULT_APERIODIC)
   const defaultEnvelope = ref(storage.getItem('defaultEnvelope') ?? 'organ')
   const defaultDelay = ref(storage.getItem('defaultDelay') ?? 'off')
-  const defaultKeyboardMode = ref(storage.getItem('defaultKeyboardMode') ?? 'keyboard')
+  const defaultKeyboardMode = ref(storage.getItem('defaultKeyboardMode') ?? 'isomorphic')
   const defaultPianoMode = ref(storage.getItem('defaultPianoMode') ?? 'Asdf')
   const defaultIsomorphicVertical = ref(parseInt(storage.getItem('defaultIsomorphicVertical') ?? '5', 10))
   const defaultIsomorphicHorizontal = ref(parseInt(storage.getItem('defaultIsomorphicHorizontal') ?? '1', 10))

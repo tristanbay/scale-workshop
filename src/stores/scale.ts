@@ -52,8 +52,6 @@ const AUTO_LABEL_MAX_LENGTH = 20
 const MAX_ERROR_LENGTH = 10000
 const EPSILON = 1e-6
 
-const state = useStateStore()
-
 // Colors from #1 to #12 inclusive.
 function defaultColors(base: number) {
   return [...Array(12).keys()].map((i) => MIDI_NOTE_COLORS[mmod(base + 1 + i, 12)])
@@ -82,6 +80,9 @@ harmonicEntropy.__doc__ =
 harmonicEntropy.__node__ = builtinNode(harmonicEntropy)
 
 export const useScaleStore = defineStore('scale', () => {
+  // For loading user defaults
+  const state = useStateStore()
+
   // The scale store should remain unit-test friendly so this state needs to be here as well
   const centsFractionDigits = ref(parseInt(localStorage.getItem('centsFractionDigits') ?? '3', 10))
   const decimalFractionDigits = ref(
