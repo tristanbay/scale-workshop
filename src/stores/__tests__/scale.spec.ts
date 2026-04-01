@@ -9,7 +9,7 @@ const SERIALIZED = String.raw`{"scale":{"type":"ScaleWorkshopScale","intervalRat
 vi.hoisted(() => {
   // define property to get around "matchMedia is not a function" thing
   Object.defineProperty(window, 'matchMedia', {
-    writeable: true,
+    writable: true,
     enumerable: true,
     value: vi.fn().mockImplementation(query => ({
       matches: false,
