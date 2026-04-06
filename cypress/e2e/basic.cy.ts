@@ -13,7 +13,6 @@ describe("Basic test", () => {
     cy.get("#base-frequency").type("432")
     cy.get("#base-frequency").trigger("change")
     cy.get("#base-frequency").should("have.value", "432");
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(400); // Wait for debounce to expire.
     cy.get("a").contains("Synth").click();
     cy.get("a").contains("Build Scale").click();

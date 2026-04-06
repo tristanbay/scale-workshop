@@ -158,8 +158,7 @@ function midiNoteOn(index: number, rawAttack?: number, channel?: number) {
   }
 
   if (isNaN(frequency)) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    return (rawRelease?: number) => {}
+    return (_rawRelease?: number) => {}
   }
 
   const noteOff = sendNoteOn(index, frequency, rawAttack)

@@ -6,16 +6,16 @@ export type ImportResult = {
 }
 
 export abstract class TextImporter {
-  event: Event
+  event?: Event
 
-  constructor(event: Event) {
+  constructor(event?: Event) {
     this.event = event
   }
 
   abstract parseText(input: string, filename: string): ImportResult
 
   parse() {
-    if (this.event.target == null) {
+    if (this.event == null || this.event.target == null) {
       throw new Error('Missing event target element')
     }
     const target: HTMLInputElement = this.event.target as HTMLInputElement

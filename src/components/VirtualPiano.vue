@@ -72,7 +72,6 @@ const whiteKeys = computed(() => {
         const seen = new Set<string>()
         let j = 0
         let left = 0
-        // eslint-disable-next-line no-constant-condition
         while (true) {
           const acc = props.colorMap(index - 1 - j)
           if (acc !== low && acc !== middle && acc !== high) {
@@ -92,7 +91,6 @@ const whiteKeys = computed(() => {
         j = 0
         let right = 0
         seen.clear()
-        // eslint-disable-next-line no-constant-condition
         while (true) {
           const acc = props.colorMap(index + 1 + j)
           if (acc !== low && acc !== middle && acc !== high) {

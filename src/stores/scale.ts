@@ -352,7 +352,7 @@ export const useScaleStore = defineStore('scale', () => {
       // XXX: Abuses the fact that SonicWeave tracking ids are positive.
       scale[i].trackingIds.add(-i)
     }
-    const rel = relative.bind(this)
+    const rel = relative.bind(this.rootContext)
     latticeIntervals.value = scale.map((i) => rel(i))
 
     latticeEquave.value = equave
@@ -362,7 +362,7 @@ export const useScaleStore = defineStore('scale', () => {
   latticeView.__node__ = builtinNode(latticeView)
 
   function warn(this: ExpressionVisitor, ...args: any[]) {
-    const s = repr.bind(this)
+    const s = repr.bind(this.rootContext)
     const message = args.map((a) => (typeof a === 'string' ? a : s(a))).join(', ')
     warning.value = message.slice(0, MAX_ERROR_LENGTH)
   }
@@ -438,7 +438,7 @@ export const useScaleStore = defineStore('scale', () => {
 
       const intervals = visitor.currentScale
       const ev = visitor.createExpressionVisitor()
-      const rel = relative.bind(ev)
+      const rel = relative.bind(ev.rootContext)
       relativeIntervals.value = intervals.map((i) => rel(i))
       if (!latticeIntervals.value.length) {
         latticeIntervals.value = relativeIntervals.value
@@ -449,8 +449,7 @@ export const useScaleStore = defineStore('scale', () => {
         visitorBaseFrequency = visitor.rootContext!.unisonFrequency.valueOf()
       }
       if (ratios.length) {
-        const evLstr = lstr.bind(ev)
-        // eslint-disable-next-line no-inner-declarations
+        const evLstr = lstr.bind(ev.rootContext)
         function autoLabel(interval: Interval) {
           if (interval.label.length) {
             return convertAccidentals(interval.label, accidentalPreference.value)
@@ -490,11 +489,11 @@ export const useScaleStore = defineStore('scale', () => {
           )
         } else if (autoColors.value === 'cents') {
           colors.value = intervals.map(
-            (interval) => interval.color?.value ?? centsColor.bind(ev)(interval).value
+            (interval) => interval.color?.value ?? centsColor.bind(ev.rootContext)(interval).value
           )
         } else {
           colors.value = intervals.map(
-            (interval) => interval.color?.value ?? factorColor.bind(ev)(interval).value
+            (interval) => interval.color?.value ?? factorColor.bind(ev.rootContext)(interval).value
           )
         }
         labels.value = intervals.map(autoLabel)
@@ -506,12 +505,12 @@ export const useScaleStore = defineStore('scale', () => {
           colors.value = defaultColors(baseMidiNote.value)
         } else if (autoColors.value === 'cents') {
           colors.value = INTERVALS_12TET.map(
-            (interval) => interval.color?.value ?? centsColor.bind(ev)(interval).value
+            (interval) => interval.color?.value ?? centsColor.bind(ev.rootContext)(interval).value
           )
         } else {
           // XXX: This is just black, but whatever.
           colors.value = INTERVALS_12TET.map(
-            (interval) => interval.color?.value ?? factorColor.bind(ev)(interval).value
+            (interval) => interval.color?.value ?? factorColor.bind(ev.rootContext)(interval).value
           )
         }
         labels.value = defaultLabels(baseMidiNote.value, accidentalPreference.value)

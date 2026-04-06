@@ -21,7 +21,7 @@ export function getTestData(appTitle: string, raw = false) {
   })
   const visitor = getSourceVisitor()
   // Prefix
-  visitor.visit(parseAST('A4 = 440 Hz').body[0])
+  visitor.executeProgram(parseAST('A4 = 440 Hz'))
   let rawIntervals: Interval[] | undefined
   let unisonFrequency: TimeMonzo | undefined
   if (raw) {
@@ -30,8 +30,7 @@ export function getTestData(appTitle: string, raw = false) {
     rawIntervals = visitor.currentScale
     unisonFrequency = visitor.rootContext!.unisonFrequency
   }
-  const ev = visitor.createExpressionVisitor()
-  const relativeC5 = relative.bind(ev)(absoluteC5)
+  const relativeC5 = relative.bind(visitor.rootContext)(absoluteC5)
 
   const relativeIntervals = [
     new Interval(TimeMonzo.fromEqualTemperament('100/1200', 2, 3), 'logarithmic', 0, {

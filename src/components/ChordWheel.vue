@@ -23,7 +23,6 @@ const props = defineProps<{
 
 const canvas = ref<HTMLCanvasElement | null>(null)
 let audioTimeOffset = NaN
-// eslint-disable-next-line no-undef
 let previousTime: DOMHighResTimeStamp = 0
 let theta = 0
 let frameIndex = 0
@@ -37,7 +36,6 @@ const thetas = Array(buffers.length).fill(0)
 
 let animationFrame: number | undefined
 
-// eslint-disable-next-line no-undef
 function draw(time: DOMHighResTimeStamp) {
   let start = previousTime / 1000
   let end = time / 1000

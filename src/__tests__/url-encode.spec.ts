@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { LocationQuery } from 'vue-router'
+import type { LocationQuery } from 'vue-router'
 import { arraysEqual } from 'xen-dev-utils'
 import { mapWhiteAsdfBlackQwerty, mapWhiteQweZxcBlack123Asd } from '../keyboard-mapping'
 
@@ -14,9 +14,9 @@ import {
   encodeNumber,
   decodeNumber,
   encodeKeyMap,
-  decodeKeyMap,
-  DecodedState
+  decodeKeyMap
 } from '../url-encode'
+import type { DecodedState } from '../url-encode'
 import { DEFAULT_NUMBER_OF_COMPONENTS } from '../constants'
 import { parseScaleWorkshop2Line } from 'sonic-weave'
 
