@@ -159,7 +159,7 @@ export const useScaleStore = defineStore('scale', () => {
   })
 
   const frequencies = computed(() => scale.value.getFrequencyRange(0, NUMBER_OF_NOTES))
-  const centss = computed(() => scale.value.getCentsRange(0, NUMBER_OF_NOTES))
+  const centsValues = computed(() => scale.value.getCentsRange(0, NUMBER_OF_NOTES))
 
   const latticePermutation = computed(() => {
     const intervals = relativeIntervals.value
@@ -713,7 +713,7 @@ export const useScaleStore = defineStore('scale', () => {
     latticeColors,
     latticeLabels,
     frequencies,
-    centss,
+    centsValues,
     qwertyMapping,
     splitAccidentals,
     whiteIndices,

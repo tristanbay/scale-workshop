@@ -55,7 +55,7 @@ onUnmounted(() => {
         <TuningTable
           :heldNotes="state.heldNotes"
           :frequencies="scale.frequencies"
-          :centss="scale.centss"
+          :centsValues="scale.centsValues"
           :baseFrequency="scale.scale.baseFrequency"
           :baseMidiNote="scale.scale.baseMidiNote"
           :colors="scale.colors"

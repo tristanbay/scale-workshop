@@ -5,7 +5,7 @@ import { computed, ref } from 'vue'
 const props = defineProps<{
   labels: string[]
   colors: string[]
-  centss: number[]
+  centsValues: number[]
 }>()
 
 const entropy = useHarmonicEntropyStore()
@@ -27,7 +27,7 @@ const lineCents = computed(() => {
   if (lineIndex.value < 0) {
     return 0
   }
-  return props.centss[lineIndex.value]
+  return props.centsValues[lineIndex.value]
 })
 
 // Need to format here because prettier is overaggressive with newlines
@@ -35,7 +35,7 @@ const linePercentage = computed(() => {
   if (lineIndex.value < 0) {
     return 0
   }
-  const percentage = entropy.entropyPercentage(props.centss[lineIndex.value]) * 100
+  const percentage = entropy.entropyPercentage(props.centsValues[lineIndex.value]) * 100
   return `Entropy: ${percentage.toFixed(2)} %`
 })
 
@@ -53,7 +53,7 @@ const points = computed(() => {
 })
 
 const lines = computed(() =>
-  props.centss.map((cents) => {
+  props.centsValues.map((cents) => {
     const x = xScale.value * cents
     const y = 1 - entropy.entropyPercentage(cents)
     return { x1: x, y1: 1, x2: x, y2: y }
@@ -100,8 +100,8 @@ function lineMouseMove(event: MouseEvent) {
   const { x } = coords(event.x, event.y)
   const cents = x / xScale.value
   let minDistance = Infinity
-  for (let i = 0; i < props.centss.length; ++i) {
-    const distance = Math.abs(cents - props.centss[i])
+  for (let i = 0; i < props.centsValues.length; ++i) {
+    const distance = Math.abs(cents - props.centsValues[i])
     if (distance < minDistance) {
       lineIndex.value = i
       minDistance = distance

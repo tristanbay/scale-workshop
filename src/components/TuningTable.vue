@@ -6,7 +6,7 @@ import { mmod } from 'xen-dev-utils'
 const props = defineProps<{
   baseFrequency: number
   frequencies: number[] // All 128 frequencies
-  centss: number[] // All 128 cents values
+  centsValues: number[] // All 128 cents values
   heldNotes: Map<number, number>
   baseMidiNote: number
   labels: string[] // Labels from #1 to the equave
@@ -19,7 +19,7 @@ const rows = computed(() => {
     const active = (props.heldNotes.get(i) ?? 0) > 0
     const index = i - props.baseMidiNote
     const ratio = frequency * inverseBaseFreq
-    const cents = props.centss[i]
+    const cents = props.centsValues[i]
     return {
       index: i,
       active,

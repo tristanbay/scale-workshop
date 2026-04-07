@@ -247,7 +247,7 @@ function highlight(y?: number, x?: number) {
 // === Harmonic entropy ===
 const heMode = ref(0)
 
-const centss = computed(() => {
+const centsValues = computed(() => {
   const result: number[] = []
   let index = scale.baseMidiNote + heMode.value
   const baseCents = scale.scale.getCents(index)
@@ -262,11 +262,11 @@ const centss = computed(() => {
 })
 
 const labels = computed(() =>
-  centss.value.map((_, i) => scale.labelForIndex(scale.baseMidiNote + heMode.value + i))
+  centsValues.value.map((_, i) => scale.labelForIndex(scale.baseMidiNote + heMode.value + i))
 )
 
 const colors = computed(() =>
-  centss.value.map((_, i) => scale.colorForIndex(scale.baseMidiNote + heMode.value + i))
+  centsValues.value.map((_, i) => scale.colorForIndex(scale.baseMidiNote + heMode.value + i))
 )
 
 // These really should be direct v-models, but there's
@@ -582,7 +582,7 @@ const sSlider = computed({
     </main>
     <main v-if="subtab === 'entropy'">
       <div class="entropy-plot">
-        <HarmonicEntropyPlot :centss="centss" :labels="labels" :colors="colors" />
+        <HarmonicEntropyPlot :centsValues="centsValues" :labels="labels" :colors="colors" />
       </div>
       <div class="control-group">
         <div class="control">
@@ -624,7 +624,7 @@ const sSlider = computed({
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(cents, i) of centss" :key="i">
+            <tr v-for="(cents, i) of centsValues" :key="i">
               <td>{{ labels[i] }}</td>
               <td>{{ cents.toFixed(scale.centsFractionDigits) }}</td>
               <td>{{ (100 * entropy.entropyPercentage(cents)).toFixed(3) }}</td>
