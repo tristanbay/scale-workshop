@@ -129,8 +129,8 @@ const scale = useScaleStore()
         <h2>Analytics</h2>
         <div class="control-group">
           <div class="control checkbox-container">
-            <input id="virtual-qwerty" type="checkbox" v-model="state.shareStatistics" />
-            <label for="virtual-qwerty" class="right-of-checkbox"
+            <input id="share-statistics" type="checkbox" v-model="state.shareStatistics" />
+            <label for="share-statistics" class="right-of-checkbox"
               >Share statistics to help improve the application</label
             >
           </div>
