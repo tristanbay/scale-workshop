@@ -117,13 +117,13 @@ function hasQueryParams(route: RouteLocationNormalized) {
   return !!Object.keys(route.query).length
 }
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from) => {
   if (to.name == null) {
-    next()
-  } else if (!hasQueryParams(to) && hasQueryParams(from)) {
-    next({ name: to.name, query: from.query })
-  } else {
-    next()
+    return
+  }
+
+  if (!hasQueryParams(to) && hasQueryParams(from)) {
+    return { name: to.name, query: from.query }
   }
 })
 
