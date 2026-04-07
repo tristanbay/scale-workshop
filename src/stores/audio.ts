@@ -24,7 +24,7 @@ import {
 // The compiler chokes on this store so we need an explicit type annotation
 type AudioStore = {
   initialize: () => void
-  unintialize: () => Promise<void>
+  uninitialize: () => Promise<void>
   toJSON: () => any
   fromJSON: (data: any) => void
   context: Ref<AudioContext>
@@ -225,7 +225,7 @@ export const useAudioStore = defineStore<'audio', AudioStore>('audio', () => {
     virtualSynth.value = new VirtualSynth(context.value)
   }
 
-  async function unintialize() {
+  async function uninitialize() {
     if (!context.value) {
       return
     }
@@ -409,7 +409,7 @@ export const useAudioStore = defineStore<'audio', AudioStore>('audio', () => {
   return {
     // Methods
     initialize,
-    unintialize,
+    uninitialize,
     toJSON,
     fromJSON,
 
