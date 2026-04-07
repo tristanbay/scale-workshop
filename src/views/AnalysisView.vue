@@ -271,7 +271,7 @@ const colors = computed(() =>
 
 // These really should be direct v-models, but there's
 // something wrong with how input ranges are handled.
-const aSlider = computed({
+const renyiOrderSlider = computed({
   get: () => entropy.a,
   set(newValue: number) {
     if (typeof newValue !== 'number') {
@@ -283,7 +283,7 @@ const aSlider = computed({
   }
 })
 
-const sSlider = computed({
+const frequencyDeviationSlider = computed({
   get: () => entropy.s,
   set(newValue: number) {
     if (typeof newValue !== 'number') {
@@ -601,7 +601,7 @@ const sSlider = computed({
           min="0.02"
           max="7"
           step="any"
-          v-model="aSlider"
+          v-model="renyiOrderSlider"
         />
         <label for="s">Frequency deviation: {{ (entropy.s * 100).toFixed(2) }}%</label>
         <input
@@ -611,7 +611,7 @@ const sSlider = computed({
           min="0.003"
           max="0.02"
           step="any"
-          v-model="sSlider"
+          v-model="frequencyDeviationSlider"
         />
       </div>
       <div class="entropy-intervals">
