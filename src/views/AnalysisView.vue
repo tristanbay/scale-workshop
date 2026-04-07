@@ -245,11 +245,11 @@ function highlight(y?: number, x?: number) {
 }
 
 // === Harmonic entropy ===
-const heMode = ref(0)
+const entropyMode = ref(0)
 
 const centsValues = computed(() => {
   const result: number[] = []
-  let index = scale.baseMidiNote + heMode.value
+  let index = scale.baseMidiNote + entropyMode.value
   const baseCents = scale.scale.getCents(index)
   while (index < 10000) {
     const cents = scale.scale.getCents(index++) - baseCents
@@ -262,11 +262,11 @@ const centsValues = computed(() => {
 })
 
 const labels = computed(() =>
-  centsValues.value.map((_, i) => scale.labelForIndex(scale.baseMidiNote + heMode.value + i))
+  centsValues.value.map((_, i) => scale.labelForIndex(scale.baseMidiNote + entropyMode.value + i))
 )
 
 const colors = computed(() =>
-  centsValues.value.map((_, i) => scale.colorForIndex(scale.baseMidiNote + heMode.value + i))
+  centsValues.value.map((_, i) => scale.colorForIndex(scale.baseMidiNote + entropyMode.value + i))
 )
 
 // These really should be direct v-models, but there's
@@ -587,7 +587,7 @@ const sSlider = computed({
       <div class="control-group">
         <div class="control">
           <label for="he-mode">Mode (scale rotation)</label>
-          <input id="he-mode" type="number" step="1" v-model="heMode" />
+          <input id="he-mode" type="number" step="1" v-model="entropyMode" />
         </div>
         <div class="control">
           <label for="N">Maximum Benedetti height</label>

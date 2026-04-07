@@ -14,11 +14,11 @@ const props = defineProps<{
 }>()
 
 const rows = computed(() => {
-  const inverseBaseFreq = 1 / props.baseFrequency
+  const inverseBaseFrequency = 1 / props.baseFrequency
   return props.frequencies.map((frequency, i) => {
     const active = (props.heldNotes.get(i) ?? 0) > 0
     const index = i - props.baseMidiNote
-    const ratio = frequency * inverseBaseFreq
+    const ratio = frequency * inverseBaseFrequency
     const cents = props.centsValues[i]
     return {
       index: i,
