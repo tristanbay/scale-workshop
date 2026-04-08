@@ -21,18 +21,18 @@ const NewScaleButtonSkeleton = defineComponent({
   setup() {
     return () =>
       h('li', { class: 'skeleton-btn', 'aria-hidden': 'true' }, [
-        h('span', { class: 'skeleton-btn-text' }, 'New scale ▼'),
+        h('span', { class: 'skeleton-btn-text' }, 'New scale ▼')
       ])
-  },
+  }
 })
 
 const ModifyScaleButtonSkeleton = defineComponent({
   setup() {
     return () =>
       h('li', { class: 'skeleton-btn', 'aria-hidden': 'true' }, [
-        h('span', { class: 'skeleton-btn-text' }, 'Modify scale ▼'),
+        h('span', { class: 'skeleton-btn-text' }, 'Modify scale ▼')
       ])
-  },
+  }
 })
 
 const ExporterSkeleton = defineComponent({
@@ -41,30 +41,30 @@ const ExporterSkeleton = defineComponent({
       h('div', { class: 'exporter-skeleton', 'aria-hidden': 'true' }, [
         h('div', { class: 'skeleton-row' }),
         h('div', { class: 'skeleton-row' }),
-        h('div', { class: 'skeleton-row' }),
+        h('div', { class: 'skeleton-row' })
       ])
-  },
+  }
 })
 
 const NewScaleAsync = defineAsyncComponent({
   loader: () => import('@/components/NewScale.vue'),
   loadingComponent: NewScaleButtonSkeleton,
   delay: 0,
-  suspensible: false,
+  suspensible: false
 })
 
 const ModifyScaleAsync = defineAsyncComponent({
   loader: () => import('@/components/ModifyScale.vue'),
   loadingComponent: ModifyScaleButtonSkeleton,
   delay: 0,
-  suspensible: false,
+  suspensible: false
 })
 
 const ExporterButtonsAsync = defineAsyncComponent({
   loader: () => import('@/components/ExporterButtons.vue'),
   loadingComponent: ExporterSkeleton,
   delay: 0,
-  suspensible: false,
+  suspensible: false
 })
 
 const updateScale = debounce(scale.computeScale)
@@ -106,11 +106,21 @@ onUnmounted(() => {
         ></textarea>
         <ul class="btn-group">
           <template v-if="isAuxiliaryPanelsRequested">
-            <NewScaleAsync ref="newScale" @done="controls!.focus()" @mouseenter="modifyScale?.blur?.()" />
-            <ModifyScaleAsync ref="modifyScale" @done="controls!.focus()" @mouseenter="newScale?.blur?.()" />
+            <NewScaleAsync
+              ref="newScale"
+              @done="controls!.focus()"
+              @mouseenter="modifyScale?.blur?.()"
+            />
+            <ModifyScaleAsync
+              ref="modifyScale"
+              @done="controls!.focus()"
+              @mouseenter="newScale?.blur?.()"
+            />
           </template>
           <template v-else>
-            <li class="skeleton-btn" aria-hidden="true"><span class="skeleton-btn-text">New scale ▼</span></li>
+            <li class="skeleton-btn" aria-hidden="true">
+              <span class="skeleton-btn-text">New scale ▼</span>
+            </li>
             <li class="skeleton-btn" aria-hidden="true">
               <span class="skeleton-btn-text">Modify scale ▼</span>
             </li>
