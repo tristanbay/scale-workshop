@@ -144,7 +144,7 @@ export class KorgExporter extends BaseExporter {
   getTuningInfoXml(model: string, programmer = 'Scale Workshop', comment = '') {
     const format = getKorgModelInfo(model)
     const name = format.name
-    const tagName = name.replaceAll(/\s+/g, '').toLowerCase()
+    const tagName = name.replace(/\s+/g, '').toLowerCase()
     const escapedProgrammer = escapeXml(programmer)
     const escapedComment = escapeXml(comment)
 
