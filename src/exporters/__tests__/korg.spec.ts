@@ -2,7 +2,7 @@ import { createHash } from 'crypto'
 import type { JSZipObject } from 'jszip'
 import { describe, it, expect } from 'vitest'
 
-import { KorgExporter, KorgModels, KorgExporterError } from '../korg'
+import { KorgExporter, KorgModels, KorgExporterError, KORG_MODEL_INFO } from '../korg'
 
 import { getTestData } from './test-data'
 import { Scale } from '../../scale'
@@ -179,5 +179,20 @@ describe('Korg exporters', () => {
     }
 
     return
+  })
+
+  it('strips all whitespace from XML tag names in tuning info', () => {
+    const params = getTestData("Korg 'logue exporter unit test v0.0.0")
+    const originalName = KORG_MODEL_INFO[KorgModels.MINILOGUE_XD].name
+    KORG_MODEL_INFO[KorgModels.MINILOGUE_XD].name = 'Minilogue  XD  Mk II'
+
+    try {
+      const exporter = new KorgExporter(params, KorgModels.MINILOGUE_XD, false)
+      const xml = exporter.getTuningInfoXml(KorgModels.MINILOGUE_XD)
+      expect(xml).toContain('<miniloguexdmkii_TuneScaleInformation>')
+      expect(xml).not.toContain('<minilogue  xdmkii_TuneScaleInformation>')
+    } finally {
+      KORG_MODEL_INFO[KorgModels.MINILOGUE_XD].name = originalName
+    }
   })
 })

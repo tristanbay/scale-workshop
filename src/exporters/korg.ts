@@ -135,7 +135,7 @@ export class KorgExporter extends BaseExporter {
   getTuningInfoXml(model: string, programmer = 'Scale Workshop', comment = '') {
     const format = getKorgModelInfo(model)
     const name = format.name
-    const tagName = name.replace(' ', '').toLowerCase()
+    const tagName = name.replaceAll(/\s+/g, '').toLowerCase()
 
     const rootName = this.useOctaveFormat
       ? `${tagName}_TuneOctInformation`
