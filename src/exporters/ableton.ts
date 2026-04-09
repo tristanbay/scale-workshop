@@ -51,7 +51,7 @@ export default class AbletonAsclExporter extends BaseExporter {
         file += monzo.toCents().toFixed(8)
       }
       file += ' ! ' + labels[i] + newline
-      names.push('"' + labels[i].replace('"', '“') + '"') // XXX: Hax
+      names.push('"' + labels[i].replaceAll('"', '“') + '"') // XXX: Hax
     }
     if (names.length) {
       // Put unison's name first

@@ -40,4 +40,15 @@ describe('Scala exporters', () => {
         .join(NEWLINE) + NEWLINE
     expect(sclExporter.getFileContents()).toBe(expectedAsclContents)
   })
+
+  it('escapes every quote in note names', () => {
+    const params = getTestData('Ableton exporter unit test v0.0.0')
+    params.labels = ['A"B"C', '2/1']
+    params.relativeIntervals = params.relativeIntervals.slice(-2)
+
+    const sclExporter = new AbletonAsclExporter(params)
+    const output = sclExporter.getFileContents()
+
+    expect(output).toContain('! @ABL NOTE_NAMES "2/1" "A“B“C"')
+  })
 })
