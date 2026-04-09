@@ -294,9 +294,11 @@ export function parseFloat36(string: string) {
     string = string.slice(1)
   }
   const [integerString, fractionString] = string.split('.')
-  const value =
-    parseInt(integerString, 36) +
-    parseInt(fractionString || '0', 36) / 36 ** (fractionString?.length || 0)
+  const integerPart = integerString.length ? parseInt(integerString, 36) : 0
+  const fractionPart = fractionString?.length
+    ? parseInt(fractionString, 36) / 36 ** fractionString.length
+    : 0
+  const value = integerPart + fractionPart
   return sign * value
 }
 
