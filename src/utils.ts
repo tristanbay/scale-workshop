@@ -26,6 +26,12 @@ export function ceilPow2(x: number) {
   return 1 << (32 - Math.clz32(x - 1))
 }
 
+/**
+ * Parses a single interval expression and validates that it evaluates to an interval.
+ *
+ * @param input SonicWeave expression string.
+ * @returns Parsed interval value.
+ */
 export function parseInterval(input: string) {
   if (!input.trim()) {
     throw new Error('No input')
@@ -37,6 +43,15 @@ export function parseInterval(input: string) {
   throw new Error('Must evaluate to an interval')
 }
 
+/**
+ * Parses a val expression with a tolerant fallback strategy.
+ *
+ * If direct parsing fails, this helper retries with an `@` suffix. If both fail,
+ * the function returns a cached 12-EDO val.
+ *
+ * @param input Val expression.
+ * @returns Parsed val, or a 12-EDO fallback.
+ */
 export function parseVal(input: string) {
   try {
     const val = evaluateExpression(input)
@@ -57,6 +72,13 @@ export function parseVal(input: string) {
   return TWELVE
 }
 
+/**
+ * Formats a decimal value as a SonicWeave literal.
+ *
+ * @param amount Decimal value.
+ * @param fractionDigits Optional fixed precision.
+ * @param real Whether to emit real-flavored notation.
+ */
 export function decimalString(amount: number, fractionDigits?: number, real = false) {
   const result = fractionDigits === undefined ? amount.toString() : amount.toFixed(fractionDigits)
   if (real) {
@@ -68,6 +90,13 @@ export function decimalString(amount: number, fractionDigits?: number, real = fa
   return result + 'e'
 }
 
+/**
+ * Formats a cent value as a SonicWeave literal.
+ *
+ * @param cents Cent value.
+ * @param fractionDigits Optional fixed precision.
+ * @param real Whether to emit real-flavored notation.
+ */
 export function centString(cents: number, fractionDigits?: number, real = false) {
   const result = fractionDigits === undefined ? cents.toString() : cents.toFixed(fractionDigits)
   if (real) {
@@ -82,6 +111,9 @@ export function centString(cents: number, fractionDigits?: number, real = false)
   return result
 }
 
+/**
+ * Converts a cent value into an interval by formatting and reparsing.
+ */
 export function parseCents(cents: number, fractionDigits?: number) {
   return parseInterval(centString(cents, fractionDigits))
 }
@@ -89,10 +121,16 @@ export function parseCents(cents: number, fractionDigits?: number) {
 // Split at whitespace, pipes, amps, colons, semicolons and commas
 export const SEPARATOR_RE = /\s|\||&|:|;|,/
 
+/**
+ * Tokenizes free-form user input using the standard Scale Workshop separator set.
+ */
 export function splitText(text: string) {
   return text.split(SEPARATOR_RE).filter((token) => token.length)
 }
 
+/**
+ * Expands SonicWeave source code against default context bindings.
+ */
 export function expandCode(source: string) {
   const visitor = getSourceVisitor()
   const defaults = visitor.rootContext!.clone()
@@ -101,6 +139,9 @@ export function expandCode(source: string) {
   return visitor.expand(defaults)
 }
 
+/**
+ * Serializes an array of numbers/strings/intervals into display text.
+ */
 export function arrayToString(values: Interval[] | number[] | string[]) {
   if (!values.length) {
     return '[]'
@@ -115,6 +156,12 @@ export function arrayToString(values: Interval[] | number[] | string[]) {
   return repr.bind(visitor.rootContext)(values as Interval[])
 }
 
+/**
+ * Creates a debounced wrapper that delays invocation until input stabilizes.
+ *
+ * @param func Callback to debounce.
+ * @param timeout Debounce window in milliseconds.
+ */
 export function debounce(func: (...args: any[]) => void, timeout = 300) {
   let timer: number
   return (...args: any[]) => {
@@ -147,6 +194,9 @@ export function midiNoteNumberToName(
   return result
 }
 
+/**
+ * Sanitizes a user-supplied filename while preserving readability.
+ */
 export function sanitizeFilename(input: string) {
   input = input.trim()
   if (!input.length) {
@@ -158,6 +208,9 @@ export function sanitizeFilename(input: string) {
     .replace(/\\/g, '_')
 }
 
+/**
+ * Formats large/small numeric values in fixed or exponential form.
+ */
 export function formatExponential(x: number, fractionDigits = 3) {
   if (isNaN(x) || !isFinite(x)) {
     return x.toString()
@@ -171,6 +224,9 @@ export function formatExponential(x: number, fractionDigits = 3) {
   return (d * Math.round(x * f)).toFixed(fractionDigits) + 'e+' + e.toString()
 }
 
+/**
+ * Formats frequency using SI prefixes when useful.
+ */
 export function formatHertz(frequency: number, fractionDigits = 3) {
   const magnitude = Math.abs(frequency)
 

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+/**
+ * Component that orchestrates export, save, and upload actions for the current scale.
+ */
 import { API_URL, APP_TITLE, IS_SAFARI } from '@/constants'
 import { exportFile, type ExporterKey } from '@/exporters'
 import type { ExporterParams } from '@/exporters/base'

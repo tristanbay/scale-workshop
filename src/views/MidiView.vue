@@ -1,4 +1,7 @@
 <script setup lang="ts">
+/**
+ * MIDI configuration view for selecting devices, channels, and real-time input monitoring.
+ */
 import { onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import { Input, Output, WebMidi, type NoteMessageEvent, type MessageEvent } from 'webmidi'
 import MidiPiano from '@/components/MidiPiano.vue'

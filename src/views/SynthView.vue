@@ -1,4 +1,7 @@
 <script setup lang="ts">
+/**
+ * Synth configuration view for audio engine parameters and waveform selection.
+ */
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import TimeDomainVisualizer from '@/components/TimeDomainVisualizer.vue'
 import Modal from '@/components/ModalDialog.vue'

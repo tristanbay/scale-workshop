@@ -1,9 +1,17 @@
+/**
+ * Fills an unsigned-byte view using `Math.random` as a compatibility fallback.
+ */
 function fillWithPseudoRandomValues(view: Uint8Array) {
   for (let i = 0; i < view.length; i += 1) {
     view[i] = Math.floor(Math.random() * 256)
   }
 }
 
+/**
+ * Compatibility wrapper around `crypto.getRandomValues`.
+ *
+ * Falls back to pseudo-random bytes when the Web Crypto API is unavailable.
+ */
 export function getRandomValuesCompat<T extends ArrayBufferView>(typedArray: T): T {
   if (globalThis.crypto?.getRandomValues) {
     return globalThis.crypto.getRandomValues(typedArray)
@@ -15,7 +23,7 @@ export function getRandomValuesCompat<T extends ArrayBufferView>(typedArray: T):
 }
 
 function randomUuidFromBytes(bytes: Uint8Array) {
-  // RFC4122 version 4 UUID bit masks
+  // RFC4122 version 4 UUID bit masks.
   bytes[6] = (bytes[6] & 0x0f) | 0x40
   bytes[8] = (bytes[8] & 0x3f) | 0x80
 
@@ -23,6 +31,11 @@ function randomUuidFromBytes(bytes: Uint8Array) {
   return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`
 }
 
+/**
+ * Compatibility wrapper around `crypto.randomUUID`.
+ *
+ * Falls back to v4 UUID generation from random bytes when needed.
+ */
 export function randomUuidCompat() {
   if (globalThis.crypto?.randomUUID) {
     return globalThis.crypto.randomUUID()

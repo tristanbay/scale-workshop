@@ -11,6 +11,9 @@ const IMPORTERS = {
 
 export type ImporterKey = keyof typeof IMPORTERS
 
+/**
+ * Instantiates and runs a named importer against a file input event.
+ */
 export async function importFile(importer: ImporterKey, event: Event): Promise<ImportResult> {
   const instance = new IMPORTERS[importer](event)
   const result = await instance.parse()

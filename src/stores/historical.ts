@@ -5,6 +5,9 @@ import { Fraction, centsToValue, circleDifference, lcm } from 'xen-dev-utils'
 import { Interval, TimeMonzo } from 'sonic-weave'
 import { parseInterval } from '@/utils'
 
+/**
+ * Store for historical temperament exploration and preset generation helpers.
+ */
 export const useHistoricalStore = defineStore('historical', () => {
   const method = ref<'simple' | 'target' | 'well temperament'>('simple')
 

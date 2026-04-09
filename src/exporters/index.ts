@@ -28,6 +28,9 @@ const EXPORTERS = {
 
 export type ExporterKey = keyof typeof EXPORTERS
 
+/**
+ * Instantiates and runs a named exporter.
+ */
 export function exportFile(exporter: ExporterKey, params: ExporterParams) {
   const instance = new EXPORTERS[exporter](params)
   instance.saveFile()

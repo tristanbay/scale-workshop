@@ -24,6 +24,9 @@ export type PresetGroup = {
   members: Preset[]
 }
 
+/**
+ * Normalizes a raw preset fragment from JSON into a fully-populated preset object.
+ */
 function normalized(id: string): Preset {
   const result: any = Object.assign(
     {},
@@ -42,6 +45,9 @@ Object.keys(PRESETS).forEach((id) => {
   presets[id] = normalized(id)
 })
 
+/**
+ * Groups presets by category for display in the preset picker UI.
+ */
 export function presetsByGroup(): PresetGroup[] {
   const traditional: PresetGroup = {
     name: 'Traditional scales',

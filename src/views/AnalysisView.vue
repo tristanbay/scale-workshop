@@ -1,4 +1,7 @@
 <script setup lang="ts">
+/**
+ * Analysis workspace view for interval matrices, chord wheels, and harmonic entropy plots.
+ */
 import {
   brightnessSignature,
   constantStructureViolations,

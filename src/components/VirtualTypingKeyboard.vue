@@ -1,13 +1,17 @@
 <script setup lang="ts">
+/**
+ * Interactive QWERTY-based virtual keyboard component for typing and pointer input.
+ */
 import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
 import type { Keyboard, CoordinateKeyboardEvent } from 'isomorphic-qwerty'
 import { CODES_LAYER_1, COORDS_BY_CODE } from 'isomorphic-qwerty'
 import { LEFT_MOUSE_BTN } from '@/constants'
 
-/** Unimplemented features:
- * Key highlights on touch/click
- * Global key off when clicking the button with that rectangle inside it
- * Sustain when multi-touching with the shift buttons
+/**
+ * Unimplemented features:
+ * - Key highlights on touch/click.
+ * - Global key off when clicking the button with that rectangle inside it.
+ * - Sustain when multi-touching with the shift buttons.
  */
 
 type NoteOff = () => void

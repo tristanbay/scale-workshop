@@ -2,6 +2,9 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { Input, Output } from 'webmidi'
 
+/**
+ * MIDI device and routing preferences store.
+ */
 export const useMidiStore = defineStore('midi', () => {
   const input = ref<Input | null>(null)
   const output = ref<Output | null>(null)

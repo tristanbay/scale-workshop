@@ -14,6 +14,9 @@ import { LOG_PRIMES, dot, mmod } from 'xen-dev-utils'
 import { computedAndError } from '@/utils'
 import { TimeMonzo, parseChord } from 'sonic-weave'
 
+/**
+ * Store for just-intonation lattice rendering state (2D/3D) and presets.
+ */
 export const useJiLatticeStore = defineStore('ji-lattice', () => {
   // Kraig Grady's coordinates only go up to 23-limit, but it was the default in Scale Workshop 2.
   const opts = kraigGrady9()

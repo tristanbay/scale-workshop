@@ -1,6 +1,9 @@
 import { clamp, frequencyToMtsBytes } from 'xen-dev-utils'
 import { BaseExporter } from './base'
 
+/**
+ * Converts a frequency table into packed 3-byte MTS tuning entries.
+ */
 export function frequencyTableToBinaryData(frequencyTableIn: number[]): Uint8Array {
   const dataSize = frequencyTableIn.length * 3
   const data = new Uint8Array(dataSize)
@@ -16,6 +19,9 @@ export function frequencyTableToBinaryData(frequencyTableIn: number[]): Uint8Arr
   return data
 }
 
+/**
+ * Computes a 7-bit XOR checksum for SysEx payload data.
+ */
 export function getSysexChecksum(data: number[]): number {
   const checksum = data
     .filter((byte: number) => byte >= 0 && byte < 128)
@@ -23,6 +29,9 @@ export function getSysexChecksum(data: number[]): number {
   return checksum & 0x7f
 }
 
+/**
+ * Exporter that writes MIDI Tuning Standard bulk tuning dumps (`.syx`).
+ */
 export default class MtsSysexExporter extends BaseExporter {
   getBulkTuningData() {
     const scale = this.params.scale

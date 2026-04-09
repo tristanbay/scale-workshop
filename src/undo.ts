@@ -3,6 +3,13 @@ import { computed, reactive, ref } from 'vue'
 type Serializer = () => string
 type Restorer = (state: string) => void
 
+/**
+ * Creates an undo/redo history manager with bounded capacity.
+ *
+ * @param serialize Function that snapshots current state.
+ * @param restore Function that restores a serialized snapshot.
+ * @param capacity Maximum number of snapshots to retain.
+ */
 export function undoHistory(serialize: Serializer, restore: Restorer, capacity = 10) {
   const states = reactive<string[]>([])
   const pointer = ref(-1)
@@ -14,7 +21,7 @@ export function undoHistory(serialize: Serializer, restore: Restorer, capacity =
       states.pop()
     }
     const state = serialize()
-    // Verify that actual change took place.
+    // Verify that an actual change took place.
     if (states.length && state === states[states.length - 1]) {
       return
     }

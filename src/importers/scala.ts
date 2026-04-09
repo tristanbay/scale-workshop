@@ -1,6 +1,9 @@
 import { NEWLINE_TEST } from '@/constants'
 import { TextImporter, type ImportResult } from '@/importers/base'
 
+/**
+ * Importer for Scala `.scl` files.
+ */
 export class ScalaImporter extends TextImporter {
   parseText(input: string): ImportResult {
     const lines = input.split(NEWLINE_TEST)

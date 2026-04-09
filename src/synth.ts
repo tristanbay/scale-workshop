@@ -1,5 +1,3 @@
-// Classic variants are from Scale Workshop 2, they're softer on SW3.
-
 import { AperiodicWave } from 'sw-synth'
 import { centsToValue, sum, valueToCents } from 'xen-dev-utils'
 import { ceilPow2 } from './utils'
@@ -31,7 +29,15 @@ function getTimbreWaveformNames(): string[] {
   return Object.keys((TIMBRES as unknown as Timbres).timbres).sort()
 }
 
+/**
+ * Native oscillator waveforms available directly from the Web Audio API.
+ */
 export const BASIC_WAVEFORMS = ['sine', 'square', 'sawtooth', 'triangle']
+/**
+ * Custom periodic waveforms available in Scale Workshop.
+ *
+ * `*-classic` variants preserve the brighter Scale Workshop 2 voicing.
+ */
 export const CUSTOM_WAVEFORMS = [
   'warm1',
   'warm2',
@@ -56,9 +62,17 @@ export const CUSTOM_WAVEFORMS = [
   'boethius-classic'
 ]
 export const WAVEFORMS = BASIC_WAVEFORMS.concat(CUSTOM_WAVEFORMS)
+/**
+ * Lazily-evaluated periodic waves keyed by waveform name.
+ */
 export const PERIODIC_WAVES: Record<string, ComputedRef<PeriodicWave>> = {}
 
-// Some of these have entries in timbres.json, but we preserve the old UI order.
+/**
+ * Aperiodic waveform identifiers.
+ *
+ * Some entries are intentionally duplicated from `timbres.json` to preserve
+ * legacy UI ordering.
+ */
 export const APERIODIC_WAVEFORMS = [
   'jegogan',
   'jublag',
@@ -74,6 +88,11 @@ export const APERIODIC_WAVEFORMS = [
 ].concat(getPlainSpectraWaveformNames())
 export const APERIODIC_WAVES: Record<string, ComputedRef<AperiodicWave>> = {}
 
+/**
+ * Initializes cached periodic wave definitions for all custom periodic waveforms.
+ *
+ * @param audioContext Active audio context used to create `PeriodicWave` objects.
+ */
 export function initializePeriodic(audioContext: BaseAudioContext) {
   PERIODIC_WAVES.warm1 = computed(() =>
     audioContext.createPeriodicWave(

@@ -1,7 +1,9 @@
 import { DEFAULT_NUMBER_OF_COMPONENTS, NEWLINE_TEST, UNIX_NEWLINE } from '@/constants'
 import { Interval, parseScaleWorkshop2Line } from 'sonic-weave'
 
-// decodes HTML entities
+/**
+ * Decodes HTML entities into plain text.
+ */
 function decodeHTML(input: string): string {
   const doc = new DOMParser().parseFromString(input, 'text/html')
   if (doc.documentElement.textContent === null) {
@@ -10,7 +12,9 @@ function decodeHTML(input: string): string {
   return doc.documentElement.textContent
 }
 
-// parses Scala entries from the Xenharmonic Wiki
+/**
+ * Parses Scala data embedded in Xenharmonic Wiki exports.
+ */
 function parseWiki(str: string) {
   let s = decodeHTML(str)
   s = s.replace(/[_ ]+/g, '') // remove underscores and spaces
@@ -28,6 +32,9 @@ class SearchParams {
     this.url = url
   }
 
+  /**
+   * Reads a query parameter as a string with optional fallback.
+   */
   get(key: string): string | undefined
   get(key: string, valueIfMissing: string): string
   get(key: string, valueIfMissing?: string) {
@@ -37,6 +44,9 @@ class SearchParams {
     return this.url.searchParams.get(key)!
   }
 
+  /**
+   * Reads a query parameter as a number with optional fallback.
+   */
   getNumber(key: string): number | undefined
   getNumber(key: string, valueIfMissingOrNaN: number): number
   getNumber(key: string, valueIfMissingOrNaN?: number) {
@@ -72,35 +82,38 @@ export class ScaleWorkshopOneData {
     }
     const searchParams = new SearchParams(url)
 
-    // get data from url params, and use sane defaults for tuning name, base frequency and base midi note number if data missing
+    // Get data from URL params with sane defaults for missing fields.
     this.name = searchParams.get('name', '')
     this.data = searchParams.get('data')
     this.freq = searchParams.getNumber('freq', 440)
     this.midi = searchParams.getNumber('midi', 69)
     this.source = searchParams.get('source', '')
 
-    // get isomorphic keyboard mapping
+    // Get isomorphic keyboard mapping.
     this.vertical = searchParams.getNumber('vert', 5)
     this.horizontal = searchParams.getNumber('horiz', 1)
 
-    // get key colors
+    // Get key colors.
     this.colors = searchParams.get('colors')
 
-    // get synth options
+    // Get synth options.
     this.waveform = searchParams.get('waveform')
     this.ampenv = searchParams.get('ampenv')
 
-    // bail if there is no data
+    // Bail if there is no data.
     if (this.data === undefined) {
       return
     }
 
-    // specially parse inputs from the Xenharmonic Wiki
+    // Specially parse inputs from the Xenharmonic Wiki.
     if (this.source === 'wiki') {
       this.data = parseWiki(this.data)
     }
   }
 
+  /**
+   * Parses the serialized SW1 tuning payload into SonicWeave intervals.
+   */
   parseTuningData() {
     if (this.data === undefined) {
       throw new Error('No data to parse')

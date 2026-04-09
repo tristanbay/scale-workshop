@@ -55,6 +55,9 @@ type AudioStore = {
 const DEFAULT_WAVEFORM = 'semisine'
 const DEFAULT_APERIODIC = 'jegogan'
 
+/**
+ * Global audio-engine store for synth lifecycle, signal routing, and voice parameters.
+ */
 export const useAudioStore = defineStore<'audio', AudioStore>('audio', () => {
   const context = ref<AudioContext | null>(null)
   // Chromium has some issues with audio nodes as props

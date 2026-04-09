@@ -1,4 +1,7 @@
 <script setup lang="ts">
+/**
+ * Primary scale-editing view that coordinates controls, parsing, and export panels.
+ */
 import ScaleControls from '@/components/ScaleControls.vue'
 import TuningTable from '@/components/TuningTable.vue'
 import { DEFAULT_NUMBER_OF_COMPONENTS } from '@/constants'

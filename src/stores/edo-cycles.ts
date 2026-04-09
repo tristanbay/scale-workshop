@@ -3,6 +3,9 @@ import { defineStore } from 'pinia'
 import { mmod, modInv } from 'xen-dev-utils'
 import { parseVal } from '@/utils'
 
+/**
+ * Store for EDO cycle diagram parameters and derived cycle math.
+ */
 export const useCyclesStore = defineStore('edo-cycles', () => {
   // View
   const size = ref(0.15)

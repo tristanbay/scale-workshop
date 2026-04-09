@@ -121,6 +121,9 @@ function makeState<T>(defaultMethod: T, rank2 = false) {
   }
 }
 
+/**
+ * Rank-2 temperament input, validation, and derived preview state.
+ */
 export const useRank2Store = defineStore('rank2', () => {
   const MAX_SIZE_UNIT = 100
   const MAX_LENGTH_UNIT = 10
@@ -296,6 +299,9 @@ export const useRank2Store = defineStore('rank2', () => {
   }
 })
 
+/**
+ * Tempering lattice visualization parameters and persistence state.
+ */
 export const useLatticeStore = defineStore('lattice', () => {
   const state = makeState<'generators' | 'vals' | 'commas'>('generators')
   // method: "generators"
@@ -338,6 +344,9 @@ export const useLatticeStore = defineStore('lattice', () => {
   }
 })
 
+/**
+ * Resulting tempered scale options and UI-state bridge for apply operations.
+ */
 export const useTemperStore = defineStore('temper', () => {
   // === Component state ===
   const state = makeState<'mapping' | 'vals' | 'commas'>('mapping')

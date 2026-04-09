@@ -83,6 +83,9 @@ harmonicEntropy.__doc__ =
   'Compute the harmonic entropy as a percentage of the range of observed values.'
 harmonicEntropy.__node__ = builtinNode(harmonicEntropy)
 
+/**
+ * Core scale store for source text evaluation, keyboard mapping, and derived tuning state.
+ */
 export const useScaleStore = defineStore('scale', () => {
   // The scale store should remain unit-test friendly so this state needs to be here as well
   const centsFractionDigits = ref(parseInt(localStorage.getItem('centsFractionDigits') ?? '3', 10))

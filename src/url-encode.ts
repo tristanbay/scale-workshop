@@ -1,21 +1,58 @@
 import type { LocationQuery } from 'vue-router'
 import { ASDF_ROW, DIGIT_ROW, QWERTY_ROW, ZXCV_ROW } from './keyboard-mapping'
 
-// URL friendly versions of special characters
+/**
+ * URL-safe sentinel used to join encoded scale lines.
+ */
 const NEWLINE = '_'
+/**
+ * URL-safe substitute for `/` inside a scale line.
+ */
 const FRACTION = 'F'
+/**
+ * URL-safe substitute for `,` inside a scale line.
+ */
 const COMMA = 'C'
+/**
+ * URL-safe substitute for `\` inside a scale line.
+ */
 const BACKSLASH = 'B'
+/**
+ * URL-safe substitute for spaces inside a scale line.
+ */
 const SPACE = 'S'
+/**
+ * URL-safe substitute for `<` inside a scale line.
+ */
 const LEFT_ANGLE_BRACKET = 'L'
+/**
+ * URL-safe substitute for `>` inside a scale line.
+ */
 const RIGHT_ANGLE_BRACKET = 'R'
+/**
+ * URL-safe substitute for `[` inside a scale line.
+ */
 const LEFT_SQUARE_BRACKET = 'Q'
+/**
+ * URL-safe substitute for `+` inside a scale line.
+ */
 const PLUS = 'P'
+/**
+ * Escape marker used to disambiguate reserved characters during line encoding.
+ */
 const ESCAPE = 'E'
 
-// Color shorthands
+/**
+ * Compact token for the `black` key color.
+ */
 const BLACK = '-'
+/**
+ * Compact token for the `white` key color.
+ */
 const WHITE = '~'
+/**
+ * Separator between adjacent non-black/non-white color names.
+ */
 const SEPARATOR = '_'
 
 function isDigit(character: string) {
@@ -163,14 +200,35 @@ function decodeLine(encoded: string) {
   return result
 }
 
+/**
+ * Encodes scale lines into a newline-delimited, URL-safe string.
+ *
+ * @param scaleLines Raw scale lines as shown in the editor.
+ * @returns Encoded payload suitable for the `l` query parameter.
+ */
 export function encodeLines(scaleLines: string[]) {
   return scaleLines.map(encodeLine).join(NEWLINE)
 }
 
+/**
+ * Decodes an encoded scale text payload back to individual scale lines.
+ *
+ * @param encoded URL-encoded scale-line payload.
+ * @returns Decoded scale lines in their original order.
+ */
 export function decodeLines(encoded: string) {
   return encoded.split(NEWLINE).map(decodeLine)
 }
 
+/**
+ * Encodes keyboard key colors into a compact URL-friendly representation.
+ *
+ * `black` and `white` use single-character shorthands, while any custom color
+ * names are included literally and separated when necessary.
+ *
+ * @param keyColors Key colors in keyboard order.
+ * @returns Encoded color string suitable for the `c` query parameter.
+ */
 export function encodeKeyColors(keyColors: string[]) {
   let result = ''
   keyColors.forEach((color) => {
@@ -187,6 +245,12 @@ export function encodeKeyColors(keyColors: string[]) {
   return result
 }
 
+/**
+ * Decodes a compact key-color payload back into individual color names.
+ *
+ * @param encoded Encoded key color payload.
+ * @returns Decoded key colors in keyboard order.
+ */
 export function decodeKeyColors(encoded: string) {
   const result: string[] = []
   let color = ''
@@ -215,7 +279,15 @@ export function decodeKeyColors(encoded: string) {
   return result
 }
 
-// Inverse of number.toString(36)
+/**
+ * Parses a base-36 number with an optional base-36 fractional part.
+ *
+ * This is effectively the inverse of {@link Number.toString} when called with radix `36`
+ * for values that preserve the same precision as the encoded input.
+ *
+ * @param string Base-36 string, optionally containing a single `.` separator.
+ * @returns Parsed decimal number.
+ */
 export function parseFloat36(string: string) {
   const [integerString, fractionString] = string.split('.')
   return (
@@ -224,8 +296,15 @@ export function parseFloat36(string: string) {
   )
 }
 
-// Use all URL friendly characters to encode numbers
-// (reserve '.' for future fractional extension)
+/**
+ * Encodes an integer using a URL-safe base-64-like alphabet.
+ *
+ * The alphabet includes digits, lowercase letters, uppercase letters, `_`, and `~`.
+ * The `.` character is intentionally left unused for future fractional extensions.
+ *
+ * @param n Integer value to encode.
+ * @returns URL-safe encoded integer string.
+ */
 export function encodeNumber(n: number): string {
   // Digits and lower-case letters
   if (n >= 0 && n < 36) {
@@ -252,6 +331,12 @@ export function encodeNumber(n: number): string {
   return encodeNumber(Math.floor(n / 64)) + encodeNumber(n % 64)
 }
 
+/**
+ * Decodes the compact integer format produced by {@link encodeNumber}.
+ *
+ * @param string Encoded integer string.
+ * @returns Decoded integer value.
+ */
 export function decodeNumber(string: string) {
   let sign = 1
   if (string[0] === '-') {
@@ -428,6 +513,11 @@ export type DecodedState = {
   pingPongGain: number
 }
 
+/**
+ * Compact URL query payload used by Scale Workshop.
+ *
+ * Each property maps to a short query parameter key to keep shared URLs small.
+ */
 export type EncodedState = {
   l?: string // (scale) Lines
   c?: string // (key) Colors
@@ -451,6 +541,15 @@ export type EncodedState = {
   g?: string // Ping pong gain
 }
 
+/**
+ * Decodes Scale Workshop query parameters into a strongly typed app state.
+ *
+ * Accepts either vue-router query objects or raw `URLSearchParams`, and fills in
+ * stable defaults for omitted keys.
+ *
+ * @param query Query payload to decode.
+ * @returns Fully-populated decoded state with defaults applied.
+ */
 export function decodeQuery(query: LocationQuery | URLSearchParams): DecodedState {
   let get
   if (query instanceof URLSearchParams) {
@@ -494,6 +593,14 @@ export function decodeQuery(query: LocationQuery | URLSearchParams): DecodedStat
   }
 }
 
+/**
+ * Encodes app state into a compact query representation used in shared URLs.
+ *
+ * Default values are removed from the output to reduce URL length.
+ *
+ * @param state Decoded app state.
+ * @returns Minified query payload containing only non-default values.
+ */
 export function encodeQuery(state: DecodedState): EncodedState {
   let p = 'a'
   if (state.pianoMode === 'QweZxc0') {

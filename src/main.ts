@@ -5,6 +5,10 @@ import router from '@/router'
 import { API_URL } from './constants'
 import { randomUuidCompat } from './platform-compat'
 
+/**
+ * In development, verify that `VITE_API_URL` is reachable and appears to be an
+ * Scale Workshop backend instance.
+ */
 if (import.meta.env.DEV) {
   if (API_URL) {
     fetch(API_URL)
@@ -26,6 +30,9 @@ if (import.meta.env.DEV) {
   }
 }
 
+/**
+ * Ensure each browser instance has a persistent anonymous identifier used by the app.
+ */
 if (!localStorage.getItem('uuid')) {
   localStorage.setItem('uuid', randomUuidCompat())
 }

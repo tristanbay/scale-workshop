@@ -7,7 +7,10 @@ import {
 } from 'vue-router'
 import ScaleView from '../views/ScaleView.vue'
 
-// Boilerplate to resolve minor type incompatibility
+/**
+ * Query-string parser wrapper that coerces `qs.parse` output into `LocationQuery`
+ * after verifying no key has an `undefined` value.
+ */
 function qsParse(query: string) {
   const result = qs.parse(query)
   Object.keys(result).forEach((key) => {
@@ -32,9 +35,7 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
+      // Route-level code splitting for static content views.
       component: () => import('../views/AboutView.vue')
     },
     {
@@ -92,7 +93,7 @@ const router = createRouter({
       name: 'mos',
       component: () => import('../views/MosView.vue')
     },
-    // Root aliases mainly for compatibility with old SW1 URLs.
+    // Root aliases for compatibility with legacy SW1 URLs.
     {
       path: '/index.html',
       redirect: '/'
@@ -101,7 +102,7 @@ const router = createRouter({
       path: '/index.htm',
       redirect: '/'
     },
-    // 404 route will match everything and put it under `$route.params.pathMatch`
+    // Catch-all not-found route.
     {
       path: '/:pathMatch(.*)*',
       name: 'notFound',
@@ -110,9 +111,9 @@ const router = createRouter({
   ]
 })
 
-// Preserve query parameters on router navigation
-// https://stackoverflow.com/a/47195471
-
+/**
+ * Returns whether a route has any query parameters.
+ */
 function hasQueryParams(route: RouteLocationNormalized) {
   return !!Object.keys(route.query).length
 }

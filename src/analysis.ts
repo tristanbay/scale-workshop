@@ -3,13 +3,16 @@ import { circleDistance, mmod, valueToCents } from 'xen-dev-utils'
 
 const EPSILON = 1e-6
 
-// Absolute logarithmic error from the nearest harmonic measured in nats
+/**
+ * Absolute logarithmic error from the nearest harmonic, measured in nats.
+ */
 function harmonicError(ratio: number) {
   return Math.abs(Math.log(ratio) - Math.log(Math.round(ratio)))
 }
 
-// Calculate a small correction that removes the bias
-// in the movement of an otonal chord wheel.
+/**
+ * Calculates a correction factor that counteracts bias in otonal chord-wheel motion.
+ */
 function otonalCorrection(ratios: number[]) {
   let correction = 1
   ratios.forEach((ratio) => {
@@ -19,8 +22,9 @@ function otonalCorrection(ratios: number[]) {
   return Math.pow(correction, -1 / ratios.length)
 }
 
-// Calculate the best multiplier for a set of ratios that
-// minimizes the perceived motion of an otonal chord wheel.
+/**
+ * Finds the multiplier that minimizes aggregate otonal wheel motion for the given ratios.
+ */
 function otonalMultiplier(ratios: number[], maxMultiplier = 16) {
   let leastError = Infinity
   let result = 1
@@ -52,13 +56,16 @@ export function otonalFundamental(frequencies: number[], maxMultiplier = 16) {
   return frequencies[0] / multiplier
 }
 
-// Absolute logarithmic error from the nearest subharmonic measured in nats
+/**
+ * Absolute logarithmic error from the nearest subharmonic, measured in nats.
+ */
 function subharmonicError(ratio: number) {
   return Math.abs(Math.log(ratio) + Math.log(Math.round(1 / ratio)))
 }
 
-// Calculate a small correction that removes the bias
-// in the movement of an utonal chord wheel.
+/**
+ * Calculates a correction factor that counteracts bias in utonal chord-wheel motion.
+ */
 function utonalCorrection(ratios: number[]) {
   let correction = 1
   ratios.forEach((ratio) => {
@@ -68,8 +75,9 @@ function utonalCorrection(ratios: number[]) {
   return Math.pow(correction, 1 / ratios.length)
 }
 
-// Calculate the best divisor for a set of ratios that
-// minimizes the perceived motion of an utonal chord wheel.
+/**
+ * Finds the divisor that minimizes aggregate utonal wheel motion for the given ratios.
+ */
 export function utonalDivisor(ratios: number[], maxDivisor = 23) {
   let leastError = Infinity
   let result = 1

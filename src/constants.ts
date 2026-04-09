@@ -2,24 +2,47 @@ import { Interval, TimeMonzo } from 'sonic-weave'
 import { version } from '../package.json'
 import { Fraction, PRIME_CENTS } from 'xen-dev-utils'
 
-// .env config
+/**
+ * Optional API base URL injected from environment configuration.
+ */
 export const API_URL: string | undefined = import.meta.env.VITE_API_URL
 
-// GLOBALS
+/**
+ * Application title shown in browser metadata and top-level UI.
+ */
 export const APP_TITLE = `Scale Workshop ${version}`
 
+/**
+ * Prime component limit used by SonicWeave values in app-wide defaults.
+ */
 export const DEFAULT_NUMBER_OF_COMPONENTS = 25 // Enough to represent all primes < 100
 
+/**
+ * Newline match expression that accepts both Unix and Windows line endings.
+ */
 export const NEWLINE_TEST = /\r?\n/
+/**
+ * Unix line ending string.
+ */
 export const UNIX_NEWLINE = '\n'
+/**
+ * Windows line ending string.
+ */
 export const WINDOWS_NEWLINE = '\r\n'
 
+/**
+ * Number of MIDI notes in the supported note table.
+ */
 export const NUMBER_OF_NOTES = 128
 
-// Browser interaction
+/**
+ * Mouse button id for the primary/left button.
+ */
 export const LEFT_MOUSE_BTN = 0
 
-// Browser detection
+/**
+ * Runtime detection flag for Safari (excluding Chrome/Firefox on iOS).
+ */
 export const IS_SAFARI =
   navigator.vendor &&
   navigator.vendor.indexOf('Apple') > -1 &&
@@ -27,7 +50,9 @@ export const IS_SAFARI =
   navigator.userAgent.indexOf('CriOS') == -1 &&
   navigator.userAgent.indexOf('FxiOS') == -1
 
-// === Sanity limits for scale sharing ===
+/**
+ * Maximum number of intervals that may be serialized into shared URLs.
+ */
 export const MAX_NUMBER_OF_SHARED_INTERVALS = 255
 
 export const SEMITONE_12TET = 2 ** (1 / 12)
@@ -51,7 +76,9 @@ export const MIDI_NOTE_COLORS = [
   'white'
 ]
 
-// Some often used intervals
+/**
+ * Commonly-used interval constants.
+ */
 export const OCTAVE = new Interval(
   TimeMonzo.fromFraction(2, DEFAULT_NUMBER_OF_COMPONENTS),
   'linear'

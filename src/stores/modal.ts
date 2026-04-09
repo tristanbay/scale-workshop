@@ -28,6 +28,9 @@ function scaleGet(monzos: TimeMonzo[], index: number) {
 
 export const MAX_EQUAL_TEMPERAMENT_SIZE = 1024
 
+/**
+ * Store containing generation/modification modal state and derived helper data.
+ */
 export const useModalStore = defineStore('modal', () => {
   // Generic
   const equaveString = ref('2/1')

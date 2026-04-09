@@ -17,6 +17,9 @@ const RES = 0.5
 const SERIES = 'tenney'
 const NORMALIZE = true
 
+/**
+ * Harmonic-entropy cache and computation store backed by a worker.
+ */
 export const useHarmonicEntropyStore = defineStore('harmonic-entropy', () => {
   if (worker === undefined) {
     worker = new EntropyWorker()

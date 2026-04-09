@@ -6,6 +6,9 @@ import { parseChord } from 'sonic-weave'
 import { computedAndError, parseVal } from '@/utils'
 import { FIFTH, THIRD } from '@/constants'
 
+/**
+ * Store for equal-division grid-lattice visualization state and derived geometry.
+ */
 export const useGridStore = defineStore('grid', () => {
   // View
   const size = ref(0.15)

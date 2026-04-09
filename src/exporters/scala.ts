@@ -1,6 +1,9 @@
 import { APP_TITLE } from '@/constants'
 import { BaseExporter, type ExporterParams } from '@/exporters/base'
 
+/**
+ * Exports scales in Scala `.scl` format.
+ */
 export class ScalaSclExporter extends BaseExporter {
   static maxInteger = 2147483647n
 
@@ -60,6 +63,9 @@ export class ScalaSclExporter extends BaseExporter {
   }
 }
 
+/**
+ * Exports keyboard mappings in Scala `.kbm` format.
+ */
 export class ScalaKbmExporter extends BaseExporter {
   constructor(params: ExporterParams) {
     super(params)

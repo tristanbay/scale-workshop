@@ -1,3 +1,6 @@
+/**
+ * Canonical parse result used by all text importers.
+ */
 export type ImportResult = {
   sourceText: string
   name?: string
@@ -5,6 +8,9 @@ export type ImportResult = {
   baseFrequency?: number
 }
 
+/**
+ * Base class for text-based scale importers.
+ */
 export abstract class TextImporter {
   event?: Event
 
@@ -14,6 +20,9 @@ export abstract class TextImporter {
 
   abstract parseText(input: string, filename: string): ImportResult
 
+  /**
+   * Reads the selected file and delegates text parsing to the concrete importer.
+   */
   parse() {
     if (this.event == null || this.event.target == null) {
       throw new Error('Missing event target element')

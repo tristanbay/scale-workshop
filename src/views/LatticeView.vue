@@ -1,4 +1,7 @@
 <script setup lang="ts">
+/**
+ * Lattice workspace view for JI, ET, cycle, and 3D lattice visualizations.
+ */
 import { computed, onMounted, ref, watch } from 'vue'
 import { Fraction, isPrime, mmod, nthPrime, primeLimit } from 'xen-dev-utils'
 import GridLattice from '@/components/GridLattice.vue'

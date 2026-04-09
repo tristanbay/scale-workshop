@@ -3,6 +3,9 @@ import { defineStore } from 'pinia'
 import { KorgModels } from '@/exporters/korg'
 import type { LineFormat } from '@/exporters/base'
 
+/**
+ * Export settings store shared by all exporter modals and actions.
+ */
 export const useExportStore = defineStore('export', () => {
   // Korg
   const korgModel = ref<KorgModels>(KorgModels.MINILOGUE)

@@ -2,6 +2,9 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { Fraction, PRIMES, clamp, primeLimit as getPrimeLimit } from 'xen-dev-utils'
 
+/**
+ * State and helpers for the "Approximate by ratios" modal workflow.
+ */
 export const useApproximateByRatiosStore = defineStore('approximate-by-ratios', () => {
   const degree = ref(1)
   const approximationIndex = ref(0)

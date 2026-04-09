@@ -3,6 +3,9 @@ import { defineStore } from 'pinia'
 import { UNIX_NEWLINE } from '@/constants'
 import { syncValues } from '@/utils'
 
+/**
+ * Global UI/application preference store and lightweight shared runtime state.
+ */
 export const useStateStore = defineStore('state', () => {
   // Mapping from MIDI index to number of interfaces currently pressing the key down
   const heldNotes = reactive(new Map<number, number>())

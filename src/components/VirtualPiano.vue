@@ -1,4 +1,7 @@
 <script setup lang="ts">
+/**
+ * SVG-based virtual piano keyboard supporting split accidental rendering modes.
+ */
 import { LEFT_MOUSE_BTN } from '@/constants'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 
