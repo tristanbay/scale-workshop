@@ -17,4 +17,20 @@ describe('Anamark exporters', () => {
     const exporterV2 = new AnaMarkV2Exporter(params)
     expect(exporterV2.getFileContents()).toBe(EXPECTED_CONTENT_V2)
   })
+
+  it('sanitizes double quotes in quoted metadata fields', () => {
+    const params = getTestData('Anamark exporter unit test v0.0.0')
+    params.filename = 'My "quoted" tuning'
+    params.description = 'Description with "quotes"'
+    params.appTitle = 'Scale "Workshop"'
+
+    const exporterV2 = new AnaMarkV2Exporter(params)
+    const output = exporterV2.getFileContents()
+
+    expect(output).toContain('Name= "My “quoted“ tuning.tun"')
+    expect(output).toContain('ID= "My“quoted“tuning.tun"')
+    expect(output).toContain('Filename= "My “quoted“ tuning.tun"')
+    expect(output).toContain('Description= "Description with “quotes“"')
+    expect(output).toContain('Editor= "Scale “Workshop“"')
+  })
 })

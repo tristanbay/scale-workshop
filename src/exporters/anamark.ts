@@ -2,6 +2,10 @@ import { APP_TITLE, NEWLINE_TEST } from '@/constants'
 import { BaseExporter, type ExporterParams } from '@/exporters/base'
 import { mtof, valueToCents } from 'xen-dev-utils'
 
+function sanitizeQuotedTunValue(value: string) {
+  return value.replaceAll('"', '“')
+}
+
 class AnaMarkExporter extends BaseExporter {
   static tuningMaxSize = 128
   static baseFrequency = mtof(0)
@@ -67,12 +71,13 @@ class AnaMarkExporter extends BaseExporter {
     file +=
       'FormatSpecs= "http://www.mark-henning.de/eternity/tuningspecs.html"' + newline + newline
     file += '[Info]' + newline
-    file += 'Name= "' + filename + '.tun"' + newline
-    file += 'ID= "' + filename.replace(/ /g, '') + '.tun"' + newline // this line strips whitespace from filename, as per .tun spec
-    file += 'Filename= "' + filename + '.tun"' + newline
-    file += 'Description= "' + this.params.description + '"' + newline
+    file += 'Name= "' + sanitizeQuotedTunValue(filename) + '.tun"' + newline
+    file +=
+      'ID= "' + sanitizeQuotedTunValue(filename).replace(/ /g, '') + '.tun"' + newline // this line strips whitespace from filename, as per .tun spec
+    file += 'Filename= "' + sanitizeQuotedTunValue(filename) + '.tun"' + newline
+    file += 'Description= "' + sanitizeQuotedTunValue(this.params.description) + '"' + newline
     file += 'Date= "' + this.date.toISOString().slice(0, 10) + '"' + newline
-    file += 'Editor= "' + this.appTitle + '"' + newline + newline
+    file += 'Editor= "' + sanitizeQuotedTunValue(this.appTitle) + '"' + newline + newline
     file += '[Exact Tuning]' + newline
 
     for (let i = 0; i < AnaMarkExporter.tuningMaxSize; i++) {
