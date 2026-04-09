@@ -176,6 +176,15 @@ describe('Float 36 parser', () => {
     expect(parseFloat36('10.10')).toBeCloseTo(36 + 1 / 36, 4)
   })
 
+  it('can decode negative fractions', () => {
+    expect(parseFloat36('-1.1')).toBeCloseTo(-(1 + 1 / 36), 8)
+  })
+
+  it('can decode negative random values', () => {
+    const value = -Math.random() * 1000
+    expect(parseFloat36(value.toString(36))).toBeCloseTo(value)
+  })
+
   it('can decode random values', () => {
     const value = Math.random() * 1000
     expect(parseFloat36(value.toString(36))).toBeCloseTo(value)

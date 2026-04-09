@@ -289,11 +289,15 @@ export function decodeKeyColors(encoded: string) {
  * @returns Parsed decimal number.
  */
 export function parseFloat36(string: string) {
+  const sign = string.startsWith('-') ? -1 : 1
+  if (sign < 0) {
+    string = string.slice(1)
+  }
   const [integerString, fractionString] = string.split('.')
-  return (
+  const value =
     parseInt(integerString, 36) +
     parseInt(fractionString || '0', 36) / 36 ** (fractionString?.length || 0)
-  )
+  return sign * value
 }
 
 /**
