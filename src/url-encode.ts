@@ -385,26 +385,32 @@ export function encodeKeyMap(map: Map<string, number>) {
 export function decodeKeyMap(string: string): Map<string, number> {
   const tokens = []
   while (string.length) {
+    let unterminatedToken = false
     if (string.startsWith('--')) {
-      let token = string[2]
+      let token = string[2] ?? ''
       string = string.slice(3)
-      while (string[0] !== '-') {
+      while (string.length && string[0] !== '-') {
         token += string[0]
         string = string.slice(1)
       }
       tokens.push(token)
+      unterminatedToken = !string.length
     } else if (string.startsWith('-')) {
       let token = string[0]
       string = string.slice(1)
-      while (string[0] !== '-') {
+      while (string.length && string[0] !== '-') {
         token += string[0]
         string = string.slice(1)
       }
       tokens.push(token)
+      unterminatedToken = !string.length
     } else if (string[0] === '.') {
       tokens.push(null)
     } else {
       tokens.push(string[0])
+    }
+    if (unterminatedToken) {
+      break
     }
     string = string.slice(1)
   }

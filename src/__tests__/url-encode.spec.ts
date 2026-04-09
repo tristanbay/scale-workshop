@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import type { LocationQuery } from 'vue-router'
 import { arraysEqual } from 'xen-dev-utils'
-import { mapWhiteAsdfBlackQwerty, mapWhiteQweZxcBlack123Asd } from '../keyboard-mapping'
+import { DIGIT_ROW, mapWhiteAsdfBlackQwerty, mapWhiteQweZxcBlack123Asd } from '../keyboard-mapping'
 
 import {
   decodeKeyColors,
@@ -243,6 +243,16 @@ describe('Keyboard map encoder', () => {
     expect(map.size).toBe(2)
     expect(map.get('KeyA')).toBe(1000)
     expect(map.get('Digit2')).toBe(-500)
+  })
+
+  it('can decode a truncated positive multi-character token', () => {
+    const map = decodeKeyMap('--fE')
+    expect(map.get(DIGIT_ROW[0])).toBe(1000)
+  })
+
+  it('can decode a truncated negative token', () => {
+    const map = decodeKeyMap('-7Q')
+    expect(map.get(DIGIT_ROW[0])).toBe(-500)
   })
 })
 
