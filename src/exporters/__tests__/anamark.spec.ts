@@ -33,4 +33,14 @@ describe('Anamark exporters', () => {
     expect(output).toContain('Description= "Description with “quotes“"')
     expect(output).toContain('Editor= "Scale “Workshop“"')
   })
+
+  it('removes line breaks from quoted metadata fields', () => {
+    const params = getTestData('Anamark exporter unit test v0.0.0')
+    params.description = 'Line 1\nLine 2\r\nLine 3'
+
+    const exporterV2 = new AnaMarkV2Exporter(params)
+    const output = exporterV2.getFileContents()
+
+    expect(output).toContain('Description= "Line 1 Line 2 Line 3"')
+  })
 })

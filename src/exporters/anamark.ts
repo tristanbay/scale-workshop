@@ -3,7 +3,7 @@ import { BaseExporter, type ExporterParams } from '@/exporters/base'
 import { mtof, valueToCents } from 'xen-dev-utils'
 
 function sanitizeQuotedTunValue(value: string) {
-  return value.replaceAll('"', '“')
+  return value.replaceAll('"', '“').replace(/\r?\n|\r/g, ' ')
 }
 
 class AnaMarkExporter extends BaseExporter {
