@@ -57,6 +57,15 @@ export enum KorgExporterError {
 const OCTAVE_FORMAT_SIZE = 12
 const SCALE_FORMAT_SIZE = 128
 
+function escapeXml(value: string) {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&apos;')
+}
+
 /**
  * Maps a user-facing model key to the Korg metadata used in archive generation.
  *
@@ -136,6 +145,8 @@ export class KorgExporter extends BaseExporter {
     const format = getKorgModelInfo(model)
     const name = format.name
     const tagName = name.replaceAll(/\s+/g, '').toLowerCase()
+    const escapedProgrammer = escapeXml(programmer)
+    const escapedComment = escapeXml(comment)
 
     const rootName = this.useOctaveFormat
       ? `${tagName}_TuneOctInformation`
@@ -145,8 +156,8 @@ export class KorgExporter extends BaseExporter {
       `<?xml version="1.0" encoding="UTF-8"?>\n` +
       '\n' +
       `<${rootName}>\n` +
-      `  <Programmer>${programmer}</Programmer>\n` +
-      `  <Comment>${comment}</Comment>\n` +
+      `  <Programmer>${escapedProgrammer}</Programmer>\n` +
+      `  <Comment>${escapedComment}</Comment>\n` +
       `</${rootName}>\n`
 
     return xml

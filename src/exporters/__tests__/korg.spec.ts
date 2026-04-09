@@ -195,4 +195,18 @@ describe('Korg exporters', () => {
       KORG_MODEL_INFO[KorgModels.MINILOGUE_XD].name = originalName
     }
   })
+
+  it('escapes XML-sensitive characters in programmer and comment fields', () => {
+    const params = getTestData("Korg 'logue exporter unit test v0.0.0")
+    const exporter = new KorgExporter(params, KorgModels.MINILOGUE, false)
+
+    const xml = exporter.getTuningInfoXml(
+      KorgModels.MINILOGUE,
+      'Scale & Workshop <QA>',
+      'Name "Test" & more <less>\''
+    )
+
+    expect(xml).toContain('<Programmer>Scale &amp; Workshop &lt;QA&gt;</Programmer>')
+    expect(xml).toContain('<Comment>Name &quot;Test&quot; &amp; more &lt;less&gt;&apos;</Comment>')
+  })
 })
