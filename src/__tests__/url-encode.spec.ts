@@ -216,6 +216,20 @@ describe('Keyboard map encoder', () => {
     )
   })
 
+  it('encodes positive multi-character token with delimiter markers', () => {
+    const keyboardMapping = new Map()
+    keyboardMapping.set(DIGIT_ROW[0], 1000)
+    const encoded = encodeKeyMap(keyboardMapping)
+    expect(encoded.startsWith('--fE-')).toBeTruthy()
+  })
+
+  it('encodes negative token with trailing delimiter marker', () => {
+    const keyboardMapping = new Map()
+    keyboardMapping.set(DIGIT_ROW[0], -500)
+    const encoded = encodeKeyMap(keyboardMapping)
+    expect(encoded.startsWith('-7Q-')).toBeTruthy()
+  })
+
   it('can decode the old ASDF map', () => {
     const decoded = decodeKeyMap('............-1-1.46.9bd.gi023578acefhj...........')
     const keyboardMapping = mapWhiteAsdfBlackQwerty(decodeKeyColors('~-~~-~-~~-~-'), 0, 0)
