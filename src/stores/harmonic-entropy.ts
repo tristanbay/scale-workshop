@@ -1,6 +1,6 @@
 import HE_DATA_URL from '@/assets/harmonic-entropy.ydata.raw?url'
 import EntropyWorker from '@/harmonic-entropy-worker?worker'
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { debounce } from '@/utils'
 import { defineStore } from 'pinia'
 import { EntropyCalculator, type HarmonicEntropyOptions } from 'harmonic-entropy'
@@ -25,7 +25,7 @@ export const useHarmonicEntropyStore = defineStore('harmonic-entropy', () => {
     worker = new EntropyWorker()
   }
 
-  const table = reactive<[number, number][]>([])
+  const table = ref<[number, number][]>([])
 
   // The fetched N is much larger, but we use a smaller value for the UI.
   const N = ref(10000)
@@ -33,14 +33,19 @@ export const useHarmonicEntropyStore = defineStore('harmonic-entropy', () => {
   const s = ref(0.01)
   const isFetching = ref(false)
 
-  const minY = computed(() => Math.min(...table.map((xy) => xy[1])))
-  const maxY = computed(() => Math.max(...table.map((xy) => xy[1])))
+  const minY = computed(() => Math.min(...table.value.map((xy) => xy[1])))
+  const maxY = computed(() => Math.max(...table.value.map((xy) => xy[1])))
   let fallbackEntropy: EntropyCalculator | undefined
   let fallbackMinY = 0
   let fallbackMaxY = 1
 
+  function tableFromY(tableY: number[]) {
+    const numEntries = Math.floor(MAX_CENTS / RES) + 1
+    return tableY.slice(0, numEntries).map((y, i) => [i * RES, y] as [number, number])
+  }
+
   async function fetchTable(force = false) {
-    if (table.length && !force) {
+    if (table.value.length && !force) {
       return
     }
     isFetching.value = true
@@ -48,13 +53,7 @@ export const useHarmonicEntropyStore = defineStore('harmonic-entropy', () => {
       const response = await fetch(HE_DATA_URL)
       const buffer = await response.arrayBuffer()
       const tableY = Array.from(new Float32Array(buffer))
-
-      table.length = 0
-
-      let i = 0
-      for (let x = 0; x <= MAX_CENTS; x += RES) {
-        table.push([x, tableY[i++]])
-      }
+      table.value = tableFromY(tableY)
     } finally {
       isFetching.value = false
     }
@@ -62,19 +61,13 @@ export const useHarmonicEntropyStore = defineStore('harmonic-entropy', () => {
 
   worker.onmessage = (e) => {
     if (e.data.jobId === jobId) {
-      const tableY = e.data.json.tableY
-
-      table.length = 0
-      let i = 0
-      for (let x = 0; x <= MAX_CENTS; x += RES) {
-        table.push([x, tableY[i++]])
-      }
+      table.value = tableFromY(e.data.json.tableY)
     }
   }
 
   // Pinia fails to serialize EntropyCalculator so we recreate its functionality here.
   function entropyPercentage(cents: number) {
-    if (!table.length) {
+    if (!table.value.length) {
       if (!isFetching.value) {
         void fetchTable()
       }
@@ -89,14 +82,14 @@ export const useHarmonicEntropyStore = defineStore('harmonic-entropy', () => {
     }
     cents = Math.abs(cents)
     if (cents >= MAX_CENTS) {
-      return (table[table.length - 1][1] - minY.value) / (maxY.value - minY.value)
+      return (table.value[table.value.length - 1][1] - minY.value) / (maxY.value - minY.value)
     }
 
     let mu = cents / RES
     const index = Math.floor(mu)
     mu -= index
 
-    const y = table[index][1] * (1 - mu) + table[index + 1][1] * mu
+    const y = table.value[index][1] * (1 - mu) + table.value[index + 1][1] * mu
     return (y - minY.value) / (maxY.value - minY.value)
   }
 
