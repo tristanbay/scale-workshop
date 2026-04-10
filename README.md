@@ -140,7 +140,7 @@ Share the scale URL to yourself through *Export current settings > Share scale*.
 
 ### When I export a tuning, I get nothing, why?
 
-File export from Safari (iOS and macOS) does not work. Cause unknown. You can try to use Firefox, Chrome or Opera instead.
+If export fails, it is usually due to browser download settings, pop-up/download restrictions, or privacy extensions. Try enabling downloads for the site and retrying.
 
 ### Can I run this software offline?
 

@@ -51,9 +51,6 @@ export const useStateStore = defineStore('state', () => {
   // Opt-in for user statistics
   const shareStatistics = ref(storage.getItem('shareStatistics') === 'true')
 
-  // The app doesn't fully work on Safari. Inform the user.
-  const showSafariWarning = ref(storage.getItem('showSafariWarning') !== 'false')
-
   // Debugging features.
   const debug = ref(storage.getItem('debug') === 'true')
 
@@ -93,7 +90,6 @@ export const useStateStore = defineStore('state', () => {
     degreeUpCode,
     degreeDownCode,
     shareStatistics,
-    showSafariWarning,
     debug
   })
   watch(
@@ -131,7 +127,6 @@ export const useStateStore = defineStore('state', () => {
     degreeUpCode,
     degreeDownCode,
     shareStatistics,
-    showSafariWarning,
     debug,
     // Methods
     toJSON,

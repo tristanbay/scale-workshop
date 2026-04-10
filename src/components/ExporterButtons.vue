@@ -2,7 +2,7 @@
 /**
  * Component that orchestrates export, save, and upload actions for the current scale.
  */
-import { API_URL, APP_TITLE, IS_SAFARI } from '@/constants'
+import { API_URL, APP_TITLE } from '@/constants'
 import { exportFile, type ExporterKey } from '@/exporters'
 import type { ExporterParams } from '@/exporters/base'
 import { useAudioStore } from '@/stores/audio'
@@ -197,11 +197,6 @@ function doExport(exporter: ExporterKey) {
     <p><strong>Share scale</strong></p>
     <p>{{ exportTextClipboard }}</p>
   </a>
-  <div v-if="IS_SAFARI && state.showSafariWarning">
-    <h3 class="warning">Warning</h3>
-    <p class="warning">File export is known to be broken on Safari. Root cause unknown.</p>
-    <button class="warning" @click="state.showSafariWarning = false">Dismiss</button>
-  </div>
   <a v-if="state.debug" href="#" class="btn debug" @click.prevent="downloadDebugDump"
     ><p><strong>Debug dump (.json)</strong></p>
     <p>Copy of the data sent to the server.</p></a
