@@ -14,6 +14,7 @@ import {
 } from '@/analysis'
 import ChordWheel from '@/components/ChordWheel.vue'
 import HarmonicEntropyPlot from '@/components/HarmonicEntropyPlot.vue'
+import NumericSlider from '@/components/NumericSlider.vue'
 import ScaleLineInput from '@/components/ScaleLineInput.vue'
 import { computed, reactive, ref, watch } from 'vue'
 import { useAudioStore } from '@/stores/audio'
@@ -271,32 +272,6 @@ const labels = computed(() =>
 const colors = computed(() =>
   centsValues.value.map((_, i) => scale.colorForIndex(scale.baseMidiNote + entropyMode.value + i))
 )
-
-// These really should be direct v-models, but there's
-// something wrong with how input ranges are handled.
-const renyiOrderSlider = computed({
-  get: () => entropy.a,
-  set(newValue: number) {
-    if (typeof newValue !== 'number') {
-      newValue = parseFloat(newValue)
-    }
-    if (!isNaN(newValue)) {
-      entropy.a = newValue
-    }
-  }
-})
-
-const frequencyDeviationSlider = computed({
-  get: () => entropy.s,
-  set(newValue: number) {
-    if (typeof newValue !== 'number') {
-      newValue = parseFloat(newValue)
-    }
-    if (!isNaN(newValue)) {
-      entropy.s = newValue
-    }
-  }
-})
 
 watch(subtab, (newValue) => {
   if (newValue === 'entropy') {
@@ -609,24 +584,22 @@ watch(subtab, (newValue) => {
           <input id="N" type="number" min="1000" step="1000" v-model="entropy.N" />
         </div>
         <label for="a">Rényi order: {{ entropy.a.toFixed(4) }}</label>
-        <input
+        <NumericSlider
           class="control"
           id="a"
-          type="range"
           min="0.02"
           max="7"
           step="any"
-          v-model="renyiOrderSlider"
+          v-model="entropy.a"
         />
         <label for="s">Frequency deviation: {{ (entropy.s * 100).toFixed(2) }}%</label>
-        <input
+        <NumericSlider
           class="control"
           id="s"
-          type="range"
           min="0.003"
           max="0.02"
           step="any"
-          v-model="frequencyDeviationSlider"
+          v-model="entropy.s"
         />
       </div>
       <div class="entropy-intervals">

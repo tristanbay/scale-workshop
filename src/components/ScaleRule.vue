@@ -23,11 +23,20 @@ const ticksAndColors = computed(() => {
     }
     if (!isNaN(tick) && isFinite(tick)) {
       // mmod(1, 1) === 0 so we don't have to push the unison tick
-      result.push([`${0.5 + 99 * mmod(tick, 1)}%`, color])
+      const tickPosition = `${0.5 + 99 * mmod(tick, 1)}%`
+      result.push({
+        key: `scale-rule-${i}-${tickPosition}-${color}`,
+        tick: tickPosition,
+        color
+      })
     }
   }
   // mmod(1, 1) === 0, so we have to manually push the equave tick
-  result.push(['99.5%', 'var(--color-text)'])
+  result.push({
+    key: 'scale-rule-equave',
+    tick: '99.5%',
+    color: 'var(--color-text)'
+  })
   return result
 })
 </script>
@@ -36,25 +45,25 @@ const ticksAndColors = computed(() => {
   <svg width="100%" height="10" v-if="orientation === 'horizontal'">
     <line x1="0.5%" y1="50%" x2="99.5%" y2="50%" style="stroke: var(--color-text)" />
     <line
-      v-for="([tick, color], i) of ticksAndColors"
-      :key="i"
-      :x1="tick"
+      v-for="item of ticksAndColors"
+      :key="item.key"
+      :x1="item.tick"
       y1="5%"
-      :x2="tick"
+      :x2="item.tick"
       y2="95%"
-      :style="'stroke:' + color + ';'"
+      :style="'stroke:' + item.color + ';'"
     />
   </svg>
   <svg width="10" height="100%" v-else>
     <line y1="0.5%" x1="50%" y2="99.5%" x2="50%" style="stroke: var(--color-text)" />
     <line
-      v-for="([tick, color], i) of ticksAndColors"
-      :key="i"
-      :y1="tick"
+      v-for="item of ticksAndColors"
+      :key="item.key"
+      :y1="item.tick"
       x1="5%"
-      :y2="tick"
+      :y2="item.tick"
       x2="95%"
-      :style="'stroke:' + color + ';'"
+      :style="'stroke:' + item.color + ';'"
     />
   </svg>
 </template>

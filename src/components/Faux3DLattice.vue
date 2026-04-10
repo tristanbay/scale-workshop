@@ -103,6 +103,7 @@ const elements = computed(() => {
     const cy = vertex.y * s
     const r = store.size * s
     const node: any = {
+      key: `vertex-${vertex.index ?? 'aux'}-${cx}-${cy}-${z}`,
       tag: 'circle',
       cx,
       cy,
@@ -120,6 +121,7 @@ const elements = computed(() => {
     result.push(node)
     if (store.showLabels && vertex.index !== undefined) {
       result.push({
+        key: `label-${vertex.index}-${cx}-${cy}-${z}`,
         tag: 'text',
         x: cx,
         y: cy - store.labelOffset * r,
@@ -163,6 +165,7 @@ const elements = computed(() => {
       ;(edge as any).type = 'border'
     }
     result.push({
+      key: `edge-${edge.type}-${x1}-${y1}-${x2}-${y2}`,
       tag: 'polygon',
       points,
       class: `edge ${edge.type}`,
@@ -182,7 +185,7 @@ const elements = computed(() => {
     :viewBox="viewBox.join(' ')"
     preserveAspectRatio="xMidYMid meet"
   >
-    <template v-for="(element, i) of elements" :key="i">
+    <template v-for="element of elements" :key="element.key">
       <circle v-if="element.tag === 'circle'" v-bind="element" />
       <polygon v-if="element.tag === 'polygon'" v-bind="element" />
       <text v-if="element.tag === 'text'" v-bind="element">{{ element.body }}</text>

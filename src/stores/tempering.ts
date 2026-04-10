@@ -140,8 +140,8 @@ export const useRank2Store = defineStore('rank2', () => {
   const up = ref(5)
   const numPeriods = ref(1)
   // method: "circle"
-  const periodStretch = ref('0')
-  const generatorFineCents = ref('0')
+  const periodStretch = ref(0)
+  const generatorFineCents = ref(0)
   // MOS pattern buttons / more
   const mosPatternAmount = ref(1)
   // Footer preview
@@ -211,11 +211,7 @@ export const useRank2Store = defineStore('rank2', () => {
     if (!p || isNaN(p)) {
       return 0.0001
     }
-    const stretch = parseFloat(periodStretch.value)
-    if (isNaN(stretch)) {
-      return p
-    }
-    return p * Math.exp(stretch)
+    return p * Math.exp(periodStretch.value)
   })
 
   const circleGeneratorCents = computed(() => {
@@ -223,11 +219,7 @@ export const useRank2Store = defineStore('rank2', () => {
     if (isNaN(g)) {
       return 0
     }
-    const fine = parseFloat(generatorFineCents.value)
-    if (isNaN(fine)) {
-      return g
-    }
-    return g + fine
+    return g + generatorFineCents.value
   })
 
   const safeSize = computed(

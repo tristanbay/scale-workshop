@@ -2,6 +2,7 @@
 import { FIFTH, OCTAVE } from '@/constants'
 import { ref, watch } from 'vue'
 import Modal from '@/components/ModalDialog.vue'
+import NumericSlider from '@/components/NumericSlider.vue'
 import PeriodCircle from '@/components/PeriodCircle.vue'
 import { expandCode, gapKeyColors, parseCents } from '@/utils'
 import ScaleLineInput from '@/components/ScaleLineInput.vue'
@@ -36,8 +37,8 @@ function consolidateCircle() {
   rank2.generator = parseCents(rank2.circleGeneratorCents, scale.centsFractionDigits)
   rank2.generatorString = rank2.generator.toString()
 
-  rank2.periodStretch = '0'
-  rank2.generatorFineCents = '0'
+  rank2.periodStretch = 0
+  rank2.generatorFineCents = 0
 }
 
 watch(
@@ -79,7 +80,7 @@ function selectMosSize(mosSize: number) {
 function updateCircleGenerator(value: number) {
   rank2.generator = parseCents(value, scale.centsFractionDigits)
   rank2.generatorString = rank2.generator.toString()
-  rank2.generatorFineCents = '0'
+  rank2.generatorFineCents = 0
 }
 
 function chromaAndHardness(size: number) {
@@ -313,9 +314,8 @@ function generate(expand = true) {
           </div>
           <div class="control">
             <label for="period-stretch">Period stretch</label>
-            <input
+            <NumericSlider
               class="wide-range"
-              type="range"
               id="period-stretch"
               step="any"
               min="-0.05"
@@ -323,9 +323,8 @@ function generate(expand = true) {
               v-model="rank2.periodStretch"
             />
             <label for="generator-fine-tune">Generator fine-tune</label>
-            <input
+            <NumericSlider
               class="wide-range"
-              type="range"
               id="generator-fine-tune"
               step="any"
               min="-5"

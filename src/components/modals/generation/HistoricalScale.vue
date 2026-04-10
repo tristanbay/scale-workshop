@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Modal from '@/components/ModalDialog.vue'
+import NumericSlider from '@/components/NumericSlider.vue'
 import { computed } from 'vue'
 import { DEFAULT_NUMBER_OF_COMPONENTS, FIFTH, OCTAVE } from '@/constants'
 import ScaleLineInput from '@/components/ScaleLineInput.vue'
@@ -75,19 +76,6 @@ const mosSizeList = computed(() => {
     sizes.pop()
   }
   return sizes
-})
-
-const strengthSlider = computed({
-  get: () => historical.temperingStrength,
-  set(newValue: number) {
-    // There's something wrong with how input ranges are handled.
-    if (typeof newValue !== 'number') {
-      newValue = parseFloat(newValue)
-    }
-    if (!isNaN(newValue)) {
-      historical.temperingStrength = newValue
-    }
-  }
 })
 
 const temperedGenerator = computed(() => {
@@ -311,14 +299,13 @@ function generate(expand = true) {
             </select>
           </div>
           <label for="tempering-strength">Tempering strength</label>
-          <input
+          <NumericSlider
             id="tempering-strength"
             class="control"
-            type="range"
             min="0"
             max="1"
             step="any"
-            v-model="strengthSlider"
+            v-model="historical.temperingStrength"
           />
           <button class="control" @click="historical.equalizeBeating">Equalize beating</button>
           <div class="control">

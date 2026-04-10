@@ -117,8 +117,8 @@ defineExpose({ focus, clearPaletteInfo })
     <h3>Character palette</h3>
     <div class="control">
       <button
-        v-for="(_, character, i) of palette"
-        :key="i"
+        v-for="(_, character) of palette"
+        :key="character"
         @click="insertFromPalette"
         @mouseenter="updatePaletteInfo"
       >

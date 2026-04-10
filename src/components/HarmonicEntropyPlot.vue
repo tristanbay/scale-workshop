@@ -25,7 +25,8 @@ const circleY = ref(0)
 const showCircle = ref(false)
 const lineIndex = ref(-1)
 
-const xScale = computed(() => boxWidth / entropy.options.maxCents!)
+const maxCents = computed(() => entropy.options.maxCents ?? 1200)
+const xScale = computed(() => boxWidth / maxCents.value)
 
 const lineCents = computed(() => {
   if (lineIndex.value < 0) {
@@ -57,18 +58,26 @@ const points = computed(() => {
 })
 
 const lines = computed(() =>
-  props.centsValues.map((cents) => {
+  props.centsValues.map((cents, index) => {
     const x = xScale.value * cents
     const y = 1 - entropy.entropyPercentage(cents)
-    return { x1: x, y1: 1, x2: x, y2: y }
+    return {
+      key: `entropy-line-${cents}-${index}`,
+      x1: x,
+      y1: 1,
+      x2: x,
+      y2: y,
+      color: props.colors[index] ?? 'none'
+    }
   })
 )
 
 const ticks = computed(() => {
-  const result: [number, string][] = []
+  const result: { key: string; x: number; label: string }[] = []
 
-  for (let cents = 0; cents <= entropy.options.maxCents!; cents += 200) {
-    result.push([cents * xScale.value, cents.toString()])
+  for (let cents = 0; cents <= maxCents.value; cents += 200) {
+    const x = cents * xScale.value
+    result.push({ key: `entropy-tick-${cents}`, x, label: cents.toString() })
   }
   return result
 })
@@ -138,10 +147,10 @@ function lineMouseMove(event: MouseEvent) {
       stroke="rgba(0 0 0 / 0%)"
       stroke-width="0.25"
     />
-    <g v-for="(l, i) of lines" :key="i" @mousemove="lineMouseMove" @mouseleave="lineIndex = -1">
-      <line v-bind="l" class="interval-line" />
-      <circle :cx="l.x2" :cy="l.y2" r="0.008" :fill="colors[i]" class="interval-circle" />
-      <line v-bind="l" stroke="rgba(0 0 0 / 0%)" stroke-width="0.1" />
+    <g v-for="l of lines" :key="l.key" @mousemove="lineMouseMove" @mouseleave="lineIndex = -1">
+      <line :x1="l.x1" :y1="l.y1" :x2="l.x2" :y2="l.y2" class="interval-line" />
+      <circle :cx="l.x2" :cy="l.y2" r="0.008" :fill="l.color" class="interval-circle" />
+      <line :x1="l.x1" :y1="l.y1" :x2="l.x2" :y2="l.y2" stroke="rgba(0 0 0 / 0%)" stroke-width="0.1" />
     </g>
     <text
       v-if="lineIndex >= 0"
@@ -160,9 +169,9 @@ function lineMouseMove(event: MouseEvent) {
     </g>
     <g class="ticks">
       <rect x="0" y="0.9" :width="boxWidth" height="0.2" />
-      <g v-for="([x, label], i) of ticks" :key="i">
-        <line :x1="x" y1="0.9" :x2="x" y2="0.906" />
-        <text :x="x" y="0.909" font-size="0.04">{{ label }}</text>
+      <g v-for="tick of ticks" :key="tick.key">
+        <line :x1="tick.x" y1="0.9" :x2="tick.x" y2="0.906" />
+        <text :x="tick.x" y="0.909" font-size="0.04">{{ tick.label }}</text>
       </g>
     </g>
   </svg>

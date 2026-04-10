@@ -5,6 +5,7 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import TimeDomainVisualizer from '@/components/TimeDomainVisualizer.vue'
 import Modal from '@/components/ModalDialog.vue'
+import NumericSlider from '@/components/NumericSlider.vue'
 import { APERIODIC_WAVEFORMS, WAVEFORMS } from '@/synth'
 import { useAudioStore } from '@/stores/audio'
 import { useStateStore } from '@/stores/state'
@@ -17,145 +18,24 @@ const scale = useScaleStore()
 
 const audio = useAudioStore()
 
-const remappedKey = ref('')
+const remappableKeys = [
+  'deactivationCode',
+  'equaveDownCode',
+  'equaveUpCode',
+  'degreeDownCode',
+  'degreeUpCode'
+] as const
+type RemappableKey = (typeof remappableKeys)[number]
 
-const timeDomainVisualizer = ref<any>(null)
+const remappedKey = ref<RemappableKey | ''>('')
+
+type TimeDomainVisualizerHandle = {
+  initialize: (analyser: AnalyserNode) => void
+}
+
+const timeDomainVisualizer = ref<TimeDomainVisualizerHandle | null>(null)
 
 const analyser = ref<AnalyserNode | null>(null)
-
-// These really should be direct v-models, but there's
-// something wrong with how input ranges are handled.
-const audioDelay = computed({
-  get: () => audio.audioDelay,
-  set(newValue: number) {
-    if (typeof newValue !== 'number') {
-      newValue = parseFloat(newValue)
-    }
-    if (!isNaN(newValue)) {
-      audio.audioDelay = newValue
-    }
-  }
-})
-
-const mainVolume = computed({
-  get: () => audio.mainVolume,
-  set(newValue: number) {
-    if (typeof newValue !== 'number') {
-      newValue = parseFloat(newValue)
-    }
-    if (!isNaN(newValue)) {
-      audio.mainVolume = newValue
-    }
-  }
-})
-
-const attackTime = computed({
-  get: () => audio.attackTime,
-  set(newValue: number) {
-    if (typeof newValue !== 'number') {
-      newValue = parseFloat(newValue)
-    }
-    if (!isNaN(newValue)) {
-      audio.attackTime = newValue
-    }
-  }
-})
-
-const decayTime = computed({
-  get: () => audio.decayTime,
-  set(newValue: number) {
-    if (typeof newValue !== 'number') {
-      newValue = parseFloat(newValue)
-    }
-    if (!isNaN(newValue)) {
-      audio.decayTime = newValue
-    }
-  }
-})
-
-const sustainLevel = computed({
-  get: () => audio.sustainLevel,
-  set(newValue: number) {
-    if (typeof newValue !== 'number') {
-      newValue = parseFloat(newValue)
-    }
-    if (!isNaN(newValue)) {
-      audio.sustainLevel = newValue
-    }
-  }
-})
-
-const releaseTime = computed({
-  get: () => audio.releaseTime,
-  set(newValue: number) {
-    if (typeof newValue !== 'number') {
-      newValue = parseFloat(newValue)
-    }
-    if (!isNaN(newValue)) {
-      audio.releaseTime = newValue
-    }
-  }
-})
-
-const unisonSpread = computed({
-  get: () => audio.spread,
-  set(newValue: number) {
-    if (typeof newValue !== 'number') {
-      newValue = parseFloat(newValue)
-    }
-    if (!isNaN(newValue)) {
-      audio.spread = newValue
-    }
-  }
-})
-
-const pingPongDelayTime = computed({
-  get: () => audio.pingPongDelayTime,
-  set(newValue: number) {
-    if (typeof newValue !== 'number') {
-      newValue = parseFloat(newValue)
-    }
-    if (!isNaN(newValue)) {
-      audio.pingPongDelayTime = newValue
-    }
-  }
-})
-
-const pingPongFeedback = computed({
-  get: () => audio.pingPongFeedback,
-  set(newValue: number) {
-    if (typeof newValue !== 'number') {
-      newValue = parseFloat(newValue)
-    }
-    if (!isNaN(newValue)) {
-      audio.pingPongFeedback = newValue
-    }
-  }
-})
-
-const pingPongSeparation = computed({
-  get: () => audio.pingPongSeparation,
-  set(newValue: number) {
-    if (typeof newValue !== 'number') {
-      newValue = parseFloat(newValue)
-    }
-    if (!isNaN(newValue)) {
-      audio.pingPongSeparation = newValue
-    }
-  }
-})
-
-const pingPongGain = computed({
-  get: () => audio.pingPongGain,
-  set(newValue: number) {
-    if (typeof newValue !== 'number') {
-      newValue = parseFloat(newValue)
-    }
-    if (!isNaN(newValue)) {
-      audio.pingPongGain = newValue
-    }
-  }
-})
 
 const strokeStyle = computed(() => {
   // Add dependency.
@@ -165,43 +45,43 @@ const strokeStyle = computed(() => {
 })
 
 function presetOrgan() {
-  attackTime.value = 0.01
-  decayTime.value = 0.15
-  sustainLevel.value = 0.8
-  releaseTime.value = 0.01
+  audio.attackTime = 0.01
+  audio.decayTime = 0.15
+  audio.sustainLevel = 0.8
+  audio.releaseTime = 0.01
 }
 
 function presetPad() {
-  attackTime.value = 0.5
-  decayTime.value = 1.5
-  sustainLevel.value = 0.5
-  releaseTime.value = 0.7
+  audio.attackTime = 0.5
+  audio.decayTime = 1.5
+  audio.sustainLevel = 0.5
+  audio.releaseTime = 0.7
 }
 
 function presetShort() {
-  attackTime.value = 0.002
-  decayTime.value = 0.125
-  sustainLevel.value = 0.0
-  releaseTime.value = 0.1
+  audio.attackTime = 0.002
+  audio.decayTime = 0.125
+  audio.sustainLevel = 0.0
+  audio.releaseTime = 0.1
 }
 
 function presetMedium() {
-  attackTime.value = 0.003
-  decayTime.value = 1.5
-  sustainLevel.value = 0.0
-  releaseTime.value = 0.3
+  audio.attackTime = 0.003
+  audio.decayTime = 1.5
+  audio.sustainLevel = 0.0
+  audio.releaseTime = 0.3
 }
 
 function presetLong() {
-  attackTime.value = 0.005
-  decayTime.value = 4
-  sustainLevel.value = 0.0
-  releaseTime.value = 0.8
+  audio.attackTime = 0.005
+  audio.decayTime = 4
+  audio.sustainLevel = 0.0
+  audio.releaseTime = 0.8
 }
 
 function assignCode(event: KeyboardEvent) {
   if (remappedKey.value.length && event.code.length) {
-    ;(state as any)[remappedKey.value] = event.code
+    state[remappedKey.value] = event.code
     remappedKey.value = ''
   }
 }
@@ -250,7 +130,14 @@ onUnmounted(() => {
         </div>
         <div class="control-group">
           <label for="volume">Main volume</label>
-          <input class="control" type="range" min="0" max="0.4" step="any" v-model="mainVolume" />
+          <NumericSlider
+            id="volume"
+            class="control"
+            min="0"
+            max="0.4"
+            step="any"
+            v-model="audio.mainVolume"
+          />
           <button @click="emit('panic')" style="max-width: 12rem" title="Stop all sound at once">
             Panic
           </button>
@@ -282,14 +169,13 @@ onUnmounted(() => {
               <input id="stack-size" min="2" max="9" type="number" v-model="audio.stackSize" />
             </div>
             <label for="unison-spread">Unison spread</label>
-            <input
+            <NumericSlider
               id="unison-spread"
               class="control"
-              type="range"
               min="0.01"
               max="100"
               step="any"
-              v-model="unisonSpread"
+              v-model="audio.spread"
             />
           </template>
           <div class="control">
@@ -310,44 +196,40 @@ onUnmounted(() => {
             </select>
           </div>
           <label for="attack">Attack time</label>
-          <input
+          <NumericSlider
             id="attack"
             class="control"
-            type="range"
             min="0.01"
             max="1.0"
             step="any"
-            v-model="attackTime"
+            v-model="audio.attackTime"
           />
           <label for="decay">Decay time</label>
-          <input
+          <NumericSlider
             id="decay"
             class="control"
-            type="range"
             min="0.01"
             max="4.0"
             step="any"
-            v-model="decayTime"
+            v-model="audio.decayTime"
           />
           <label for="sustain">Sustain level</label>
-          <input
+          <NumericSlider
             id="sustain"
             class="control"
-            type="range"
             min="0.0"
             max="1.0"
             step="any"
-            v-model="sustainLevel"
+            v-model="audio.sustainLevel"
           />
           <label for="release">Release time</label>
-          <input
+          <NumericSlider
             id="release"
             class="control"
-            type="range"
             min="0.01"
             max="1.0"
             step="any"
-            v-model="releaseTime"
+            v-model="audio.releaseTime"
           />
           <div class="btn-group">
             <label>Presets</label>
@@ -364,58 +246,53 @@ onUnmounted(() => {
           <hr />
           <label>Delay Effect</label>
           <label for="ping-pong-delay-time"
-            >Delay time ({{ Math.floor(pingPongDelayTime * 1000) }} ms)</label
+            >Delay time ({{ Math.floor(audio.pingPongDelayTime * 1000) }} ms)</label
           >
-          <input
+          <NumericSlider
             id="ping-pong-delay-time"
             class="control"
-            type="range"
             min="0.01"
             max="5.0"
             step="any"
-            v-model="pingPongDelayTime"
+            v-model="audio.pingPongDelayTime"
           />
           <label for="ping-pong-feedback">Feedback gain</label>
-          <input
+          <NumericSlider
             id="ping-pong-feedback"
             class="control"
-            type="range"
             min="0.0"
             max="1.0"
             step="any"
-            v-model="pingPongFeedback"
+            v-model="audio.pingPongFeedback"
           />
           <label for="ping-pong-separation">Stereo separation</label>
-          <input
+          <NumericSlider
             id="ping-pong-separation"
             class="control"
-            type="range"
             min="0.0"
             max="1.0"
             step="any"
-            v-model="pingPongSeparation"
+            v-model="audio.pingPongSeparation"
           />
           <label for="ping-pong-gain">Mix</label>
-          <input
+          <NumericSlider
             id="ping-pong-gain"
             class="control"
-            type="range"
             min="0.0"
             max="1.0"
             step="any"
-            v-model="pingPongGain"
+            v-model="audio.pingPongGain"
           />
           <hr />
           <label>Advanced</label>
           <label for="audio-delay">Audio delay (reduce pops)</label>
-          <input
+          <NumericSlider
             id="audio-delay"
             class="control"
-            type="range"
             min="0.0"
             max="0.1"
             step="any"
-            v-model="audioDelay"
+            v-model="audio.audioDelay"
           />
         </div>
       </div>

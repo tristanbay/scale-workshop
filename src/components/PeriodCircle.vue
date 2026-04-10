@@ -65,12 +65,13 @@ const periodCents = computed(() => {
 })
 
 const generatorTickRatios = computed(() => {
-  if (props.generatorCents === null) {
+  const { generatorCents } = props
+  if (generatorCents === null) {
     return []
   }
   const periodScale = 1 / periodCents.value
-  return [...Array(props.size).keys()].map(
-    (i) => (i + props.up + 1 - props.size) * props.generatorCents! * periodScale
+  return Array.from({ length: props.size }, (_, i) =>
+    (i + props.up + 1 - props.size) * generatorCents * periodScale
   )
 })
 
@@ -129,10 +130,11 @@ const scaleTickDirections = computed(() => {
 
 const scaleTickCoords = computed(() => {
   const result = []
-  for (const [sin, cos] of scaleTickDirections.value) {
+  for (const [index, [sin, cos]] of scaleTickDirections.value.entries()) {
     const inner = CIRCLE_RADIUS - 0.5 * SCALE_TICK_HEIGHT
     const outer = CIRCLE_RADIUS + 0.5 * SCALE_TICK_HEIGHT
     result.push({
+      key: `scale-tick-${index}`,
       x1: `${50 + inner * sin}%`,
       y1: `${50 - inner * cos}%`,
       x2: `${50 + outer * sin}%`,
@@ -149,6 +151,7 @@ const scaleLabels = computed(() => {
     const name = props.labels ? props.labels[i++] : '·'
     const radius = CIRCLE_RADIUS - 2 * SCALE_TICK_HEIGHT
     result.push({
+      key: `scale-label-${name}-${i}`,
       x: `${50 + radius * sin}`,
       y: `${50 - radius * cos}`,
       name
@@ -168,6 +171,7 @@ const generatorTrajectory = computed(() => {
   const result = []
   for (let i = 0; i < directions.length - 1; ++i) {
     result.push({
+      key: `generator-trajectory-${i}`,
       x1: `${50 + directions[i][0] * CIRCLE_RADIUS}%`,
       y1: `${50 - directions[i][1] * CIRCLE_RADIUS}%`,
       x2: `${50 + directions[i + 1][0] * CIRCLE_RADIUS}%`,
@@ -179,10 +183,11 @@ const generatorTrajectory = computed(() => {
 
 const generatorTickCoords = computed(() => {
   const result = []
-  for (const [sin, cos] of generatorTickDirections.value) {
+  for (const [index, [sin, cos]] of generatorTickDirections.value.entries()) {
     const inner = CIRCLE_RADIUS - 0.5 * GENERATOR_TICK_HEIGHT
     const outer = CIRCLE_RADIUS + 0.5 * GENERATOR_TICK_HEIGHT
     result.push({
+      key: `generator-tick-${index}`,
       x1: `${50 + inner * sin}%`,
       y1: `${50 - inner * cos}%`,
       x2: `${50 + outer * sin}%`,
@@ -208,6 +213,7 @@ const generatorLabels = computed(() => {
     }
     const radius = CIRCLE_RADIUS + GENERATOR_TICK_HEIGHT
     result.push({
+      key: `generator-label-${i}`,
       x: `${50 + radius * sin}`,
       y: `${50 - radius * cos}`,
       name
@@ -303,8 +309,8 @@ onUnmounted(() => {
     </text>
 
     <line
-      v-for="(attrs, index) of generatorTrajectory"
-      :key="index"
+      v-for="attrs of generatorTrajectory"
+      :key="attrs.key"
       v-bind="attrs"
       stroke-width="0.5%"
       stroke="rgba(127, 127, 127, 0.5)"
@@ -313,15 +319,15 @@ onUnmounted(() => {
     <circle cx="50%" cy="50%" r="40%" fill="none" stroke-width="0.7%" />
 
     <line
-      v-for="(attrs, index) of scaleTickCoords"
-      :key="index"
+      v-for="attrs of scaleTickCoords"
+      :key="attrs.key"
       v-bind="attrs"
       stroke-width="0.5%"
       class="scale-tick"
     />
     <text
-      v-for="(label, index) of scaleLabels"
-      :key="index"
+      v-for="label of scaleLabels"
+      :key="label.key"
       :x="label.x"
       :y="label.y"
       font-size="3.5"
@@ -332,15 +338,15 @@ onUnmounted(() => {
     </text>
 
     <line
-      v-for="(attrs, index) of generatorTickCoords"
-      :key="index"
+      v-for="attrs of generatorTickCoords"
+      :key="attrs.key"
       v-bind="attrs"
       stroke-width="0.5%"
       class="generator-tick"
     />
     <text
-      v-for="(label, index) of generatorLabels"
-      :key="index"
+      v-for="label of generatorLabels"
+      :key="label.key"
       :x="label.x"
       :y="label.y"
       font-size="4"

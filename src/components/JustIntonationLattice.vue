@@ -96,6 +96,28 @@ const arrows = computed(() => {
   return result
 })
 
+const keyedEdges = computed(() =>
+  lattice.value.edges.map((edge) => ({
+    key: `${edge.type}-${edge.x1}-${edge.y1}-${edge.x2}-${edge.y2}`,
+    edge
+  }))
+)
+
+const keyedArrows = computed(() =>
+  arrows.value.map((arrow, index) => ({
+    key: `arrow-${index}-${arrow.d}`,
+    arrow
+  }))
+)
+
+const keyedVertices = computed(() =>
+  lattice.value.vertices.map((vertex) => ({
+    key: `vertex-${vertex.index ?? 'aux'}-${vertex.x}-${vertex.y}`,
+    vertex,
+    color: vertex.index === undefined ? 'none' : props.colors[vertex.index] ?? 'none'
+  }))
+)
+
 watch(
   () => [
     svgElement.value,
@@ -163,44 +185,44 @@ watch(
     </defs>
 
     <line
-      v-for="(e, i) of lattice.edges"
-      :key="i"
-      v-bind="e"
-      :class="`edge ${e.type}`"
+      v-for="item of keyedEdges"
+      :key="item.key"
+      v-bind="item.edge"
+      :class="`edge ${item.edge.type}`"
       :stroke-width="store.size * 0.2"
     />
 
     <path
-      v-for="(a, i) of arrows"
-      :key="i"
-      v-bind="a"
+      v-for="item of keyedArrows"
+      :key="item.key"
+      v-bind="item.arrow"
       :stroke-width="store.size * 0.2"
       class="arrow"
       marker-end="url(#arrow)"
     />
 
     <circle
-      v-for="(v, i) of lattice.vertices"
-      :key="i"
-      :class="{ node: true, held: heldNotes.has(v.index!), auxiliary: v.index === undefined }"
-      :cx="v.x"
-      :cy="v.y"
-      :r="v.index === undefined ? 0.4 * store.size : store.size"
-      :fill="colors[v.index!] ?? 'none'"
-      :stroke="colors[v.index!] ?? 'none'"
+      v-for="item of keyedVertices"
+      :key="item.key"
+      :class="{ node: true, held: heldNotes.has(item.vertex.index!), auxiliary: item.vertex.index === undefined }"
+      :cx="item.vertex.x"
+      :cy="item.vertex.y"
+      :r="item.vertex.index === undefined ? 0.4 * store.size : store.size"
+      :fill="item.color"
+      :stroke="item.color"
       :stroke-width="store.size * 0.1"
     />
     <template v-if="store.showLabels">
       <text
-        v-for="(v, i) of lattice.vertices"
-        :key="i"
+        v-for="item of keyedVertices"
+        :key="item.key"
         class="node-label"
-        :x="v.x"
-        :y="v.y - store.labelOffset * store.size"
+        :x="item.vertex.x"
+        :y="item.vertex.y - store.labelOffset * store.size"
         :font-size="`${3 * store.size}px`"
         :stroke-width="store.size * 0.08"
       >
-        {{ labels[v.index!] }}
+        {{ labels[item.vertex.index!] }}
       </text>
     </template>
   </svg>

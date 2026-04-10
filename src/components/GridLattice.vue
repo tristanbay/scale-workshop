@@ -3,7 +3,7 @@ import { useGridStore } from '@/stores/grid'
 import { debounce, labelX, labelY } from '@/utils'
 import { spanGrid } from 'ji-lattice'
 import { type Interval } from 'sonic-weave'
-import { computed, ref, watch } from 'vue'
+import { computed, onUnmounted, ref, watch } from 'vue'
 
 const store = useGridStore()
 
@@ -29,8 +29,31 @@ const grid = computed(() => {
   return result
 })
 
-const gridLines = computed(() => grid.value.edges.filter((e) => e.type === 'gridline'))
-const edges = computed(() => grid.value.edges.filter((e) => e.type !== 'gridline'))
+const keyedGridLines = computed(() =>
+  grid.value.edges
+    .filter((edge) => edge.type === 'gridline')
+    .map((edge) => ({
+      key: `${edge.type}-${edge.x1}-${edge.y1}-${edge.x2}-${edge.y2}`,
+      attrs: edge
+    }))
+)
+
+const keyedEdges = computed(() =>
+  grid.value.edges
+    .filter((edge) => edge.type !== 'gridline')
+    .map((edge) => ({
+      key: `${edge.type}-${edge.x1}-${edge.y1}-${edge.x2}-${edge.y2}`,
+      attrs: edge
+    }))
+)
+
+const keyedVertices = computed(() =>
+  grid.value.vertices.map((vertex) => ({
+    key: `${vertex.x}-${vertex.y}`,
+    vertex,
+    color: props.colors[vertex.indices[0]] ?? 'none'
+  }))
+)
 
 const viewBox = computed(
   () =>
@@ -60,13 +83,21 @@ function computeGridExtent() {
 
 const computeExtent = debounce(computeGridExtent)
 
-watch(svgElement, (element) => {
+let resizeObserver: ResizeObserver | null = null
+
+watch(svgElement, (element, _, onCleanup) => {
+  resizeObserver?.disconnect()
+  resizeObserver = null
   if (!element) {
     return
   }
   computeGridExtent()
-  const observer = new ResizeObserver(computeExtent)
-  observer.observe(element)
+  resizeObserver = new ResizeObserver(computeExtent)
+  resizeObserver.observe(element)
+  onCleanup(() => {
+    resizeObserver?.disconnect()
+    resizeObserver = null
+  })
 })
 
 watch(
@@ -81,6 +112,11 @@ watch(
   ],
   computeExtent
 )
+
+onUnmounted(() => {
+  resizeObserver?.disconnect()
+  resizeObserver = null
+})
 </script>
 
 <template>
@@ -92,38 +128,38 @@ watch(
     preserveAspectRatio="xMidYMid meet"
   >
     <line
-      v-for="(e, i) of gridLines"
-      :key="i"
-      v-bind="e"
-      :class="`edge ${e.type}`"
+      v-for="edge of keyedGridLines"
+      :key="edge.key"
+      v-bind="edge.attrs"
+      :class="`edge ${edge.attrs.type}`"
       :stroke-width="store.size * 0.1"
     />
     <line
-      v-for="(e, i) of edges"
-      :key="i"
-      v-bind="e"
-      :class="`edge ${e.type}`"
+      v-for="edge of keyedEdges"
+      :key="edge.key"
+      v-bind="edge.attrs"
+      :class="`edge ${edge.attrs.type}`"
       :stroke-width="store.size * 0.2"
     />
     <circle
-      v-for="(v, i) of grid.vertices"
-      :key="i"
-      :class="{ node: true, held: v.indices.some((idx) => heldNotes.has(idx)) }"
-      :cx="v.x"
-      :cy="v.y"
+      v-for="item of keyedVertices"
+      :key="item.key"
+      :class="{ node: true, held: item.vertex.indices.some((idx) => heldNotes.has(idx)) }"
+      :cx="item.vertex.x"
+      :cy="item.vertex.y"
       :r="store.size"
-      :fill="colors[v.indices[0]] ?? 'none'"
-      :stroke="colors[v.indices[0]] ?? 'none'"
+      :fill="item.color"
+      :stroke="item.color"
       :stroke-width="store.size * 0.1"
     />
     <template v-if="store.showLabels">
-      <template v-for="(v, i) of grid.vertices" :key="i">
+      <template v-for="item of keyedVertices" :key="item.key">
         <text
-          v-for="(idx, j) of v.indices"
+          v-for="(idx, j) of item.vertex.indices"
           :key="idx"
           class="node-label"
-          :x="v.x + store.size * store.labelOffset * labelX(j, v.indices.length)"
-          :y="v.y + store.size * store.labelOffset * labelY(j, v.indices.length)"
+          :x="item.vertex.x + store.size * store.labelOffset * labelX(j, item.vertex.indices.length)"
+          :y="item.vertex.y + store.size * store.labelOffset * labelY(j, item.vertex.indices.length)"
           :font-size="`${2.5 * store.size}px`"
           :stroke-width="store.size * 0.05"
         >

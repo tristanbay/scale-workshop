@@ -3,7 +3,7 @@ import { useCyclesStore } from '@/stores/edo-cycles'
 import { labelX, labelY } from '@/utils'
 import { type MultiVertex } from 'ji-lattice'
 import { type Interval } from 'sonic-weave'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { mmod } from 'xen-dev-utils'
 
 const RADIUS = 2
@@ -17,7 +17,7 @@ const props = defineProps<{
   heldNotes: Set<number>
 }>()
 
-const svgElement = ref<SVGSVGElement | null>(null)
+type KeyedVertex = MultiVertex & { key: number }
 
 const steps = computed(() => {
   const result: number[] = []
@@ -27,17 +27,18 @@ const steps = computed(() => {
   return result
 })
 
-const vertices = computed(() => {
+const vertices = computed<KeyedVertex[]>(() => {
   const m = store.modulus
   const n = store.numCycles
   const gpi = store.generatorPseudoInverse
-  const result = new Map<number, MultiVertex>()
+  const result = new Map<number, KeyedVertex>()
   const dt = (2 * Math.PI) / m
   for (let i = 0; i < steps.value.length; ++i) {
     const s = steps.value[i]
     const c = mmod(s, n)
     const j = mmod((s - c) * gpi, m) + c
     const vertex = result.get(j) ?? {
+      key: j,
       x: RADIUS * Math.sin(dt * j),
       y: -RADIUS * Math.cos(dt * j),
       indices: []
@@ -49,7 +50,7 @@ const vertices = computed(() => {
 })
 
 const cycles = computed(() => {
-  const result: string[] = []
+  const result: { key: number; d: string }[] = []
   const dt = (2 * Math.PI) / store.modulus
   for (let n = 0; n < store.numCycles; ++n) {
     const xs: number[] = []
@@ -64,7 +65,7 @@ const cycles = computed(() => {
       d += `Q ${0.45 * (xs[i] + xs[i + 1])} ${0.45 * (ys[i] + ys[i + 1])} ${xs[i + 1]} ${ys[i + 1]} `
     }
     d += 'Z'
-    result.push(d)
+    result.push({ key: n, d })
   }
   return result
 })
@@ -80,16 +81,15 @@ const viewBox = computed(
 
 <template>
   <svg
-    ref="svgElement"
     class="lattice"
     xmlns="http://www.w3.org/2000/svg"
     :viewBox="viewBox"
     preserveAspectRatio="xMidYMid meet"
   >
-    <path v-for="(d, i) of cycles" :key="i" :d="d" stroke-width="0.03" />
+    <path v-for="cycle of cycles" :key="cycle.key" :d="cycle.d" stroke-width="0.03" />
     <circle
-      v-for="(v, i) of vertices"
-      :key="i"
+      v-for="v of vertices"
+      :key="v.key"
       :class="{ node: true, held: v.indices.some((idx) => heldNotes.has(idx)) }"
       :cx="v.x"
       :cy="v.y"
@@ -99,7 +99,7 @@ const viewBox = computed(
       :stroke-width="store.size * 0.1"
     />
     <template v-if="store.showLabels">
-      <template v-for="(v, i) of vertices" :key="i">
+      <template v-for="v of vertices" :key="v.key">
         <text
           v-for="(idx, j) of v.indices"
           :key="idx"
