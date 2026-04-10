@@ -10,6 +10,14 @@ export class ScalaSclExporter extends BaseExporter {
   name: string
   appTitle: string
 
+  private formatCents(cents: number, fractionDigits: number) {
+    const result = cents.toFixed(fractionDigits)
+    if (!result.includes('.')) {
+      return result + '.'
+    }
+    return result
+  }
+
   constructor(params: ExporterParams) {
     super(params)
     this.name = params.scale.title || 'Untitled tuning'
@@ -44,10 +52,10 @@ export class ScalaSclExporter extends BaseExporter {
         ) {
           file += `${numerator}/${denominator}`
         } else {
-          file += monzo.toCents().toFixed(centsFractionDigits)
+          file += this.formatCents(monzo.toCents(), centsFractionDigits)
         }
       } else {
-        file += monzo.toCents().toFixed(centsFractionDigits)
+        file += this.formatCents(monzo.toCents(), centsFractionDigits)
       }
       if (labels[i]?.length) {
         file += labels[i]

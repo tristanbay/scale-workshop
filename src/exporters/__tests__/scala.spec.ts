@@ -92,4 +92,30 @@ describe('Scala exporters', () => {
     ].join(NEWLINE)
     expect(sclExporter.getFileContents()).toBe(expectedSclContents)
   })
+
+  it('keeps cents distinct when using zero fraction digits', () => {
+    const params = getTestData('Scala exporter unit test v0.0.0')
+    params.centsFractionDigits = 0
+    params.labels = Array(params.labels.length).fill('')
+    const sclExporter = new ScalaSclExporter(params)
+    const expectedSclContents = [
+      '! test.scl',
+      '! Created using Scala exporter unit test v0.0.0',
+      '!',
+      '! https://scaleworkshop.plainsound.org/',
+      '!',
+      'Test Scale',
+      ' 7',
+      '!',
+      ' 100.',
+      ' 6/5',
+      ' 960.',
+      ' 5/3',
+      ' 531.',
+      ' 108.',
+      ' 2/1',
+      ''
+    ].join(NEWLINE)
+    expect(sclExporter.getFileContents()).toBe(expectedSclContents)
+  })
 })
