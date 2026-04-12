@@ -130,14 +130,14 @@ td p {
   pointer-events: none;
   word-break: break-word;
   line-height: 1.1em;
-  color: #888;
+  color: var(--color-key-label);
 }
 
 td:hover {
   background: linear-gradient(
     0deg,
     rgba(255, 255, 255, 0) 0%,
-    rgba(255, 0, 0, 0.5) 50%,
+    var(--color-key-hover) 50%,
     rgba(255, 255, 255, 0) 100%
   );
 }
@@ -145,7 +145,7 @@ td.held {
   background: linear-gradient(
     0deg,
     rgba(0, 0, 0, 0) 0%,
-    rgba(200, 230, 0, 0.5) 50%,
+    var(--color-key-held) 50%,
     rgba(0, 0, 0, 0) 100%
   );
 }
@@ -153,7 +153,7 @@ td.active {
   background: linear-gradient(
     0deg,
     rgba(0, 0, 0, 0) 0%,
-    rgba(0, 255, 0, 0.5) 50%,
+    var(--color-key-active) 50%,
     rgba(0, 0, 0, 0) 100%
   );
 }

@@ -212,14 +212,14 @@ function lineMouseMove(event: MouseEvent) {
 }
 
 .ticks > rect {
-  fill: #ddd;
+  fill: var(--color-plot-tick-fill);
 }
 .ticks > g > line {
-  stroke: #111;
+  stroke: var(--color-plot-tick-line);
   stroke-width: 0.004;
 }
 .ticks > g > text {
-  fill: #333;
+  fill: var(--color-plot-tick-text);
   text-anchor: middle;
   dominant-baseline: hanging;
 }
