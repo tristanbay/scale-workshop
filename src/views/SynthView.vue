@@ -119,8 +119,9 @@ function dlyPresetOff() {
 }
 
 function assignCode(event: KeyboardEvent) {
-  if (remappedKey.value.length && event.code.length) {
-    state[remappedKey.value] = event.code
+  const key = remappedKey.value
+  if (key !== '' && event.code.length) {
+    state[key] = event.code
     remappedKey.value = ''
   }
 }
