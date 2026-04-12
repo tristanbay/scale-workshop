@@ -44,39 +44,39 @@ const strokeStyle = computed(() => {
   return getComputedStyle(document.documentElement).getPropertyValue('--color-text').trim()
 })
 
-function presetOrgan() {
+function envPresetOrgan() {
   audio.attackTime = 0.01
   audio.decayTime = 0.15
   audio.sustainLevel = 0.8
   audio.releaseTime = 0.01
 }
 
-function presetPad() {
+function envPresetPad() {
   audio.attackTime = 0.5
   audio.decayTime = 1.5
   audio.sustainLevel = 0.5
   audio.releaseTime = 0.7
 }
 
-function presetShort() {
-  audio.attackTime = 0.002
+function envPresetShort() {
+  audio.attackTime = 0.01
   audio.decayTime = 0.125
   audio.sustainLevel = 0.0
   audio.releaseTime = 0.1
 }
 
-function presetMedium() {
-  audio.attackTime = 0.003
+function envPresetMedium() {
+  audio.attackTime = 0.01
   audio.decayTime = 1.5
   audio.sustainLevel = 0.0
   audio.releaseTime = 0.3
 }
 
-function presetLong() {
-  audio.attackTime = 0.005
+function envPresetLong() {
+  audio.attackTime = 0.01
   audio.decayTime = 4
   audio.sustainLevel = 0.0
-  audio.releaseTime = 0.8
+  audio.releaseTime = 0.95
 }
 
 function assignCode(event: KeyboardEvent) {
@@ -233,11 +233,11 @@ onUnmounted(() => {
           />
           <div class="btn-group">
             <label>Presets</label>
-            <button @click="presetOrgan">Organ</button>
-            <button @click="presetPad">Pad</button>
-            <button @click="presetShort">Percussive (Short)</button>
-            <button @click="presetMedium">Percussive (Medium)</button>
-            <button @click="presetLong">Percussive (Long)</button>
+            <button @click="envPresetOrgan">Organ</button>
+            <button @click="envPresetPad">Pad</button>
+            <button @click="envPresetShort">Percussive (Short)</button>
+            <button @click="envPresetMedium">Percussive (Medium)</button>
+            <button @click="envPresetLong">Percussive (Long)</button>
           </div>
           <div class="control">
             <label for="polyphony">Max polyphony</label>
