@@ -322,6 +322,9 @@ onUnmounted(() => {
             step="any"
             v-model="audio.pingPongGain"
           />
+          <button @click="dlyPresetOff" style="max-width: 12rem" title="Set delay mix to zero">
+            Delay Off
+          </button>
           <div class="btn-group">
             <label>Presets</label>
             <button @click="dlyPresetBasicMono">Basic (Mono)</button>
@@ -329,7 +332,6 @@ onUnmounted(() => {
             <button @click="dlyPresetIntense">Intense</button>
             <button @click="dlyPresetElastic">Elastic</button>
             <button @click="dlyPresetAmbient">Ambient</button>
-            <button @click="dlyPresetOff">Off</button>
           </div>
           <hr />
           <label>Advanced</label>
