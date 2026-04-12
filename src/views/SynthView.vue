@@ -79,6 +79,45 @@ function presetLong() {
   audio.releaseTime = 0.8
 }
 
+function dlyPresetBasicMono() {
+  audio.pingPongDelayTime = 0.4
+  audio.pingPongFeedback = 0.45
+  audio.pingPongSeparation = 0.0
+  audio.pingPongGain = 0.65
+}
+
+function dlyPresetBasicStereo() {
+  audio.pingPongDelayTime = 0.4
+  audio.pingPongFeedback = 0.45
+  audio.pingPongSeparation = 0.8
+  audio.pingPongGain = 0.65
+}
+
+function dlyPresetIntense() {
+  audio.pingPongDelayTime = 0.6
+  audio.pingPongFeedback = 0.85
+  audio.pingPongSeparation = 0.7
+  audio.pingPongGain = 0.7
+}
+
+function dlyPresetElastic() {
+  audio.pingPongDelayTime = 0.085
+  audio.pingPongFeedback = 0.5
+  audio.pingPongSeparation = 0.4
+  audio.pingPongGain = 0.75
+}
+
+function dlyPresetAmbient() {
+  audio.pingPongDelayTime = 0.019
+  audio.pingPongFeedback = 0.625
+  audio.pingPongSeparation = 0.8
+  audio.pingPongGain = 0.6
+}
+
+function dlyPresetOff() {
+  audio.pingPongGain = 0.0
+}
+
 function assignCode(event: KeyboardEvent) {
   if (remappedKey.value.length && event.code.length) {
     state[remappedKey.value] = event.code
@@ -283,6 +322,15 @@ onUnmounted(() => {
             step="any"
             v-model="audio.pingPongGain"
           />
+          <div class="btn-group">
+            <label>Presets</label>
+            <button @click="dlyPresetBasicMono">Basic (Mono)</button>
+            <button @click="dlyPresetBasicStereo">Basic (Stereo)</button>
+            <button @click="dlyPresetIntense">Intense</button>
+            <button @click="dlyPresetElastic">Elastic</button>
+            <button @click="dlyPresetAmbient">Ambient</button>
+            <button @click="dlyPresetOff">Off</button>
+          </div>
           <hr />
           <label>Advanced</label>
           <label for="audio-delay">Audio delay (reduce pops)</label>
