@@ -51,9 +51,10 @@ export function otonalFundamental(frequencies: number[], maxMultiplier = 16) {
   if (!frequencies.length) {
     return NaN
   }
-  const ratios = frequencies.map((f) => f / frequencies[0])
+  const root = Math.abs(frequencies[0])
+  const ratios = frequencies.map((f) => Math.abs(f) / root)
   const multiplier = otonalMultiplier(ratios, maxMultiplier)
-  return frequencies[0] / multiplier
+  return root / multiplier
 }
 
 /**
@@ -104,9 +105,10 @@ export function utonalFundamental(frequencies: number[], maxDivisor = 23) {
   if (!frequencies.length) {
     return NaN
   }
-  const ratios = frequencies.map((f) => f / frequencies[0])
+  const root = Math.abs(frequencies[0])
+  const ratios = frequencies.map((f) => Math.abs(f) / root)
   const divisor = utonalDivisor(ratios, maxDivisor)
-  return divisor * frequencies[0]
+  return divisor * root
 }
 
 /**

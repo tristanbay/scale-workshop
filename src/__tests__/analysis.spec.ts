@@ -16,6 +16,17 @@ describe('Otonal balancer', () => {
       )
     ).toBeTruthy()
   })
+
+  it('handles negative ratios when estimating the fundamental', () => {
+    const frequencies = [-(2 ** 0), 2 ** (4 / 12), -(2 ** (7 / 12))]
+    const fundamental = otonalFundamental(frequencies)
+    expect(
+      arraysEqual(
+        frequencies.map((f) => Math.round(Math.abs(f) / fundamental)),
+        [4, 5, 6]
+      )
+    ).toBeTruthy()
+  })
 })
 
 describe('Utonal balancer', () => {
@@ -25,6 +36,17 @@ describe('Utonal balancer', () => {
     expect(
       arraysEqual(
         frequencies.map((f) => 1 / Math.round(fundamental / f)),
+        [1 / 6, 1 / 5, 1 / 4]
+      )
+    ).toBeTruthy()
+  })
+
+  it('handles negative ratios when estimating the inverted fundamental', () => {
+    const frequencies = [-(2 ** 0), 2 ** (3 / 12), -(2 ** (7 / 12))]
+    const fundamental = utonalFundamental(frequencies)
+    expect(
+      arraysEqual(
+        frequencies.map((f) => 1 / Math.round(fundamental / Math.abs(f))),
         [1 / 6, 1 / 5, 1 / 4]
       )
     ).toBeTruthy()

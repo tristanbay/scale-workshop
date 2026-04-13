@@ -1,4 +1,3 @@
-otonalFundamental
 <script setup lang="ts">
 import { otonalFundamental, utonalFundamental } from '@/analysis'
 import type { VirtualSynth } from '@/virtual-synth'
