@@ -6,7 +6,6 @@
   --color-background-semitransparent: rgba(255, 255, 255, 0.9);
 
   --color-border: #aaa;
-  --color-border-hover: #eee;
   --color-drop-shadow: rgba(0, 0, 0, 0.5);
 
   --color-heading: #080008;
@@ -34,7 +33,6 @@
   --color-alert-danger-background: rgba(243, 216, 218, 1);
   --color-alert-danger-border: rgba(239, 199, 204, 1);
 
-  --section-gap: 160px;
   --base-font-size: 15px;
   --base-line-height: 1.5;
 }
@@ -48,7 +46,6 @@
   --color-background-semitransparent: rgba(0, 0, 0, 0.75);
 
   --color-border: #666;
-  --color-border-hover: #111;
   --color-drop-shadow: rgba(200, 100, 200, 0.5);
 
   --color-heading: #fff8ff;

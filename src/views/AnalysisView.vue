@@ -635,8 +635,8 @@ nav {
   overflow-x: auto;
 }
 nav ul {
-  padding: 0px;
-  margin: 0px;
+  padding: 0;
+  margin: 0;
   white-space: nowrap;
 }
 nav ul li {
