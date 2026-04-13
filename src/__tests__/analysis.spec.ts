@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest'
+import { Interval, TimeReal } from 'sonic-weave'
 import { arraysEqual, valueToCents } from 'xen-dev-utils'
 
-import { alignValues, misalignment, otonalFundamental, utonalFundamental } from '../analysis'
+import { alignValues, intervalMatrix, misalignment, otonalFundamental, utonalFundamental } from '../analysis'
 
 const EPSILON = 1e-4
 
@@ -65,5 +66,16 @@ describe('Equal-division deviation minimizer', () => {
       const candidate = pitches.map((pitch) => pitch + offset)
       expect(misalignment(candidate, 100.0)).toBeGreaterThanOrEqual(minimumAchievableError)
     }
+  })
+})
+
+
+describe('Interval matrix', () => {
+  it('throws a user-facing error for 0Hz scales', () => {
+    const zeroHzScale = [new Interval(TimeReal.fromValue(0), 'linear')]
+
+    expect(() => intervalMatrix(zeroHzScale)).toThrow(
+      'Interval matrix is undefined for scales containing 0Hz intervals.'
+    )
   })
 })

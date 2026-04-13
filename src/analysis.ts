@@ -385,6 +385,12 @@ function mixedFormat(value: TimeMonzo | TimeReal): Interval {
 // Interval matrix a.k.a the modes of a scale
 export function intervalMatrix(intervals: Interval[]) {
   intervals = intervals.map((i) => i.shallowClone())
+  if (!intervals.length) {
+    return []
+  }
+  if (intervals.some((interval) => interval.value.valueOf() === 0)) {
+    throw new Error('Interval matrix is undefined for scales containing 0Hz intervals.')
+  }
   // Simplify by removing formatting.
   for (let i = 0; i < intervals.length; ++i) {
     intervals[i].node = undefined
