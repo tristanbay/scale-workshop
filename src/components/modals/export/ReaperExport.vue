@@ -81,7 +81,7 @@ function doExport() {
         </div>
         <div class="control" v-show="store.format === 'cents'">
           <label for="cents-root">Base cents value</label>
-          <input type="number" id="cents-root" v-model="store.centsRoot" />
+          <input type="number" id="cents-root" step="any" v-model.number="store.centsRoot" />
         </div>
         <div class="control" v-show="store.format === 'degree'">
           <label for="base-degree">Base degree</label>
