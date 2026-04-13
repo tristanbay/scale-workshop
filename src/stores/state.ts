@@ -24,6 +24,7 @@ export const useStateStore = defineStore('state', () => {
   )
   const showVirtualQwerty = ref(storage.getItem('showVirtualQwerty') === 'true')
   const showMosTab = ref(storage.getItem('showMosTab') === 'true')
+  const releaseOnBlur = ref(storage.getItem('releaseOnBlur') === 'true')
   const showKeyboardLabel = ref(storage.getItem('showKeyboardLabel') !== 'false')
   const showKeyboardCents = ref(storage.getItem('showKeyboardCents') !== 'false')
   const showKeyboardRatio = ref(storage.getItem('showKeyboardRatio') !== 'false')
@@ -74,6 +75,7 @@ export const useStateStore = defineStore('state', () => {
     newline,
     showVirtualQwerty,
     showMosTab,
+    releaseOnBlur,
     showKeyboardLabel,
     showKeyboardCents,
     showKeyboardRatio,
@@ -111,6 +113,7 @@ export const useStateStore = defineStore('state', () => {
     colorScheme,
     showVirtualQwerty,
     showMosTab,
+    releaseOnBlur,
     showKeyboardLabel,
     showKeyboardCents,
     showKeyboardRatio,

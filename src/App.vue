@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, reactive, watch } from 'vue'
 import { RouterLink, RouterView, useRouter } from 'vue-router'
-import { DEFAULT_NUMBER_OF_COMPONENTS } from '@/constants'
+import { DEFAULT_NUMBER_OF_COMPONENTS, LEFT_MOUSE_BTN } from '@/constants'
 import type { Input, Output } from 'webmidi'
 import { MidiIn, midiKeyInfo, MidiOut, type NoteOff } from 'xen-midi'
 import { Keyboard, type CoordinateKeyboardEvent, COORDS_BY_CODE } from 'isomorphic-qwerty'
@@ -324,6 +324,33 @@ function windowKeyup(event: KeyboardEvent) {
   typingKeyboard.keyup(event)
 }
 
+function releaseActiveNotes() {
+  typingKeyboard.deactivate()
+  midiIn.deactivate()
+  window.dispatchEvent(new MouseEvent('mouseup', { button: LEFT_MOUSE_BTN }))
+  state.heldNotes.clear()
+  if (midi.output !== null) {
+    midi.output.sendAllNotesOff({
+      channels: midi.outputMode === 'pitchBend' ? [...midi.outputChannels] : [midi.outputChannel]
+    })
+  }
+  if (audio.synth !== null) {
+    audio.synth.allNotesOff()
+  }
+}
+
+function windowBlur() {
+  if (state.releaseOnBlur) {
+    releaseActiveNotes()
+  }
+}
+
+function documentVisibilitychange() {
+  if (state.releaseOnBlur && document.visibilityState !== 'visible') {
+    releaseActiveNotes()
+  }
+}
+
 // === Typing keyboard input ===
 const typingKeyboard = new Keyboard()
 
@@ -371,6 +398,8 @@ onMounted(async () => {
   window.addEventListener('keyup', windowKeydownOrUp)
   window.addEventListener('mousedown', windowKeydownOrUp)
   window.addEventListener('keydown', windowKeydown)
+  window.addEventListener('blur', windowBlur)
+  document.addEventListener('visibilitychange', documentVisibilitychange)
   window.addEventListener('touchstart', audio.initialize)
   typingKeyboard.addKeydownListener(typingKeydown)
 
@@ -493,6 +522,8 @@ onUnmounted(() => {
   window.removeEventListener('keydown', windowKeydownOrUp)
   window.removeEventListener('keyup', windowKeydownOrUp)
   window.removeEventListener('mousedown', windowKeydownOrUp)
+  window.removeEventListener('blur', windowBlur)
+  document.removeEventListener('visibilitychange', documentVisibilitychange)
   window.removeEventListener('touchstart', audio.initialize)
   typingKeyboard.removeEventListener(typingKeydown)
   if (midi.input !== null) {
@@ -503,16 +534,7 @@ onUnmounted(() => {
 
 function panic() {
   console.log('Firing global key off.')
-  typingKeyboard.deactivate()
-  midiIn.deactivate()
-  if (midi.output !== null) {
-    midi.output.sendAllNotesOff({
-      channels: midi.outputMode === 'pitchBend' ? [...midi.outputChannels] : [midi.outputChannel]
-    })
-  }
-  if (audio.synth !== null) {
-    audio.synth.allNotesOff()
-  }
+  releaseActiveNotes()
 }
 </script>
 

@@ -46,6 +46,12 @@ const scale = useScaleStore()
             <input id="virtual-qwerty" type="checkbox" v-model="state.showVirtualQwerty" />
             <label for="virtual-qwerty" class="right-of-checkbox">Virtual QWERTY in top menu</label>
           </div>
+          <div class="control checkbox-container">
+            <input id="release-on-blur" type="checkbox" v-model="state.releaseOnBlur" />
+            <label for="release-on-blur" class="right-of-checkbox"
+              >Release notes when window loses focus</label
+            >
+          </div>
           <div class="control">
             <label for="gas">Computational budget (gas)</label>
             <input id="gas" type="number" min="1" v-model="scale.gas" />
