@@ -327,11 +327,7 @@ onUnmounted(() => {
             step="any"
             v-model="audio.pingPongGain"
           />
-          <button
-            @click="dlyPresetOff"
-            class="compact-action-button"
-            title="Set delay mix to zero"
-          >
+          <button @click="dlyPresetOff" class="compact-action-button" title="Set delay mix to zero">
             Delay Off
           </button>
           <div class="btn-group">

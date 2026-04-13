@@ -2,7 +2,13 @@ import { describe, it, expect } from 'vitest'
 import { Interval, TimeReal } from 'sonic-weave'
 import { arraysEqual, valueToCents } from 'xen-dev-utils'
 
-import { alignValues, intervalMatrix, misalignment, otonalFundamental, utonalFundamental } from '../analysis'
+import {
+  alignValues,
+  intervalMatrix,
+  misalignment,
+  otonalFundamental,
+  utonalFundamental
+} from '../analysis'
 
 const EPSILON = 1e-4
 
@@ -68,7 +74,6 @@ describe('Equal-division deviation minimizer', () => {
     }
   })
 })
-
 
 describe('Interval matrix', () => {
   it('throws a user-facing error for 0Hz scales', () => {

@@ -70,8 +70,9 @@ const generatorTickRatios = computed(() => {
     return []
   }
   const periodScale = 1 / periodCents.value
-  return Array.from({ length: props.size }, (_, i) =>
-    (i + props.up + 1 - props.size) * generatorCents * periodScale
+  return Array.from(
+    { length: props.size },
+    (_, i) => (i + props.up + 1 - props.size) * generatorCents * periodScale
   )
 })
 

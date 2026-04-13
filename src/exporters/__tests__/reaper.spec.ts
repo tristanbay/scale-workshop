@@ -7,9 +7,7 @@ import EXPECTED_CONTENT from './reaper.txt?raw'
 import { getTestData } from './test-data'
 
 function getValueForMidi(contents: string, midiNote: number) {
-  const line = contents
-    .split(/\r?\n/)
-    .find((line) => line.startsWith(`${midiNote} `))
+  const line = contents.split(/\r?\n/).find((line) => line.startsWith(`${midiNote} `))
 
   if (!line) {
     throw new Error(`MIDI note ${midiNote} not found`)
