@@ -7,7 +7,7 @@ import {
   mosWithDaughter,
   mosWithParent,
   parentMos,
-  type MosScaleInfo
+  type EdoMapEntry
 } from 'moment-of-symmetry'
 import Modal from '@/components/ModalDialog.vue'
 import ScaleLineInput from '@/components/ScaleLineInput.vue'
@@ -123,12 +123,12 @@ function pyramidClick(l: number, key: number) {
   modal.method = 'direct'
 }
 
-function edoMouseEnter(info: MosScaleInfo) {
+function edoMouseEnter(info: EdoMapEntry) {
   modal.previewL = info.numberOfLargeSteps
   modal.previewS = info.numberOfSmallSteps
 }
 
-function edoClick(info: MosScaleInfo) {
+function edoClick(info: EdoMapEntry) {
   modal.numberOfLargeSteps = info.numberOfLargeSteps
   modal.numberOfSmallSteps = info.numberOfSmallSteps
   modal.sizeOfLargeStep = info.sizeOfLargeStep
