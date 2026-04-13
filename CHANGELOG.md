@@ -1,14 +1,27 @@
 # Change log
 
 ## 3.2.0 (unreleased)
+  * Feature: Add configurable delay presets and a clearer dedicated "off" control in the synth [#922](https://github.com/xenharmonic-devs/scale-workshop/issues/922)
+  * Feature: Keep the Scale view mounted to preserve state while navigating [#865](https://github.com/xenharmonic-devs/scale-workshop/issues/865)
   * Feature: Display hardness and chroma alongside the MOS pattern in Rank 2 modal [#379](https://github.com/xenharmonic-devs/scale-workshop/issues/379)
   * Feature: Accept fractional values for CS variety margin [#821](https://github.com/xenharmonic-devs/scale-workshop/issues/821)
   * Feature: Add a button for calculating more MOS sizes in Rank 2 modal [#832](https://github.com/xenharmonic-devs/scale-workshop/issues/832)
   * Feature: Linear MIDI output mode (uses the numbers in the "#" column and assumes you tune the target device yourself) [#834](https://github.com/xenharmonic-devs/scale-workshop/issues/834)
   * Feature: Display a warning when the user tries to create a scale larger than 1024 notes in *New scale -> Equal temperament* [#402](https://github.com/xenharmonic-devs/scale-workshop/issues/402)
   * Feature: Add several L-system inharmonic timbres related to golden ratio, silver ratio, plastic number and supergolden ratio [#845](https://github.com/xenharmonic-devs/scale-workshop/issues/845)
+  * Feature: Add `isoharmonic` and `isorescale` functions to the library.
+  * Bug fix: Fix virtual QWERTY mouse note indexing in isomorphic mode [#854](https://github.com/xenharmonic-devs/scale-workshop/issues/854)
+  * Bug fix: Fix Scala cents formatting when zero fractional digits are requested [#878](https://github.com/xenharmonic-devs/scale-workshop/issues/878)
+  * Bug fix: Fix chord wheel computation while preserving display for negative ratios [#867](https://github.com/xenharmonic-devs/scale-workshop/issues/867)
+  * Bug fix: Fix division-by-zero crash in the Analysis tab [#866](https://github.com/xenharmonic-devs/scale-workshop/issues/866)
+  * Bug fix: Add global note-off handling when the window blurs or page visibility changes [#865](https://github.com/xenharmonic-devs/scale-workshop/issues/865)
   * Bug fix: Fix a crash in Rank 2 caused by temperaments with a negative number of periods per equave [#837](https://github.com/xenharmonic-devs/scale-workshop/issues/837)
   * Bug fix: Use maximum real precision when more than 12 fraction digits are used for cents [#843](https://github.com/xenharmonic-devs/scale-workshop/issues/843)
+  * Bug fix: Fix parsing of doubly diminished intervals [#443](https://github.com/xenharmonic-devs/sonic-weave/issues/443)
+  * Bug fix: (Hopefully) fix overlapping MIDI notes resulting in "funky" behavior [#810](https://github.com/xenharmonic-devs/scale-workshop/issues/810)
+  * Bug fix: Fix 3D edge merging and alignment of vertical vectors on Lattice Tab
+  * Improvement: Reduce initial app size by manually splitting build chunks
+  * Improvement: Decrease time to first paint by making key components asynchronous
 
 ## 3.1.0
   * Feature: Implement the missing size inequality operator `~<>` (i.e. the negation of `~=`)
