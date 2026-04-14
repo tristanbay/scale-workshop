@@ -178,7 +178,11 @@ onUnmounted(() => {
             step="any"
             v-model="audio.mainVolume"
           />
-          <button @click="emit('panic')" style="max-width: 12rem" title="Stop all sound at once">
+          <button
+            @click="emit('panic')"
+            class="compact-action-button"
+            title="Stop all sound at once"
+          >
             Panic
           </button>
           <div class="control radio-group">
@@ -323,7 +327,7 @@ onUnmounted(() => {
             step="any"
             v-model="audio.pingPongGain"
           />
-          <button @click="dlyPresetOff" style="max-width: 12rem" title="Set delay mix to zero">
+          <button @click="dlyPresetOff" class="compact-action-button" title="Set delay mix to zero">
             Delay Off
           </button>
           <div class="btn-group">
@@ -386,7 +390,7 @@ onUnmounted(() => {
         </div>
         <template v-if="scale.keyboardMode === 'isomorphic'">
           <h2>Keyboard notes</h2>
-          <div class="control-group" style="flex-direction: row; flex-wrap: wrap">
+          <div class="control-group keyboard-notes-options">
             <div class="control checkbox-container">
               <input id="keyboard-show-label" type="checkbox" v-model="state.showKeyboardLabel" />
               <label for="keyboard-show-label">Display label</label>
@@ -415,15 +419,12 @@ onUnmounted(() => {
             Distance between adjacent keys on the horizontal/vertical axes, in scale degrees.
             Affects virtual keyboard (and also typing keyboard if in isomorphic mode).
           </p>
-          <div
-            class="control-group"
-            style="flex-direction: row; align-items: stretch; flex-wrap: nowrap"
-          >
-            <div class="control" style="width: 50%">
+          <div class="control-group isomorphic-axis-group">
+            <div class="control half-width-control">
               <label for="vertical">Vertical</label>
               <input type="number" id="vertical" v-model="scale.isomorphicVertical" />
             </div>
-            <div class="control" style="width: 50%">
+            <div class="control half-width-control">
               <label for="horizontal">Horizontal</label>
               <input type="number" id="horizontal" v-model="scale.isomorphicHorizontal" />
             </div>
@@ -554,5 +555,24 @@ div.keyboard-controls {
   height: auto;
   border: 1px solid var(--color-border);
   border-radius: 5px;
+}
+
+.compact-action-button {
+  max-width: 12rem;
+}
+
+.keyboard-notes-options {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.isomorphic-axis-group {
+  flex-direction: row;
+  align-items: stretch;
+  flex-wrap: nowrap;
+}
+
+.half-width-control {
+  width: 50%;
 }
 </style>

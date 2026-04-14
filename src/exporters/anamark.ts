@@ -72,8 +72,7 @@ class AnaMarkExporter extends BaseExporter {
       'FormatSpecs= "http://www.mark-henning.de/eternity/tuningspecs.html"' + newline + newline
     file += '[Info]' + newline
     file += 'Name= "' + sanitizeQuotedTunValue(filename) + '.tun"' + newline
-    file +=
-      'ID= "' + sanitizeQuotedTunValue(filename).replace(/ /g, '') + '.tun"' + newline // this line strips whitespace from filename, as per .tun spec
+    file += 'ID= "' + sanitizeQuotedTunValue(filename).replace(/ /g, '') + '.tun"' + newline // this line strips whitespace from filename, as per .tun spec
     file += 'Filename= "' + sanitizeQuotedTunValue(filename) + '.tun"' + newline
     file += 'Description= "' + sanitizeQuotedTunValue(this.params.description) + '"' + newline
     file += 'Date= "' + this.date.toISOString().slice(0, 10) + '"' + newline

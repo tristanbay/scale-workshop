@@ -158,8 +158,12 @@ onUnmounted(() => {
           v-for="(idx, j) of item.vertex.indices"
           :key="idx"
           class="node-label"
-          :x="item.vertex.x + store.size * store.labelOffset * labelX(j, item.vertex.indices.length)"
-          :y="item.vertex.y + store.size * store.labelOffset * labelY(j, item.vertex.indices.length)"
+          :x="
+            item.vertex.x + store.size * store.labelOffset * labelX(j, item.vertex.indices.length)
+          "
+          :y="
+            item.vertex.y + store.size * store.labelOffset * labelY(j, item.vertex.indices.length)
+          "
           :font-size="`${2.5 * store.size}px`"
           :stroke-width="store.size * 0.05"
         >

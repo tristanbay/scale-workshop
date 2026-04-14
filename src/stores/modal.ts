@@ -9,7 +9,8 @@ import {
   tamnamsInfo,
   modeInfo,
   getHardness,
-  allForEdo
+  allForEdo,
+  type EdoMapEntry
 } from 'moment-of-symmetry'
 import {
   TimeMonzo,
@@ -297,15 +298,16 @@ export const useModalStore = defineStore('modal', () => {
   )
   // Selections
   const edoMap = reactive(makeEdoMap())
+  const anyForEdoEntry = (edo: number) => anyForEdo(edo) as EdoMapEntry
   const minSize = ref(5)
   const maxSize = ref(12)
   const maxHardness = ref(5)
-  const edoList = computed(() => {
+  const edoList = computed<EdoMapEntry[]>(() => {
     const edo_ = boundedEdo.value
     if (edoMap.has(edo_)) {
       return edoMap.get(edo_)!
     }
-    return [anyForEdo(edo_)]
+    return [anyForEdoEntry(edo_)]
   })
   // Additional information
   const tamnamsName = computed(() => {
@@ -349,7 +351,7 @@ export const useModalStore = defineStore('modal', () => {
   // Methods
   function sortByHardness() {
     const edo_ = boundedEdo.value
-    const patterns = edoMap.get(edo_) ?? [anyForEdo(edo_)]
+    const patterns = edoMap.get(edo_) ?? [anyForEdoEntry(edo_)]
     patterns.sort(
       (a, b) =>
         a.sizeOfLargeStep * b.sizeOfSmallStep - b.sizeOfLargeStep * a.sizeOfSmallStep ||
@@ -359,7 +361,7 @@ export const useModalStore = defineStore('modal', () => {
   }
   function sortBySize() {
     const edo_ = boundedEdo.value
-    const patterns = edoMap.get(edo_) ?? [anyForEdo(edo_)]
+    const patterns = edoMap.get(edo_) ?? [anyForEdoEntry(edo_)]
     patterns.sort(
       (a, b) =>
         a.numberOfLargeSteps + a.numberOfSmallSteps - b.numberOfLargeSteps - b.numberOfSmallSteps ||

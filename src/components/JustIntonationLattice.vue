@@ -114,7 +114,7 @@ const keyedVertices = computed(() =>
   lattice.value.vertices.map((vertex) => ({
     key: `vertex-${vertex.index ?? 'aux'}-${vertex.x}-${vertex.y}`,
     vertex,
-    color: vertex.index === undefined ? 'none' : props.colors[vertex.index] ?? 'none'
+    color: vertex.index === undefined ? 'none' : (props.colors[vertex.index] ?? 'none')
   }))
 )
 
@@ -204,7 +204,11 @@ watch(
     <circle
       v-for="item of keyedVertices"
       :key="item.key"
-      :class="{ node: true, held: heldNotes.has(item.vertex.index!), auxiliary: item.vertex.index === undefined }"
+      :class="{
+        node: true,
+        held: heldNotes.has(item.vertex.index!),
+        auxiliary: item.vertex.index === undefined
+      }"
       :cx="item.vertex.x"
       :cy="item.vertex.y"
       :r="item.vertex.index === undefined ? 0.4 * store.size : store.size"

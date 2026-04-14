@@ -18,6 +18,7 @@ export default class ReaperExporter extends BaseExporter {
     const format = this.params.format
     const basePeriod = this.params.basePeriod || 0
     const baseDegree = this.params.baseDegree || 0
+    const centsRoot = this.params.centsRoot ?? 0
     const modBySize = !this.params.integratePeriod
 
     const intervals = this.params.relativeIntervals
@@ -47,7 +48,7 @@ export default class ReaperExporter extends BaseExporter {
 
         switch (format) {
           case 'cents':
-            file += valueToCents(ratio).toFixed(digits)
+            file += (valueToCents(ratio) + centsRoot).toFixed(digits)
             break
           case 'decimal':
             file += ratio.toFixed(digits)

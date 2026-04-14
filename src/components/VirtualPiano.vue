@@ -312,6 +312,8 @@ function onMouseLeave(event: MouseEvent, index: number) {
 function windowMouseUp(event: MouseEvent) {
   if (event.button === LEFT_MOUSE_BTN) {
     isMousePressed.value = false
+    noteOffs.forEach((off) => off())
+    noteOffs.clear()
   }
 }
 

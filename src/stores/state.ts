@@ -24,6 +24,7 @@ export const useStateStore = defineStore('state', () => {
   )
   const showVirtualQwerty = ref(storage.getItem('showVirtualQwerty') === 'true')
   const showMosTab = ref(storage.getItem('showMosTab') === 'true')
+  const releaseOnBlur = ref(storage.getItem('releaseOnBlur') === 'true')
   const showKeyboardLabel = ref(storage.getItem('showKeyboardLabel') !== 'false')
   const showKeyboardCents = ref(storage.getItem('showKeyboardCents') !== 'false')
   const showKeyboardRatio = ref(storage.getItem('showKeyboardRatio') !== 'false')
@@ -51,9 +52,6 @@ export const useStateStore = defineStore('state', () => {
   // Opt-in for user statistics
   const shareStatistics = ref(storage.getItem('shareStatistics') === 'true')
 
-  // The app doesn't fully work on Safari. Inform the user.
-  const showSafariWarning = ref(storage.getItem('showSafariWarning') !== 'false')
-
   // Debugging features.
   const debug = ref(storage.getItem('debug') === 'true')
 
@@ -77,6 +75,7 @@ export const useStateStore = defineStore('state', () => {
     newline,
     showVirtualQwerty,
     showMosTab,
+    releaseOnBlur,
     showKeyboardLabel,
     showKeyboardCents,
     showKeyboardRatio,
@@ -93,7 +92,6 @@ export const useStateStore = defineStore('state', () => {
     degreeUpCode,
     degreeDownCode,
     shareStatistics,
-    showSafariWarning,
     debug
   })
   watch(
@@ -115,6 +113,7 @@ export const useStateStore = defineStore('state', () => {
     colorScheme,
     showVirtualQwerty,
     showMosTab,
+    releaseOnBlur,
     showKeyboardLabel,
     showKeyboardCents,
     showKeyboardRatio,
@@ -131,7 +130,6 @@ export const useStateStore = defineStore('state', () => {
     degreeUpCode,
     degreeDownCode,
     shareStatistics,
-    showSafariWarning,
     debug,
     // Methods
     toJSON,

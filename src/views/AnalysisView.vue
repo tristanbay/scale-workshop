@@ -16,7 +16,7 @@ import ChordWheel from '@/components/ChordWheel.vue'
 import HarmonicEntropyPlot from '@/components/HarmonicEntropyPlot.vue'
 import NumericSlider from '@/components/NumericSlider.vue'
 import ScaleLineInput from '@/components/ScaleLineInput.vue'
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, reactive, ref, watch, watchEffect } from 'vue'
 import { useAudioStore } from '@/stores/audio'
 import { useStateStore } from '@/stores/state'
 import { literalToString, type Interval } from 'sonic-weave'
@@ -136,9 +136,19 @@ function formatMatrixCell(interval: Interval) {
 
 const highlights = reactive<boolean[][]>([])
 
-const matrix = computed(() =>
-  intervalMatrix(scale.relativeIntervals.slice(0, state.maxMatrixWidth))
-)
+const matrixError = ref('')
+const matrix = ref<Interval[][]>([])
+
+watchEffect(() => {
+  try {
+    matrix.value = intervalMatrix(scale.relativeIntervals.slice(0, state.maxMatrixWidth))
+    matrixError.value = ''
+  } catch (error) {
+    matrix.value = []
+    matrixError.value =
+      error instanceof Error ? error.message : 'Unable to calculate interval matrix for this scale.'
+  }
+})
 
 const centsMatrix = computed(() => matrix.value.map((row) => row.map((i) => i.totalCents(true))))
 
@@ -304,7 +314,8 @@ watch(subtab, (newValue) => {
     <main v-if="subtab === 'matrix'">
       <h2>Interval matrix (modes)</h2>
       <div class="control-group interval-matrix">
-        <table @mouseleave="highlight()">
+        <p v-if="matrixError" class="matrix-error">{{ matrixError }}</p>
+        <table v-else @mouseleave="highlight()">
           <thead>
             <tr>
               <th></th>
@@ -584,14 +595,7 @@ watch(subtab, (newValue) => {
           <input id="N" type="number" min="1000" step="1000" v-model="entropy.N" />
         </div>
         <label for="a">Rényi order: {{ entropy.a.toFixed(4) }}</label>
-        <NumericSlider
-          class="control"
-          id="a"
-          min="0.02"
-          max="7"
-          step="any"
-          v-model="entropy.a"
-        />
+        <NumericSlider class="control" id="a" min="0.02" max="7" step="any" v-model="entropy.a" />
         <label for="s">Frequency deviation: {{ (entropy.s * 100).toFixed(2) }}%</label>
         <NumericSlider
           class="control"
@@ -635,8 +639,8 @@ nav {
   overflow-x: auto;
 }
 nav ul {
-  padding: 0px;
-  margin: 0px;
+  padding: 0;
+  margin: 0;
   white-space: nowrap;
 }
 nav ul li {
@@ -673,6 +677,10 @@ main {
 .interval-matrix {
   overflow-x: auto;
   display: block;
+}
+.matrix-error {
+  color: var(--color-error);
+  font-weight: 600;
 }
 .interval-matrix th {
   font-weight: bold;

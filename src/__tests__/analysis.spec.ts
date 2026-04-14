@@ -1,7 +1,14 @@
 import { describe, it, expect } from 'vitest'
+import { Interval, TimeReal } from 'sonic-weave'
 import { arraysEqual, valueToCents } from 'xen-dev-utils'
 
-import { alignValues, misalignment, otonalFundamental, utonalFundamental } from '../analysis'
+import {
+  alignValues,
+  intervalMatrix,
+  misalignment,
+  otonalFundamental,
+  utonalFundamental
+} from '../analysis'
 
 const EPSILON = 1e-4
 
@@ -16,6 +23,17 @@ describe('Otonal balancer', () => {
       )
     ).toBeTruthy()
   })
+
+  it('handles negative ratios when estimating the fundamental', () => {
+    const frequencies = [-(2 ** 0), 2 ** (4 / 12), -(2 ** (7 / 12))]
+    const fundamental = otonalFundamental(frequencies)
+    expect(
+      arraysEqual(
+        frequencies.map((f) => Math.round(Math.abs(f) / fundamental)),
+        [4, 5, 6]
+      )
+    ).toBeTruthy()
+  })
 })
 
 describe('Utonal balancer', () => {
@@ -25,6 +43,17 @@ describe('Utonal balancer', () => {
     expect(
       arraysEqual(
         frequencies.map((f) => 1 / Math.round(fundamental / f)),
+        [1 / 6, 1 / 5, 1 / 4]
+      )
+    ).toBeTruthy()
+  })
+
+  it('handles negative ratios when estimating the inverted fundamental', () => {
+    const frequencies = [-(2 ** 0), 2 ** (3 / 12), -(2 ** (7 / 12))]
+    const fundamental = utonalFundamental(frequencies)
+    expect(
+      arraysEqual(
+        frequencies.map((f) => 1 / Math.round(fundamental / Math.abs(f))),
         [1 / 6, 1 / 5, 1 / 4]
       )
     ).toBeTruthy()
@@ -43,5 +72,15 @@ describe('Equal-division deviation minimizer', () => {
       const candidate = pitches.map((pitch) => pitch + offset)
       expect(misalignment(candidate, 100.0)).toBeGreaterThanOrEqual(minimumAchievableError)
     }
+  })
+})
+
+describe('Interval matrix', () => {
+  it('throws a user-facing error for 0Hz scales', () => {
+    const zeroHzScale = [new Interval(TimeReal.fromValue(0), 'linear')]
+
+    expect(() => intervalMatrix(zeroHzScale)).toThrow(
+      'Interval matrix is undefined for scales containing 0Hz intervals.'
+    )
   })
 })

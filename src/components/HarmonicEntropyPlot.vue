@@ -150,7 +150,14 @@ function lineMouseMove(event: MouseEvent) {
     <g v-for="l of lines" :key="l.key" @mousemove="lineMouseMove" @mouseleave="lineIndex = -1">
       <line :x1="l.x1" :y1="l.y1" :x2="l.x2" :y2="l.y2" class="interval-line" />
       <circle :cx="l.x2" :cy="l.y2" r="0.008" :fill="l.color" class="interval-circle" />
-      <line :x1="l.x1" :y1="l.y1" :x2="l.x2" :y2="l.y2" stroke="rgba(0 0 0 / 0%)" stroke-width="0.1" />
+      <line
+        :x1="l.x1"
+        :y1="l.y1"
+        :x2="l.x2"
+        :y2="l.y2"
+        stroke="rgba(0 0 0 / 0%)"
+        stroke-width="0.1"
+      />
     </g>
     <text
       v-if="lineIndex >= 0"
@@ -212,14 +219,14 @@ function lineMouseMove(event: MouseEvent) {
 }
 
 .ticks > rect {
-  fill: #ddd;
+  fill: var(--color-plot-tick-fill);
 }
 .ticks > g > line {
-  stroke: #111;
+  stroke: var(--color-plot-tick-line);
   stroke-width: 0.004;
 }
 .ticks > g > text {
-  fill: #333;
+  fill: var(--color-plot-tick-text);
   text-anchor: middle;
   dominant-baseline: hanging;
 }

@@ -81,7 +81,7 @@ const rows = computed(() => {
       let index: number | undefined = base
       if (props.keyboardMode === 'isomorphic') {
         const [x, y] = COORDS_BY_CODE.get(code)!
-        index += base + x * horizontal + (2 - y) * vertical
+        index += x * horizontal + (2 - y) * vertical
       } else {
         index = mapping.get(code)
       }

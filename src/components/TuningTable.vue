@@ -57,7 +57,7 @@ const rows = computed(() => {
 table {
   width: 100%;
   text-align: center;
-  border-spacing: 0px;
+  border-spacing: 0;
 }
 table th {
   position: sticky;

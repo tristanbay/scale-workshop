@@ -51,9 +51,10 @@ export function otonalFundamental(frequencies: number[], maxMultiplier = 16) {
   if (!frequencies.length) {
     return NaN
   }
-  const ratios = frequencies.map((f) => f / frequencies[0])
+  const root = Math.abs(frequencies[0])
+  const ratios = frequencies.map((f) => Math.abs(f) / root)
   const multiplier = otonalMultiplier(ratios, maxMultiplier)
-  return frequencies[0] / multiplier
+  return root / multiplier
 }
 
 /**
@@ -104,9 +105,10 @@ export function utonalFundamental(frequencies: number[], maxDivisor = 23) {
   if (!frequencies.length) {
     return NaN
   }
-  const ratios = frequencies.map((f) => f / frequencies[0])
+  const root = Math.abs(frequencies[0])
+  const ratios = frequencies.map((f) => Math.abs(f) / root)
   const divisor = utonalDivisor(ratios, maxDivisor)
-  return divisor * frequencies[0]
+  return divisor * root
 }
 
 /**
@@ -383,6 +385,12 @@ function mixedFormat(value: TimeMonzo | TimeReal): Interval {
 // Interval matrix a.k.a the modes of a scale
 export function intervalMatrix(intervals: Interval[]) {
   intervals = intervals.map((i) => i.shallowClone())
+  if (!intervals.length) {
+    return []
+  }
+  if (intervals.some((interval) => interval.value.valueOf() === 0)) {
+    throw new Error('Interval matrix is undefined for scales containing 0Hz intervals.')
+  }
   // Simplify by removing formatting.
   for (let i = 0; i < intervals.length; ++i) {
     intervals[i].node = undefined

@@ -70,8 +70,9 @@ const generatorTickRatios = computed(() => {
     return []
   }
   const periodScale = 1 / periodCents.value
-  return Array.from({ length: props.size }, (_, i) =>
-    (i + props.up + 1 - props.size) * generatorCents * periodScale
+  return Array.from(
+    { length: props.size },
+    (_, i) => (i + props.up + 1 - props.size) * generatorCents * periodScale
   )
 })
 
@@ -130,11 +131,10 @@ const scaleTickDirections = computed(() => {
 
 const scaleTickCoords = computed(() => {
   const result = []
-  for (const [index, [sin, cos]] of scaleTickDirections.value.entries()) {
+  for (const [sin, cos] of scaleTickDirections.value) {
     const inner = CIRCLE_RADIUS - 0.5 * SCALE_TICK_HEIGHT
     const outer = CIRCLE_RADIUS + 0.5 * SCALE_TICK_HEIGHT
     result.push({
-      key: `scale-tick-${index}`,
       x1: `${50 + inner * sin}%`,
       y1: `${50 - inner * cos}%`,
       x2: `${50 + outer * sin}%`,
@@ -171,7 +171,6 @@ const generatorTrajectory = computed(() => {
   const result = []
   for (let i = 0; i < directions.length - 1; ++i) {
     result.push({
-      key: `generator-trajectory-${i}`,
       x1: `${50 + directions[i][0] * CIRCLE_RADIUS}%`,
       y1: `${50 - directions[i][1] * CIRCLE_RADIUS}%`,
       x2: `${50 + directions[i + 1][0] * CIRCLE_RADIUS}%`,
@@ -183,11 +182,10 @@ const generatorTrajectory = computed(() => {
 
 const generatorTickCoords = computed(() => {
   const result = []
-  for (const [index, [sin, cos]] of generatorTickDirections.value.entries()) {
+  for (const [sin, cos] of generatorTickDirections.value) {
     const inner = CIRCLE_RADIUS - 0.5 * GENERATOR_TICK_HEIGHT
     const outer = CIRCLE_RADIUS + 0.5 * GENERATOR_TICK_HEIGHT
     result.push({
-      key: `generator-tick-${index}`,
       x1: `${50 + inner * sin}%`,
       y1: `${50 - inner * cos}%`,
       x2: `${50 + outer * sin}%`,
@@ -309,8 +307,8 @@ onUnmounted(() => {
     </text>
 
     <line
-      v-for="attrs of generatorTrajectory"
-      :key="attrs.key"
+      v-for="(attrs, index) of generatorTrajectory"
+      :key="`generator-trajectory-${index}`"
       v-bind="attrs"
       stroke-width="0.5%"
       stroke="rgba(127, 127, 127, 0.5)"
@@ -319,8 +317,8 @@ onUnmounted(() => {
     <circle cx="50%" cy="50%" r="40%" fill="none" stroke-width="0.7%" />
 
     <line
-      v-for="attrs of scaleTickCoords"
-      :key="attrs.key"
+      v-for="(attrs, index) of scaleTickCoords"
+      :key="`scale-tick-${index}`"
       v-bind="attrs"
       stroke-width="0.5%"
       class="scale-tick"
@@ -338,8 +336,8 @@ onUnmounted(() => {
     </text>
 
     <line
-      v-for="attrs of generatorTickCoords"
-      :key="attrs.key"
+      v-for="(attrs, index) of generatorTickCoords"
+      :key="`generator-tick-${index}`"
       v-bind="attrs"
       stroke-width="0.5%"
       class="generator-tick"

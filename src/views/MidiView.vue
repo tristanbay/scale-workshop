@@ -418,15 +418,15 @@ div.multichannel-input-container {
 }
 
 .active {
-  background-color: greenyellow;
+  background-color: var(--color-bright-indicator);
 }
 div.piano-container {
   height: 50%;
 }
 
 p.midi-error {
-  background-color: color-mix(in srgb, var(--color-background-soft), tomato 12%);
-  border: 1px solid color-mix(in srgb, tomato, var(--color-border) 40%);
+  background-color: color-mix(in srgb, var(--color-background-soft), var(--color-warning) 12%);
+  border: 1px solid color-mix(in srgb, var(--color-warning), var(--color-border) 40%);
   border-radius: 0.5rem;
   margin: 1rem;
   padding: 0.75rem;
